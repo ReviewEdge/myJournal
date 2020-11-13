@@ -19,7 +19,7 @@ public abstract class Page {
 	}
 	
 	public int getLikes {
-		this.ps.getLikes();
+		
 	}
 	
 	public int getViews {
