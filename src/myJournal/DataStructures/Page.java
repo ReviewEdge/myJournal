@@ -10,34 +10,33 @@ public abstract class Page {
 	
 	}
 	
-	public int getId {
+	public int getId() {
 		
 	}
 	
-	public String getContent {
+	public String getContent() {
 		
 	}
 	
-	public int getLikes {
+	public int getLikes() {
 		
 	}
 	
-	public int getViews {
+	public int getViews() {
 		
 	}
 	
-	public ArrayList<Integer> getLikers {
+	public ArrayList<Integer> getLikers() {
 		
 	}
 	
-	public void setName {
+	public void setName() {
 		
 	}
 	
-	public void addLike {
+	public void addLike() {
 		
 	}
-	
 	
 	@Override
 	public String toString() {
