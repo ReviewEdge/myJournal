@@ -26,6 +26,10 @@ public abstract class Page {
 		
 	}
 	
+	public ArrayList<Integer> getLikers {
+		
+	}
+	
 	public void setName {
 		
 	}
@@ -33,6 +37,7 @@ public abstract class Page {
 	public void addLike {
 		
 	}
+	
 	
 	@Override
 	public String toString() {
