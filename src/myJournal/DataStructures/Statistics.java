@@ -1,5 +1,5 @@
 package myJournal.DataStructures;
 
-public class Statistics {
-
+public abstract class Statistics {
+	
 }

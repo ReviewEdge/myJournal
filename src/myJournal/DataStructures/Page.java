@@ -4,6 +4,7 @@ public abstract class Page {
 	private final int id;
 	private String name;
 	private String content;
+	private PageStatistics ps;
 	
 	public Page(int newId) {
 	
@@ -18,9 +19,8 @@ public abstract class Page {
 	}
 	
 	public int getLikes {
-		
+		this.ps.getLikes();
 	}
-	
 	
 	public int getViews {
 		
@@ -31,6 +31,11 @@ public abstract class Page {
 	}
 	
 	public void addLike {
+		
+	}
+	
+	@Override
+	public String toString() {
 		
 	}
 }
