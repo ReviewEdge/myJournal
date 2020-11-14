@@ -6,7 +6,7 @@ public abstract class Page {
 	private String content;
 	private PageStatistics ps;
 	
-	public Page(int newId) {
+	public Page(int newId, String newName) {
 	
 	}
 	

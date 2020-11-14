@@ -4,7 +4,7 @@ public class PageOptions extends Options{
 	private boolean hasLikes;
 	private boolean hasViews;
 	
-	public PageOptions() {
+	public PageOptions(Page p) {
 		
 	}
 	
