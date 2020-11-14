@@ -1,8 +1,8 @@
 package myJournal.DataStructures;
 
 public class PageOptions extends Options{
-	private boolean haveLikes;
-	private boolean haveViews;
+	private boolean hasLikes;
+	private boolean hasViews;
 	
 	public PageOptions() {
 		
