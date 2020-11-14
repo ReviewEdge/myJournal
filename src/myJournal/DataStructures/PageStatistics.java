@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PageStatistics extends Statistics {
 	private int likes;
 	private int views;
-	private ArrayList<Integer> likers;
+	private ArrayList<Integer> likers;		// HashSet Instead? So only unique people are liking?
 	
 	public PageStatistics() {
 		
