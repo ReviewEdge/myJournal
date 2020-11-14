@@ -4,33 +4,42 @@ public abstract class Page {
 	private final int id;
 	private String name;
 	private String content;
+	private PageStatistics ps;
 	
 	public Page(int newId) {
 	
 	}
 	
-	public int getId {
+	public int getId() {
 		
 	}
 	
-	public String getContent {
+	public String getContent() {
 		
 	}
 	
-	public int getLikes {
+	public int getLikes() {
 		
 	}
 	
-	
-	public int getViews {
+	public int getViews() {
 		
 	}
 	
-	public void setName {
+	public ArrayList<Integer> getLikers() {
 		
 	}
 	
-	public void addLike {
+	public void setName() {
+		
+	}
+	
+	public void addLike() {
+		
+	}
+	
+	@Override
+	public String toString() {
 		
 	}
 }
