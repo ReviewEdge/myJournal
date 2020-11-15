@@ -22,5 +22,9 @@ public class PageStatistics extends Statistics {
 		return likers;
 	}
 	
+	public void addView() {
+		this.views++;
+	}
+	
 	
 }

@@ -8,6 +8,11 @@ public class PageOptions extends Options{
 		
 	}
 	
+	public PageOptions(Page p, boolean hasLikes, boolean hasViews) {
+		this.hasLikes = hasLikes;
+		this.hasViews = hasViews;
+	}
+	
 	public boolean hasLikes() {
 		return this.hasLikes;
 	}
