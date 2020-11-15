@@ -6,23 +6,28 @@ public abstract class Page {
 	private final int id;
 	private String name;
 	private String content;
+	private int authorId;
 	private PageStatistics stats;
 	private PageOptions options;
 	
-	public Page(int newId, String newName) {
+	public Page(int newId, String newName, int authorId) {
 	
 	}
 	
 	public int getId() {
-		
+		return this.id;
 	}
 	
 	public String getContent() {
-		
+		return this.content;
+	}
+	
+	public int getAuthorId() {
+		return this.authorId;
 	}
 	
 	public int getLikes() {
-		
+		return this.stats.getLikes();
 	}
 	
 	public int getViews() {
