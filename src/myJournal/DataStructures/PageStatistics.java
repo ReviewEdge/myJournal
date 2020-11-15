@@ -1,10 +1,10 @@
 package myJournal.DataStructures;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PageStatistics extends Statistics {
 	private int views;
-	private ArrayList<Integer> likers;		// HashSet Instead? So only unique people are liking?
+	private HashSet<Long> likers;		// HashSet Instead? So only unique people are liking?
 	
 	public PageStatistics(Page p) {
 		
@@ -18,8 +18,8 @@ public class PageStatistics extends Statistics {
 		return this.views;
 	}
 	
-	public ArrayList<Integer> getLikers() {
-		return this.likers;
+	public HashSet<Long> getLikers() {
+		return likers;
 	}
 	
 	

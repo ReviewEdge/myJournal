@@ -1,10 +1,13 @@
 package myJournal.DataStructures;
 
+import java.util.HashSet;
+
 public abstract class Page {
 	private final int id;
 	private String name;
 	private String content;
-	private PageStatistics ps;
+	private PageStatistics stats;
+	private PageOptions options;
 	
 	public Page(int newId, String newName) {
 	
@@ -23,10 +26,14 @@ public abstract class Page {
 	}
 	
 	public int getViews() {
-		
+		return this.stats.getViews();
 	}
 	
-	public ArrayList<Integer> getLikers() {
+	public HashSet<Long> getLikers() {
+		return this.stats.getLikers();
+	}
+	
+	public void addView() {
 		
 	}
 	
@@ -34,7 +41,7 @@ public abstract class Page {
 		
 	}
 	
-	public void addLike() {
+	public void addLiker() { //not sure what this should take as input
 		
 	}
 	

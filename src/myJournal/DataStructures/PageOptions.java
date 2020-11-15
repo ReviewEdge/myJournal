@@ -9,10 +9,18 @@ public class PageOptions extends Options{
 	}
 	
 	public boolean hasLikes() {
-		
+		return this.hasLikes;
 	}
 	
 	public boolean hasViews() {
-		
+		return this.hasViews;
+	}
+
+	public void setHasLikes(boolean hasLikes) {
+		this.hasLikes = hasLikes;
+	}
+	
+	public void setHasViews(boolean hasViews) {
+		this.hasViews = hasViews;
 	}
 }
