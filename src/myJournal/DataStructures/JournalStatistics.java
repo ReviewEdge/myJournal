@@ -3,7 +3,7 @@ package myJournal.DataStructures;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class JournalStatistics extends Statistics {
+public class JournalStatistics {
 
 	private HashSet<Long> likers;
 	private HashSet<Long> followers;
@@ -26,7 +26,7 @@ public class JournalStatistics extends Statistics {
 	public HashSet<Long> getFollowers(){
 		return followers;
 	}
-	
+
 	public long getNumFollowers() {
 		return followers.size();
 	}
