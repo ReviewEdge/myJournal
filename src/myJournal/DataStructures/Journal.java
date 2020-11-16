@@ -169,5 +169,19 @@ public class Journal implements Followable {
         return 0;
     }
 
+	/**
+	 * @return the name of the journal
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name of the journal
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 
 }
