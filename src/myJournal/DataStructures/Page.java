@@ -8,13 +8,17 @@ public class Page {
 	private String content;
 	private int authorId;
 	private PageStatistics stats;
-	private PageOptions options;
+	private Journal parentJournal;
+	//Page Options
+	private boolean hasLikes;
+	private boolean hasViews;
 	
-	public Page(int newId, String newName, String content, int authorId) {
+	public Page(int newId, String newName, String content, int authorId, Journal parentJournal) {
 		this.id = newId;
 		this.name = newName;
 		this.content = content;
 		this.authorId = authorId;
+		this.parentJournal = parentJournal;
 	}
 	
 	public int getId() {
@@ -45,12 +49,16 @@ public class Page {
 		return this.stats.getLikers();
 	}
 	
+	public Journal getParentJournal() {
+		return this.parentJournal;
+	}
+	
 	public boolean hasLikes() {
-		return options.hasLikes();
+		return this.hasLikes;
 	}
 	
 	public boolean hasViews() {
-		return options.hasViews();
+		return this.hasViews;
 	}
 	
 	public void addView() {
