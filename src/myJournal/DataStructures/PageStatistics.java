@@ -6,7 +6,13 @@ public class PageStatistics {
 	private HashSet<Long> likers;
 	private HashSet<Long> viewers;
 	
-	public PageStatistics(Page p) {
+
+	/**
+	 * @param p
+	 * @param likers
+	 * @param viewers
+	 */
+	public PageStatistics(Page p, HashSet<Long> likers, HashSet<Long> viewers) {
 		
 	}
 	

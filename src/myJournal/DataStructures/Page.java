@@ -13,12 +13,24 @@ public class Page {
 	private boolean hasLikes;
 	private boolean hasViews;
 	
-	public Page(long newId, String newName, String content, long authorId, Journal parentJournal) {
+
+	/**
+	 * @param newId
+	 * @param newName
+	 * @param content
+	 * @param authorId
+	 * @param parentJournal
+	 * @param hasLikes
+	 * @param hasViews
+	 */
+	public Page(long newId, String newName, String content, long authorId, Journal parentJournal, boolean hasLikes, boolean hasViews) {
 		this.id = newId;
 		this.name = newName;
 		this.content = content;
 		this.authorId = authorId;
 		this.parentJournal = parentJournal;
+		this.hasLikes = hasLikes;
+		this.hasViews = hasViews;
 	}
 	
 	/**
