@@ -1,5 +1,6 @@
 package myJournal.DataStructures;
 
+import javax.swing.*;
 import java.util.Date;
 
 /**
@@ -13,6 +14,16 @@ public class AccountData {
     private Date dateOfBirth;
     private String bio;
     private String livingLocation;
+
+    public AccountData(String firstName, String lastName, String username, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.accountCreation = accountCreation;
+        this.dateOfBirth = dateOfBirth;
+        this.bio = bio;
+        this.livingLocation = livingLocation;
+    }
 
     /**
      *
