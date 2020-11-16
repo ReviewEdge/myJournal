@@ -3,17 +3,17 @@ package myJournal.DataStructures;
 import java.util.HashSet;
 
 public class Page {
-	private final int id;
+	private final long id;
 	private String name;
 	private String content;
-	private int authorId;
+	private long authorId;
 	private PageStatistics stats;
 	private Journal parentJournal;
 	//Page Options
 	private boolean hasLikes;
 	private boolean hasViews;
 	
-	public Page(int newId, String newName, String content, int authorId, Journal parentJournal) {
+	public Page(long newId, String newName, String content, long authorId, Journal parentJournal) {
 		this.id = newId;
 		this.name = newName;
 		this.content = content;
@@ -21,7 +21,7 @@ public class Page {
 		this.parentJournal = parentJournal;
 	}
 	
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 	
@@ -33,7 +33,7 @@ public class Page {
 		return this.content;
 	}
 	
-	public int getAuthorId() {
+	public long getAuthorId() {
 		return this.authorId;
 	}
 	
@@ -61,8 +61,20 @@ public class Page {
 		return this.hasViews;
 	}
 	
-	public void addView() {
-		this.stats.addView();
+	public void setHasLikes(boolean hasLikes) {
+		this.hasLikes = hasLikes;
+	}
+	
+	public void setHasViews(boolean hasViews) {
+		this.hasViews = hasViews;
+	}
+	
+	public void addView(long viewerId) {
+		this.stats.addView(viewerId);
+	}
+	
+	public void addLiker(long likerId) {
+		this.stats.addView(likerId);
 	}
 	
 	public void setName(String newName) {
@@ -71,11 +83,6 @@ public class Page {
 	
 	public void writeContent(String content) {
 		this.content = content;
-	}
-	
-	// TO DO:
-	public void addLiker() { //not sure what this should take as input
-		
 	}
 	
 	@Override
