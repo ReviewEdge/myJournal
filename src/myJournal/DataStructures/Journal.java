@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- *
+ * A container for individual pages that can be public or private and can have multiple contributers.
  */
 public class Journal implements Followable {
 

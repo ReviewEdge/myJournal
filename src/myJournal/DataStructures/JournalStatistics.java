@@ -1,10 +1,9 @@
 package myJournal.DataStructures;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- *
+ * Stores the statistics for a journal.
  */
 public class JournalStatistics {
 
@@ -12,6 +11,11 @@ public class JournalStatistics {
 	private HashSet<Long> followers;
 	private HashSet<Long> viewers;
 	
+	/**
+	 * @param likers
+	 * @param followers
+	 * @param viewers
+	 */
 	public JournalStatistics(HashSet<Long> likers, HashSet<Long> followers, HashSet<Long> viewers) {
 		this.likers = likers;
 		this.followers = followers;
@@ -19,48 +23,42 @@ public class JournalStatistics {
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return how many likes the journal has
 	 */
 	public long getLikes() {
 		return likers.size();
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return a hashset of the ids of all of the journal's likers
 	 */
 	public HashSet<Long> getLikers() {
 		return likers;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return a hashset of the ids of all of the journal's followers
 	 */
 	public HashSet<Long> getFollowers(){
 		return followers;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return how many followers the journal has
 	 */
 	public long getNumFollowers() {
 		return followers.size();
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return a hashset of the ids of all of the journal's viewers
 	 */
 	public HashSet<Long> getViewers () {
 		return viewers;
 	}
 
 	/**
-	 *
-	 * @return
+	 * @return how many viewers the journal has
 	 */
 	public int getNumViewers() {
 		return viewers.size();
