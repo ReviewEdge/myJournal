@@ -23,10 +23,6 @@ public class PageStatistics extends Statistics {
 		return likers;
 	}
 	
-	public void addView() {
-		this.views++;
-	}
-	
 	public void addView(long viewer) {
 		viewers.add(viewer);
 	}
