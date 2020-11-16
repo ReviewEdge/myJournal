@@ -2,7 +2,7 @@ package myJournal.DataStructures;
 
 import java.util.HashSet;
 
-public class JournalOptions extends Options {
+public class JournalOptions{
 
 	private boolean isPrivate;
 	private boolean hasLikes;
