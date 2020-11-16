@@ -2,6 +2,9 @@ package myJournal.DataStructures;
 
 import java.util.HashSet;
 
+/**
+ *
+ */
 public class JournalOptions{
 
 	private boolean isPrivate;
@@ -17,23 +20,43 @@ public class JournalOptions{
 		this.owners = owners;
 		this.contributers = contributers;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean isPrivate() {
 		return isPrivate;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasLikes() {
 		return hasLikes;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public boolean hasFollowers() {
 		return hasFollowers;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public HashSet<Long> getOwners(){
 		return owners;
 	}
-	
+
+	/**
+	 *
+	 * @return
+	 */
 	public HashSet<Long> getContributers(){
 		return contributers;
 	}

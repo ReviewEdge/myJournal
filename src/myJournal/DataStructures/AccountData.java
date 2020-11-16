@@ -2,6 +2,9 @@ package myJournal.DataStructures;
 
 import java.util.Date;
 
+/**
+ * 
+ */
 public class AccountData {
     private String firstName;
     private String lastName;
