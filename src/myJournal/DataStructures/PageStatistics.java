@@ -2,7 +2,7 @@ package myJournal.DataStructures;
 
 import java.util.HashSet;
 
-public class PageStatistics extends Statistics {
+public class PageStatistics {
 	private int views;
 	private HashSet<Long> likers;
 	private HashSet<Long> viewers;

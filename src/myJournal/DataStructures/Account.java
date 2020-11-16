@@ -10,7 +10,8 @@ public class Account implements Followable{
     private ArrayList<Followable> subscribed;
     private Feed feed;
     private ArrayList<Journal> journals;
-    private HashSet<Long> followers;
+    private AccountStatistics stats;
+
 
     public Account(long id, AccountData profile, ArrayList<Followable> subscribed, Feed feed) {
         this.profile = profile;
@@ -54,13 +55,12 @@ public class Account implements Followable{
     public Page getLatestPage(long requestingId) {
         return null;
     }
-
     public HashSet<Long> getFollowers() {
-        return null;
+        return stats.getFollowers();
     }
 
     public long getNumFollowers() {
-        return 0;
+        return stats.getNumFollowers();
     }
 
     public long getNumPages() {
