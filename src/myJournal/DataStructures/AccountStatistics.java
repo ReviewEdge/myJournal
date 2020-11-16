@@ -8,6 +8,10 @@ import java.util.HashSet;
 public class AccountStatistics {
     private HashSet<Long> followers;
     
+    
+    /**
+     * @param followers
+     */
     public AccountStatistics(HashSet<Long> followers) {
   
     }
