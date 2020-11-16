@@ -3,24 +3,30 @@ package myJournal.DataStructures;
 import java.util.HashSet;
 
 /**
- *
+ * Stores statistics about an account
  */
 public class AccountStatistics {
     private HashSet<Long> followers;
-
+    
+    
     /**
-     *
-     * @return
+     * @param followers
      */
-    public HashSet<Long> getFollowers() {
-        return null;
+    public AccountStatistics(HashSet<Long> followers) {
+  
     }
 
     /**
-     *
-     * @return
+     * @return a hashset of all of the followers
+     */
+    public HashSet<Long> getFollowers() {
+        return this.followers;
+    }
+
+    /**
+     * @return how many followers the account has
      */
     public long getNumFollowers() {
-        return 0;
+        return followers.size();
     }
 }

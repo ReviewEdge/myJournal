@@ -2,6 +2,10 @@ package myJournal.DataStructures;
 
 import java.util.HashSet;
 
+
+/**
+ * Holds text as content that can be viewed, and belongs to a journal.
+ */
 public class Page {
 	private final long id;
 	private String name;

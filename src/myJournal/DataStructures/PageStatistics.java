@@ -2,6 +2,9 @@ package myJournal.DataStructures;
 
 import java.util.HashSet;
 
+/**
+ * Stores the statistics for a page.
+ */
 public class PageStatistics {
 	private HashSet<Long> likers;
 	private HashSet<Long> viewers;
