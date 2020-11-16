@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- *
+ * A class that creates a set of pages.
  */
 public class Feed {
     private LinkedList<Page> pages;
@@ -14,7 +14,7 @@ public class Feed {
     }
 
     /**
-     *
+     * Repopulate the internal page list.
      */
     public void refreshFeed() {
 
@@ -22,8 +22,10 @@ public class Feed {
 
     /**
      *
+     * @return the next page for the user to read
      */
-    public void getPage() {
+    public Page getPage() {
         //refresh page after no more page
+        return null;
     }
 }
