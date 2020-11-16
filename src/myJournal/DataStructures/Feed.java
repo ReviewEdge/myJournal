@@ -3,6 +3,9 @@ package myJournal.DataStructures;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/**
+ *
+ */
 public class Feed {
     private LinkedList<Page> pages;
 
@@ -10,10 +13,16 @@ public class Feed {
 
     }
 
+    /**
+     *
+     */
     public void refreshFeed() {
 
     }
 
+    /**
+     *
+     */
     public void getPage() {
         //refresh page after no more page
     }
