@@ -88,11 +88,12 @@ public class Journal implements Followable {
 	}
 	
 	//TO DO:
-	public Page getLatestPage() {
+	public Page getLatestPage(long requestingId) {
 		return null;
 	}
-	
-	
+	public ArrayList<Page> getPages(long requestingId) {return null;}
+	public long getNumPages() {return 0;}
+
 	
 	
 }

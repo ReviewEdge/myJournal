@@ -7,10 +7,12 @@ public class JournalStatistics extends Statistics {
 
 	private HashSet<Long> likers;
 	private HashSet<Long> followers;
+	private HashSet<Long> viewers;
 	
-	public JournalStatistics(HashSet<Long> likers, HashSet<Long> followers) {
+	public JournalStatistics(HashSet<Long> likers, HashSet<Long> followers, HashSet<Long> viewers) {
 		this.likers = likers;
 		this.followers = followers;
+		this.viewers = viewers;
 	}
 	
 	public long getLikes() {
@@ -29,8 +31,13 @@ public class JournalStatistics extends Statistics {
 		return followers.size();
 	}
 	
-	
-	
-	
-	
+	public HashSet<Long> getViewers () {
+		return viewers;
+	}
+
+	public int getNumViewers() {
+		return viewers.size();
+	}
+
+
 }
