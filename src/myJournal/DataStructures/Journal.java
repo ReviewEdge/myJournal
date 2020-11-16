@@ -36,14 +36,14 @@ public class Journal implements Followable {
     }
 
     /**
-     * @return
+     * @return id of journal as long
      */
     public long getId() {
         return id;
     }
 
     /**
-     * @return
+     * @return arrayList of all of the pages in the journal
      */
     public ArrayList<Page> getPages() {
         return pages;
@@ -54,35 +54,35 @@ public class Journal implements Followable {
     // Stats Data
 
     /**
-     * @return
+     * @return how many likes the journal has
      */
     public long getLikes() {
         return stats.getLikes();
     }
 
     /**
-     * @return
+     * @return a hashset of all of the journal's likers
      */
     public HashSet<Long> getLikers() {
         return stats.getLikers();
     }
 
     /**
-     * @return
+     * @return a hashset of all of the journal's followers
      */
     public HashSet<Long> getFollowers() {
         return stats.getFollowers();
     }
 
     /**
-     * @return
+     * @return how many followers a journal has
      */
     public long getNumFollowers() {
         return stats.getNumFollowers();
     }
 
     /**
-     * @return
+     * @return the statistics object for the journal
      */
     public JournalStatistics getStats() {
         return stats;
@@ -92,42 +92,42 @@ public class Journal implements Followable {
     // Options data:
 
     /**
-     * @return
+     * @return if the journal is private
      */
     public boolean isPrivate() {
         return options.isPrivate();
     }
 
     /**
-     * @return
+     * @return if the journal has likes
      */
     public boolean hasLikes() {
         return options.hasLikes();
     }
 
     /**
-     * @return
+     * @return if the journal has followers
      */
     public boolean hasFollowers() {
         return options.hasFollowers();
     }
 
     /**
-     * @return
+     * @return a hashset of the owners of the journal
      */
     public HashSet<Long> getOwners() {
         return options.getOwners();
     }
 
     /**
-     * @return
+     * @return a hashset of the contributers to the journal
      */
     public HashSet<Long> getContributers() {
         return options.getContributers();
     }
 
     /**
-     * @return
+     * @return the options object for the journal
      */
     public JournalOptions getOptions() {
         return options;
@@ -137,9 +137,10 @@ public class Journal implements Followable {
     // TO DO:
 
     /**
-     *
+     * Adds a new page to the journal.
+     * @param newPage
      */
-    public void addPage() {
+    public void addPage(Page newPage) {
 
     }
 
@@ -147,7 +148,7 @@ public class Journal implements Followable {
 
     /**
      * @param requestingId
-     * @return
+     * @return the latest page in the journal
      */
     public Page getLatestPage(long requestingId) {
         return null;
@@ -155,14 +156,14 @@ public class Journal implements Followable {
 
     /**
      * @param requestingId
-     * @return
+     * @return the id of all of the pages in the journal
      */
     public ArrayList<Page> getPages(long requestingId) {
         return null;
     }
 
     /**
-     * @return
+     * @return how many pages are in the journal
      */
     public long getNumPages() {
         return 0;
