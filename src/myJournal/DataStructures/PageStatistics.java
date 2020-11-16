@@ -4,7 +4,8 @@ import java.util.HashSet;
 
 public class PageStatistics extends Statistics {
 	private int views;
-	private HashSet<Long> likers;		// HashSet Instead? So only unique people are liking?
+	private HashSet<Long> likers;
+	private HashSet<Long> viewers;
 	
 	public PageStatistics(Page p) {
 		
@@ -26,5 +27,8 @@ public class PageStatistics extends Statistics {
 		this.views++;
 	}
 	
+	public void addView(long viewer) {
+		viewers.add(viewer);
+	}
 	
 }
