@@ -85,7 +85,7 @@ public class Account implements Followable{
      * @return an arraylist of the pages available to the account
      */
     public ArrayList<Page> getPages(long requestingId) {
-        return new ArrayList<>();
+        return new ArrayList<Page>();
     }
 
     /**
