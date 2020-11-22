@@ -30,14 +30,14 @@ public class JournalStatistics {
 	}
 
 	/**
-	 * @return a hashset of the ids of all of the journal's likers
+	 * @return a HashSet of the ids of all of the journal's likers
 	 */
 	public HashSet<Long> getLikers() {
 		return likers;
 	}
 
 	/**
-	 * @return a hashset of the ids of all of the journal's followers
+	 * @return a HashSet of the ids of all of the journal's followers
 	 */
 	public HashSet<Long> getFollowers(){
 		return followers;
@@ -51,7 +51,7 @@ public class JournalStatistics {
 	}
 
 	/**
-	 * @return a hashset of the ids of all of the journal's viewers
+	 * @return a HashSet of the ids of all of the journal's viewers
 	 */
 	public HashSet<Long> getViewers () {
 		return viewers;
@@ -62,6 +62,27 @@ public class JournalStatistics {
 	 */
 	public int getNumViewers() {
 		return viewers.size();
+	}
+	
+	/**
+	 * @param likerId
+	 */
+	public void addLiker(long likerId) {
+		likers.add(likerId);
+	}
+
+	/**
+	 * @param followerId
+	 */
+	public void addFollower(long followerId) {
+		followers.add(followerId);
+	}
+
+	/**
+	 * @param viewerId
+	 */
+	public void addViewer(long viewerId) {
+		viewers.add(viewerId);
 	}
 
 

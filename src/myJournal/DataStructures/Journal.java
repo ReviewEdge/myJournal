@@ -11,8 +11,6 @@ public class Journal implements Followable {
     private long id;
     private String name;
     private ArrayList<Page> pages;
-    private HashSet<Long> owners;
-    private HashSet<Long> contributers;
     private JournalStatistics stats;
     private JournalOptions options;
 
@@ -25,12 +23,10 @@ public class Journal implements Followable {
      * @param stats
      * @param options
      */
-    public Journal(long id, String name, ArrayList<Page> pages, HashSet<Long> owners, HashSet<Long> contributers, JournalStatistics stats, JournalOptions options) {
+    public Journal(long id, String name, ArrayList<Page> pages, JournalStatistics stats, JournalOptions options) {
         this.id = id;
         this.name = name;
         this.pages = pages;
-        this.owners = owners;
-        this.contributers = contributers;
         this.stats = stats;
         this.options = options;
     }
@@ -61,14 +57,14 @@ public class Journal implements Followable {
     }
 
     /**
-     * @return a hashset of all of the journal's likers
+     * @return a HashSet of all of the journal's likers
      */
     public HashSet<Long> getLikers() {
         return stats.getLikers();
     }
 
     /**
-     * @return a hashset of all of the journal's followers
+     * @return a HashSet of all of the journal's followers
      */
     public HashSet<Long> getFollowers() {
         return stats.getFollowers();
@@ -113,14 +109,14 @@ public class Journal implements Followable {
     }
 
     /**
-     * @return a hashset of the owners of the journal
+     * @return a HashSet of the owners of the journal
      */
     public HashSet<Long> getOwners() {
         return options.getOwners();
     }
 
     /**
-     * @return a hashset of the contributers to the journal
+     * @return a HashSet of the contributers to the journal
      */
     public HashSet<Long> getContributers() {
         return options.getContributers();
@@ -133,7 +129,6 @@ public class Journal implements Followable {
         return options;
     }
 
-
     // TO DO:
 
     /**
@@ -141,7 +136,7 @@ public class Journal implements Followable {
      * @param newPage
      */
     public void addPage(Page newPage) {
-
+    	pages.add(newPage);
     }
 
     //TO DO:
@@ -166,7 +161,7 @@ public class Journal implements Followable {
      * @return how many pages are in the journal
      */
     public long getNumPages() {
-        return 0;
+        return pages.size();
     }
 
 	/**
