@@ -1,4 +1,4 @@
-package myJournal;
+package main.java.myJournal;
 
 /**
  * The main server class, which runs all the code.

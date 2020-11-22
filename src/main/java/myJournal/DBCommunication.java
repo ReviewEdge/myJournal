@@ -1,8 +1,8 @@
-package myJournal;
+package main.java.myJournal;
 
-import myJournal.DataStructures.Account;
-import myJournal.DataStructures.Journal;
-import myJournal.DataStructures.Page;
+import main.java.myJournal.DataStructures.Account;
+import main.java.myJournal.DataStructures.Journal;
+import main.java.myJournal.DataStructures.Page;
 
 /**
  * A class for communication with the database.

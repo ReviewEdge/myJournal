@@ -1,4 +1,4 @@
-package myJournal.DataStructures;
+package main.java.myJournal.DataStructures;
 
 import javax.swing.*;
 import java.util.Date;
