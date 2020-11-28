@@ -1,8 +1,8 @@
-package main.java.myJournal;
+package myJournal;
 
-import main.java.myJournal.DataStructures.Account;
-import main.java.myJournal.DataStructures.Journal;
-import main.java.myJournal.DataStructures.Page;
+import myJournal.DataStructures.Account;
+import myJournal.DataStructures.Journal;
+import myJournal.DataStructures.Page;
 
 import java.util.ArrayList;
 

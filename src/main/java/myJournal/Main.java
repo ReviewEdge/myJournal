@@ -1,4 +1,4 @@
-package main.java.myJournal;
+package myJournal;
 
 import myJournal.Endpoints;
 import myJournal.Routes;
