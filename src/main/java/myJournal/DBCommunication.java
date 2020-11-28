@@ -4,12 +4,20 @@ import main.java.myJournal.DataStructures.Account;
 import main.java.myJournal.DataStructures.Journal;
 import main.java.myJournal.DataStructures.Page;
 
+import java.util.ArrayList;
+
 /**
  * A class for communication with the database.
  */
 public class DBCommunication {
-    public DBCommunication(String DBLocation) {
+    private ArrayList<Account> fakeAccountsTable;
+    private ArrayList<Journal> fakeJournalsTable;
+    private ArrayList<Page> fakePagesTable;
 
+    public DBCommunication(String DBLocation) {
+        fakeAccountsTable = new ArrayList<>();
+        fakeJournalsTable = new ArrayList<>();
+        fakePagesTable = new ArrayList<>();
     }
 
     /**
@@ -18,7 +26,9 @@ public class DBCommunication {
      * @return The id of the account in the database.
      */
     public long addAccount(Account toAdd) {
-        return 0;
+        long id = fakeAccountsTable.size();
+        fakeAccountsTable.add(toAdd);
+        return id;
     }
 
     /**
@@ -27,7 +37,7 @@ public class DBCommunication {
      * @return the account, from the database.
      */
     public Account getAccount(long id) {
-        return null;
+        return fakeAccountsTable.get((int)id);
     }
 
     /**
@@ -36,7 +46,9 @@ public class DBCommunication {
      * @return The id of the journal in the database.
      */
     public long addJournal(Journal toAdd) {
-        return 0;
+        long id = fakeJournalsTable.size();
+        fakeJournalsTable.add(toAdd);
+        return id;
     }
 
     /**
@@ -45,7 +57,7 @@ public class DBCommunication {
      * @return the journal, from the database.
      */
     public Journal getJournal(long id) {
-        return null;
+        return fakeJournalsTable.get((int)id);
     }
 
     /**
@@ -54,7 +66,9 @@ public class DBCommunication {
      * @return the id of the page in the database.
      */
     public long addPage(Page toAdd) {
-        return 0;
+        long id = fakePagesTable.size();
+        fakePagesTable.add(toAdd);
+        return id;
     }
     /**
      *
@@ -62,6 +76,6 @@ public class DBCommunication {
      * @return the page, from the database.
      */
     public Page getPage(long id) {
-        return null;
+        return fakePagesTable.get((int)id);
     }
 }
