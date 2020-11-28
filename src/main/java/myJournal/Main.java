@@ -21,7 +21,7 @@ public class Main {
 		post(Endpoints.Account, Routes.addAccount);
 		post(Endpoints.Journal, Routes.addJournal);
 		post(Endpoints.Page, Routes.addPage);
-		post(Endpoints.Session, Routes.createSession)
+		post(Endpoints.Session, Routes.createSession);
 		put(Endpoints.Account, Routes.editAccount);
 		put(Endpoints.Journal, Routes.editJournal);
 		delete(Endpoints.Account, Routes.deleteAccount);
