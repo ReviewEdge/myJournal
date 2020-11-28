@@ -1,4 +1,4 @@
-package main.java.myJournal.DataStructures;
+package myJournal.DataStructures;
 
 import java.util.HashSet;
 
