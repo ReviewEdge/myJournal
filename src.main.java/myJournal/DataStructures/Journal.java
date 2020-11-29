@@ -228,6 +228,10 @@ public class Journal implements Followable {
 		result = result*37 + options.hashCode();
 		return result;
 	}
+
+	public Journal copyWithId(long id) {
+	    return new Journal(id, name, page, stats, options);
+    }
 	
 	
 	

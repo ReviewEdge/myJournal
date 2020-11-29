@@ -155,6 +155,10 @@ public class Page {
 	public void writeContent(String content) {
 		this.content = content;
 	}
+
+	public Page copyWithId(long id) {
+		return new Page(id, name, content, authorId, parentJournal, hasLikes, hasViews);
+	}
 	
 	/**
 	 * return the content as a string

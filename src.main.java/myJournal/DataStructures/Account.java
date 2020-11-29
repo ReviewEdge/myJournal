@@ -129,4 +129,8 @@ public class Account implements Followable{
     public boolean checkPasswordHash(String passwordHash) {
         return this.profile.getPasswordHash().equals(passwordHash);
     }
+
+    public Account copyWithId(long id) {
+        return new Account(id, this.profile, this.subscribed, this.feed);
+    }
 }
