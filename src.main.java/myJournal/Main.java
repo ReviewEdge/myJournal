@@ -18,6 +18,8 @@ public class Main {
 		get(Endpoints.Journal, Routes.getJournal);
 		get(Endpoints.Page, Routes.getPage);
 		get(Endpoints.Feed, Routes.getFeed);
+		get(Endpoints.AccountPages, Routes.getAccountPages);
+		get(Endpoints.JournalPages, Routes.getJournalPages);
 		post(Endpoints.Account, Routes.addAccount);
 		post(Endpoints.Journal, Routes.addJournal);
 		post(Endpoints.Page, Routes.addPage);

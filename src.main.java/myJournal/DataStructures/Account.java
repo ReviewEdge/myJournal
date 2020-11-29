@@ -85,7 +85,7 @@ public class Account implements Followable{
      * @return an arraylist of the pages available to the account
      */
     public ArrayList<Page> getPages(long requestingId) {
-        return new ArrayList<Page>();
+        return new ArrayList<>();
     }
 
     /**
@@ -119,5 +119,14 @@ public class Account implements Followable{
      */
     public long getNumPages() {
         return 0;
+    }
+
+    /**
+     *
+     * @param passwordHash the hash of the password to be checked
+     * @return whether or not the hashes match
+     */
+    public boolean checkPasswordHash(String passwordHash) {
+        return this.profile.getPasswordHash().equals(passwordHash);
     }
 }

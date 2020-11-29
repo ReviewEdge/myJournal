@@ -10,15 +10,17 @@ public class AccountData {
     private String firstName;
     private String lastName;
     private String username;
+    private String passwordHash;
     private Date accountCreation;
     private Date dateOfBirth;
     private String bio;
     private String livingLocation;
 
-    public AccountData(String firstName, String lastName, String username, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
+    public AccountData(String firstName, String lastName, String username, String passwordHash, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
+        this.passwordHash = passwordHash;
         this.accountCreation = accountCreation;
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
@@ -63,6 +65,22 @@ public class AccountData {
      */
     public String getUsername() {
         return username;
+    }
+
+    /**
+     *
+     * @param passwordHash the new password hash
+     */
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    /**
+     *
+     * @return the account's password's hash
+     */
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
     /**
