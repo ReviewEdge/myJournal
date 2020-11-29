@@ -146,15 +146,23 @@ public class Journal implements Followable {
      * @return the latest page in the journal
      */
     public Page getLatestPage(long requestingId) {
-        return null;
+    	if (hasPermission(requestingId)) {
+    		return pages.get(pages.size()-1);
+    	}
+    	// better way???
+    	return null;
     }
-
+    	
     /**
      * @param requestingId
      * @return the id of all of the pages in the journal
      */
     public ArrayList<Page> getPages(long requestingId) {
-        return null;
+    	if (hasPermission(requestingId)) {
+        return pages;
+    	}
+    	// better way???
+    	return null;
     }
 
     /**
@@ -178,5 +186,49 @@ public class Journal implements Followable {
 		this.name = name;
 	}
 
-
+	/**
+	 * TODO:
+	 * @param name the name of the journal
+	 * @return if requestingId has permission
+	 */
+	public boolean hasPermission(long requestingId) {
+		
+		
+		return true;
+	}
+	
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Journal)) {
+			return false;
+		}
+		Journal s = (Journal) o;
+		
+		return ((s.id == this.id) && s.name.equals(this.name) && s.pages.equals(this.pages) 
+				&& s.stats.equals(this.stats) && s.options.equals(this.options));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + (new Long(id).hashCode());
+		result = result*37 + name.hashCode();	
+		result = result*37 + pages.hashCode();
+		result = result*37 + stats.hashCode();
+		result = result*37 + options.hashCode();
+		return result;
+	}
+	
+	
+	
 }

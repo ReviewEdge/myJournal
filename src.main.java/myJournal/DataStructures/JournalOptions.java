@@ -122,4 +122,55 @@ public class JournalOptions{
 		}
 	}
 	
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof JournalOptions)) {
+			return false;
+		}
+		JournalOptions j = (JournalOptions) o;
+		
+		return (j.owners.equals(this.owners) && j.contributers.equals(this.contributers) && (j.isPrivate == this.isPrivate)
+				&& (j.hasLikes == this.hasLikes) && (j.isPrivate == this.isPrivate));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + owners.hashCode();
+		result = result*37 + contributers.hashCode();
+		
+		if (isPrivate) {
+			result = result*37 + 1;
+		}
+		else {
+			result *= 37;
+		}
+		
+		if (hasLikes) {
+			result = result*37 + 1;
+		}
+		else {
+			result *= 37;
+		}
+		
+		if (hasFollowers) {
+			result = result*37 + 1;
+		}
+		else {
+			result *= 37;
+		}
+		
+		return result;
+	}
+	
 }

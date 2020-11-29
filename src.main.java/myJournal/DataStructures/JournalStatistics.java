@@ -84,6 +84,40 @@ public class JournalStatistics {
 	public void addViewer(long viewerId) {
 		viewers.add(viewerId);
 	}
+	
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof JournalStatistics)) {
+			return false;
+		}
+		JournalStatistics s = (JournalStatistics) o;
+		
+		return (s.likers.equals(this.likers) && s.followers.equals(this.followers) && s.viewers.equals(this.viewers));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + likers.hashCode();
+		result = result*37 + followers.hashCode();	
+		result = result*37 + viewers.hashCode();	
+		return result;
+	}
+	
+	
+	
+	
+	
 
 
 }
