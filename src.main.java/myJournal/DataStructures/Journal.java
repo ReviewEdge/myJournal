@@ -221,7 +221,7 @@ public class Journal implements Followable {
 	 */
 	public int hashCode() {
 		int result = 17;
-		result = result*37 + (new Long(id).hashCode());
+		result = result*37 + (new valueOfLong(id).hashCode());
 		result = result*37 + name.hashCode();	
 		result = result*37 + pages.hashCode();
 		result = result*37 + stats.hashCode();
