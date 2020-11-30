@@ -74,7 +74,7 @@ if current_user_id:
 else:
     print("Please make an account.")
     # directs the user to make an account
-    accounts()
+    add_account()
 
 while True:
     do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
