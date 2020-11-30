@@ -77,17 +77,18 @@ else:
     add_account()
     print("Restart the program to use your new account.")
 
-while True:
-    do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
-
-    if do == "a":
-        print("ACCOUNTS\n\n")
-
-    if do == "j":
-        print("JOURNALS\n\n")
-
-    if do == "p":
-        print("PAGES\n\n")
-
-    if do == "f":
-        print("FEED\n\n")
+if current_user_id:
+    while True:
+        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
+    
+        if do == "a":
+            print("ACCOUNTS\n\n")
+    
+        if do == "j":
+            print("JOURNALS\n\n")
+    
+        if do == "p":
+            print("PAGES\n\n")
+    
+        if do == "f":
+            print("FEED\n\n")
