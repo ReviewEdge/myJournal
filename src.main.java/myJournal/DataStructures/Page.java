@@ -27,14 +27,14 @@ public class Page {
 	 * @param hasLikes
 	 * @param hasViews
 	 */
-	public Page(long newId, String newName, String content, long authorId, Journal parentJournal, boolean hasLikes, boolean hasViews) {
+	public Page(long newId, String newName, String content, long authorId, Journal parentJournal) {
 		this.id = newId;
 		this.name = newName;
 		this.content = content;
 		this.authorId = authorId;
 		this.parentJournal = parentJournal;
-		this.hasLikes = hasLikes;
-		this.hasViews = hasViews;
+		this.hasLikes = this.getParentJournal.hasLikes();
+		this.hasViews = this.getParentJournal.hasViews();
 	}
 	
 	/**
@@ -161,10 +161,27 @@ public class Page {
 	}
 	
 	/**
-	 * return the content as a string
+	 * @return the content as a string
 	 */
 	@Override
 	public String toString() {
 		return this.content;
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 */
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + (new valueOfLong(id).hashCode());
+		result = result*37 + name.hashCode();	
+		result = result*37 + content.hashCode();
+		result = result*37 + authorId.hashCode();
+		result = result*37 + stats.hashCode();
+		result = result*37 + parentJournal.hashCode();
+		result = result*37 + hasLikes.hashCode();
+		result = result*37 + hasViews.hashCode();
+		return result;
 	}
 }

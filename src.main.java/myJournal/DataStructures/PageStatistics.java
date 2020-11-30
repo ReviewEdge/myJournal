@@ -55,4 +55,15 @@ public class PageStatistics {
 		viewers.add(viewer);
 	}
 	
+	/**
+	 * @return the HashCode of the object
+	 */
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + likers.hashCode();
+		result = result*37 + viewers.hashCode();	
+		return result;
+	}
+	
 }
