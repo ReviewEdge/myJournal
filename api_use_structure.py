@@ -75,6 +75,7 @@ else:
     print("Please make an account.")
     # directs the user to make an account
     add_account()
+    exit
 
 while True:
     do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
