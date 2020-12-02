@@ -1,3 +1,4 @@
+
 package myJournal;
 
 import myJournal.DataStructures.*;
