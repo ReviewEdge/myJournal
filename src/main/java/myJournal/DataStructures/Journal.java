@@ -18,8 +18,6 @@ public class Journal implements Followable {
      * @param id
      * @param name
      * @param pages
-     * @param owners
-     * @param contributers
      * @param stats
      * @param options
      */
@@ -188,7 +186,6 @@ public class Journal implements Followable {
 
 	/**
 	 * TODO:
-	 * @param name the name of the journal
 	 * @return if requestingId has permission
 	 */
 	public boolean hasPermission(long requestingId) {
@@ -196,6 +193,10 @@ public class Journal implements Followable {
 		
 		return true;
 	}
+
+	public Journal copyWithId(long id) {
+	    return new Journal(id, name, pages, stats, options);
+    }
 	
 	/**
 	 * @param o
@@ -221,7 +222,7 @@ public class Journal implements Followable {
 	 */
 	public int hashCode() {
 		int result = 17;
-		result = result*37 + (new Long(id).hashCode());
+		result = result*37 + (Long.valueOf(id).hashCode());
 		result = result*37 + name.hashCode();	
 		result = result*37 + pages.hashCode();
 		result = result*37 + stats.hashCode();

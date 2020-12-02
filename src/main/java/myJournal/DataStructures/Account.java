@@ -1,3 +1,4 @@
+
 package myJournal.DataStructures;
 
 import java.util.ArrayList;

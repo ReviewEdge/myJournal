@@ -1,41 +1,59 @@
+
 package myJournal;
 
 import myJournal.DataStructures.*;
+import org.mindrot.jbcrypt.BCrypt;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class Routes {
+    public static Route getTest = (Request request, Response response) -> {
+        return "I DONT CARE";
+    };
     public static Route getAccount = (Request request, Response response) -> {
-        String username = request.params("username");
+        String username = request.queryParams("username");
         return DBCommunication.getAccountByUsername(username);
     };
     public static Route getJournal = (Request request, Response response) -> {
-        long id = Long.parseLong(request.params("id"));
+        long id = Long.parseLong(request.queryParams("id"));
         return DBCommunication.getJournal(id);
     };
     public static Route getPage = (Request request, Response response) -> {
-        long id = Long.parseLong(request.params("id"));
+        long id = Long.parseLong(request.queryParams("id"));
         return DBCommunication.getPage(id);
     };
     public static Route getFeed = (Request request, Response response) -> {
         return ((Account)request.session().attribute("account")).getFeed().getPage();
     };
     public static Route addAccount = (Request request, Response response) -> {
-        String firstName = request.params("firstName");
-        String lastName = request.params("lastName");
-        String username = request.params("username");
-        String passwordHash = request.params("passwordHash");
+        request.params().forEach((key, value) -> System.out.println(key));
+        System.out.println(request.queryParams().toArray().length);
+        System.out.println("I HOPE TO GET THE DATA");
+        String firstName = request.queryParams("firstName");
+        System.out.println("GOT FIRSTNAME");
+        String lastName = request.queryParams("lastName");
+        System.out.println("GOT LASTNAME");
+        String username = request.queryParams("username");
+        System.out.println("GOT USERNAME");
+        String passwordHash = request.queryParams("passwordHash");
+        System.out.println("GOT PASSWORD");
         Date accountCreation = new Date();
-        Date dateOfBirth = DateFormat.getDateInstance().parse(request.params("dateOfBirth"));
-        String bio = request.params("bio");
-        String livingLocation = request.params("livingLocation");
+        System.out.println("MADE ACCUNTCRUEATION");
+        Date dateOfBirth = (new SimpleDateFormat("yyyy-MM-DD")).parse(request.queryParams("dateOfBirth"));
+        System.out.println("GOT DOB");
+        String bio = request.queryParams("bio");
+        System.out.println("GOT BIO");
+        String livingLocation = request.queryParams("livingLocation");
+        System.out.println("GOT LL");
+        System.out.println("I HAVE GOTTEN THE DATA");
         AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
         ArrayList<Followable> s = new ArrayList<>();
         Feed f = new Feed(s);
@@ -45,17 +63,17 @@ public class Routes {
         return "OK";
     };
     public static Route addJournal = (Request request, Response response) -> {
-        String name = request.params("name");
-        Boolean isPrivate = Boolean.parseBoolean(request.params("isPrivate"));
-        Boolean hasLikes = Boolean.parseBoolean(request.params("hasLikes"));
-        Boolean hasFollowers = Boolean.parseBoolean(request.params("hasFollowers"));
+        String name = request.queryParams("name");
+        Boolean isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
+        Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
+        Boolean hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
         HashSet<Long> owners = new HashSet<>();
-        Scanner ownerScanner = new Scanner(request.params("owners"));
+        Scanner ownerScanner = new Scanner(request.queryParams("owners"));
         while(ownerScanner.hasNextLong()) {
             owners.add(ownerScanner.nextLong());
         }
         HashSet<Long> contributers = new HashSet<>();
-        Scanner contributerScanner = new Scanner(request.params("contributers"));
+        Scanner contributerScanner = new Scanner(request.queryParams("contributers"));
         while(contributerScanner.hasNextLong()) {
             owners.add(contributerScanner.nextLong());
         }
@@ -68,20 +86,19 @@ public class Routes {
     };
     public static Route addPage = (Request request, Response response) -> {
         long newId = 0;
-        String newName = request.params("name");
-        String content = request.params("content");
-        long authorId = Long.parseLong(request.params("authorId"));
-        long parentJournalId = Long.parseLong(request.params("parentJournalId"));
+        String newName = request.queryParams("name");
+        String content = request.queryParams("content");
+        long authorId = Long.parseLong(request.queryParams("authorId"));
+        long parentJournalId = Long.parseLong(request.queryParams("parentJournalId"));
         Journal parentJournal = DBCommunication.getJournal(parentJournalId);
-        boolean hasLikes = Boolean.parseBoolean(request.params("hasLikes"));
-        boolean hasViews = Boolean.parseBoolean(request.params("hasViews"));
-        Page p = new Page(newId, newName, content, authorId, parentJournal, hasLikes, hasViews);
+        Page p = new Page(newId, newName, content, authorId, parentJournal);
         return "OK";
     };
     public static Route createSession = (Request request, Response response) -> {
-        String username = request.params("username");
-        String passwordHash = request.params("phash");
-        Account a = DBCommunication.getAccountByUsername(username);
+//        String username = request.queryParams("username");
+        int id = Integer.parseInt(request.queryParams("id"));
+        String passwordHash = request.queryParams("phash");
+        Account a = DBCommunication.getAccount(id);
         if(a.checkPasswordHash(passwordHash)) {
             request.session(true).attribute("created", true);
             request.session().attribute("account", a);
@@ -93,15 +110,17 @@ public class Routes {
         }
     };
     public static Route editAccount = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
-        String firstName = request.params("firstName");
-        String lastName = request.params("lastName");
-        String username = request.params("username");
-        String passwordHash = request.params("passwordHash");
+        Long id = Long.parseLong(request.queryParams("id"));
+        String firstName = request.queryParams("firstName");
+        String lastName = request.queryParams("lastName");
+        String username = request.queryParams("username");
+        String password = request.queryParams("password");
+        String salt = BCrypt.gensalt(3);
+        String passwordHash = BCrypt.hashpw(password, salt);
         Date accountCreation = new Date();
-        Date dateOfBirth = DateFormat.getDateInstance().parse(request.params("dateOfBirth"));
-        String bio = request.params("bio");
-        String livingLocation = request.params("livingLocation");
+        Date dateOfBirth = DateFormat.getDateInstance().parse(request.queryParams("dateOfBirth"));
+        String bio = request.queryParams("bio");
+        String livingLocation = request.queryParams("livingLocation");
         AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
         ArrayList<Followable> s = new ArrayList<>();
         Feed f = new Feed(s);
@@ -111,18 +130,18 @@ public class Routes {
         return "OK";
     };
     public static Route editJournal = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
-        String name = request.params("name");
-        Boolean isPrivate = Boolean.parseBoolean(request.params("isPrivate"));
-        Boolean hasLikes = Boolean.parseBoolean(request.params("hasLikes"));
-        Boolean hasFollowers = Boolean.parseBoolean(request.params("hasFollowers"));
+        Long id = Long.parseLong(request.queryParams("id"));
+        String name = request.queryParams("name");
+        Boolean isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
+        Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
+        Boolean hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
         HashSet<Long> owners = new HashSet<>();
-        Scanner ownerScanner = new Scanner(request.params("owners"));
+        Scanner ownerScanner = new Scanner(request.queryParams("owners"));
         while(ownerScanner.hasNextLong()) {
             owners.add(ownerScanner.nextLong());
         }
         HashSet<Long> contributers = new HashSet<>();
-        Scanner contributerScanner = new Scanner(request.params("contributers"));
+        Scanner contributerScanner = new Scanner(request.queryParams("contributers"));
         while(contributerScanner.hasNextLong()) {
             owners.add(contributerScanner.nextLong());
         }
@@ -134,27 +153,27 @@ public class Routes {
         return "OK";
     };
     public static Route deleteAccount = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deleteAccount(id);
         return "OK";
     };
     public static Route deleteJournal = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deleteJournal(id);
         return "OK";
     };
     public static Route deletePage = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deletePage(id);
         return "OK";
     };
     public static Route getAccountPages = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
         Account a = DBCommunication.getAccount(id);
         return a.getPages(((Account)request.session().attribute("account")).getId());
     };
     public static Route getJournalPages = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.params("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
         Journal j = DBCommunication.getJournal(id);
         return j.getPages(((Account)request.session().attribute("account")).getId());
     };
