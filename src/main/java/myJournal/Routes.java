@@ -16,10 +16,10 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Routes {
-    public static Route getTest = (Request request, Response response) -> {
+    public static final Route getTest = (Request request, Response response) -> {
         return "I DONT CARE";
     };
-    public static Route getAccount = (Request request, Response response) -> {
+    public static final Route getAccount = (Request request, Response response) -> {
         String username = request.queryParams("username");
         if(username != null) {
             System.out.println("Accessing account with username " + username);
@@ -40,21 +40,21 @@ public class Routes {
         }
         return "NONE";
     };
-    public static Route getJournal = (Request request, Response response) -> {
+    public static final Route getJournal = (Request request, Response response) -> {
         long id = Long.parseLong(request.queryParams("id"));
         return DBCommunication.getJournal(id).asJson();
     };
-    public static Route getPage = (Request request, Response response) -> {
+    public static final Route getPage = (Request request, Response response) -> {
         long id = Long.parseLong(request.queryParams("id"));
         return DBCommunication.getPage(id).asJson();
     };
-    public static Route getFeed = (Request request, Response response) -> {
+    public static final Route getFeed = (Request request, Response response) -> {
         return ((Account)request.session().attribute("account")).getFeed().asJson();
     };
-    public static Route getFeedNext = (Request request, Response response) -> {
+    public static final Route getFeedNext = (Request request, Response response) -> {
         return ((Account)request.session().attribute("account")).getFeed().getPage().asJson();
     };
-    public static Route addAccount = (Request request, Response response) -> {
+    public static final Route addAccount = (Request request, Response response) -> {
         request.params().forEach((key, value) -> System.out.println(key));
         System.out.println(request.queryParams().toArray().length);
         String firstName = request.queryParams("firstName");
@@ -79,7 +79,7 @@ public class Routes {
         response.status(200);
         return "OK";
     };
-    public static Route addJournal = (Request request, Response response) -> {
+    public static final Route addJournal = (Request request, Response response) -> {
         String name = request.queryParams("name");
         Boolean isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
         Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
@@ -105,7 +105,7 @@ public class Routes {
         DBCommunication.editAccount(sessionAccount.getId(), sessionAccount);
         return "OK";
     };
-    public static Route addPage = (Request request, Response response) -> {
+    public static final Route addPage = (Request request, Response response) -> {
         long newId = 0;
         String newName = request.queryParams("name");
         String content = request.queryParams("content");
@@ -117,7 +117,7 @@ public class Routes {
         DBCommunication.editJournal(parentJournalId, parentJournal);
         return "OK";
     };
-    public static Route createSession = (Request request, Response response) -> {
+    public static final Route createSession = (Request request, Response response) -> {
         int id = Integer.parseInt(request.queryParams("id"));
         String password = request.queryParams("password");
         Account a = DBCommunication.getAccount(id);
@@ -131,7 +131,7 @@ public class Routes {
             return "FAIL";
         }
     };
-    public static Route editAccount = (Request request, Response response) -> {
+    public static final Route editAccount = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         if(id != ((Account)request.session().attribute("account")).getId()){
             response.status(401);
@@ -166,7 +166,7 @@ public class Routes {
         response.status(200);
         return "OK";
     };
-    public static Route editJournal = (Request request, Response response) -> {
+    public static final Route editJournal = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         if(id != ((Account)request.session().attribute("account")).getId()){
             response.status(401);
@@ -225,7 +225,7 @@ public class Routes {
         response.status(200);
         return "OK";
     };
-    public static Route subscribeAccount = (Request request, Response response) -> {
+    public static final Route subscribeAccount = (Request request, Response response) -> {
         Account subscribingAccount = request.session().attribute("account");
         Long subscribingId = subscribingAccount.getId();
         Long subscribedId = Long.parseLong(request.queryParams("id"));
@@ -237,7 +237,7 @@ public class Routes {
         response.status(200);
         return "OK";
     };
-    public static Route subscribeJournal = (Request request, Response response) -> {
+    public static final Route subscribeJournal = (Request request, Response response) -> {
         Account subscribingAccount = request.session().attribute("account");
         Long subscribingId = subscribingAccount.getId();
         Long journalId = Long.parseLong(request.queryParams("id"));
@@ -249,27 +249,27 @@ public class Routes {
         response.status(200);
         return "OK";
     };
-    public static Route deleteAccount = (Request request, Response response) -> {
+    public static final Route deleteAccount = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deleteAccount(id);
         return "OK";
     };
-    public static Route deleteJournal = (Request request, Response response) -> {
+    public static final Route deleteJournal = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deleteJournal(id);
         return "OK";
     };
-    public static Route deletePage = (Request request, Response response) -> {
+    public static final Route deletePage = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deletePage(id);
         return "OK";
     };
-    public static Route getAccountPages = (Request request, Response response) -> {
+    public static final Route getAccountPages = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         Account a = DBCommunication.getAccount(id);
         return a.getPages(((Account)request.session().attribute("account")).getId());
     };
-    public static Route getJournalPages = (Request request, Response response) -> {
+    public static final Route getJournalPages = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
         Journal j = DBCommunication.getJournal(id);
         return j.getPages(((Account)request.session().attribute("account")).getId());
