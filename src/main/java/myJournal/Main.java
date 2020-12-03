@@ -18,10 +18,6 @@ public class Main {
 	 * @param args Command line arguments to the program.
 	 */
 	public static void main(String[] args) {
-		HashSet<Long> followers = new HashSet(Arrays.asList(1,2,3,4));
-		AccountStatistics as = new AccountStatistics(followers);
-		System.out.println(as.getNumFollowers());
-		System.out.println(as.asJson());
 		before((request, response) -> {
 			request.session(true);
 		});
