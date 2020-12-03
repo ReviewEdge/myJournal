@@ -1,11 +1,14 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.HashSet;
 
 /**
  * Stores the statistics for a journal.
  */
-public class JournalStatistics {
+public class JournalStatistics implements JSONSerializable {
 
 	private HashSet<Long> likers;
 	private HashSet<Long> followers;
@@ -113,11 +116,15 @@ public class JournalStatistics {
 		result = result*37 + viewers.hashCode();	
 		return result;
 	}
-	
-	
-	
-	
-	
 
 
+	@Override
+	public JSONElement asJsonElement() {
+		return null;
+	}
+
+	@Override
+	public String asJson() {
+		return null;
+	}
 }

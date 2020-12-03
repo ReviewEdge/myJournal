@@ -1,12 +1,15 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.HashSet;
 
 
 /**
  * Holds text as content that can be viewed, and belongs to a journal.
  */
-public class Page {
+public class Page implements JSONSerializable {
 	private final long id;
 	private String name;
 	private String content;
@@ -181,5 +184,15 @@ public class Page {
 		result = result*37 + Boolean.valueOf(hasLikes).hashCode();
 		result = result*37 + Boolean.valueOf(hasViews).hashCode();
 		return result;
+	}
+
+	@Override
+	public JSONElement asJsonElement() {
+		return null;
+	}
+
+	@Override
+	public String asJson() {
+		return null;
 	}
 }

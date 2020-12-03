@@ -1,11 +1,14 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.HashSet;
 
 /**
  * Stores statistics about an account
  */
-public class AccountStatistics {
+public class AccountStatistics implements JSONSerializable {
     private HashSet<Long> followers;
     
     
@@ -28,5 +31,15 @@ public class AccountStatistics {
      */
     public long getNumFollowers() {
         return followers.size();
+    }
+
+    @Override
+    public JSONElement asJsonElement() {
+        return null;
+    }
+
+    @Override
+    public String asJson() {
+        return null;
     }
 }

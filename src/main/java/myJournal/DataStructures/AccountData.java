@@ -1,12 +1,17 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONBuilder;
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
+
 import javax.swing.*;
 import java.util.Date;
 
 /**
  * Abstraction for all of the profile information of an account.
  */
-public class AccountData {
+public class AccountData implements JSONSerializable {
     private String firstName;
     private String lastName;
     private String username;
@@ -145,5 +150,24 @@ public class AccountData {
      */
     public void setLivingLocation(String livingLocation) {
         this.livingLocation = livingLocation;
+    }
+
+    @Override
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object()
+                .pair("firstName", firstName)
+                .pair("lastName", lastName)
+                .pair("username", username)
+                .pair("passwordHash", passwordHash)
+                .pair("accountCreation", accountCreation)
+                .pair("dateOfBirth", dateOfBirth)
+                .pair("bio", bio)
+                .pair("livingLocation", livingLocation);
+        return jb.toJSONElement();
+    }
+
+    @Override
+    public String asJson() {
+        return asJsonElement().toJSONString();
     }
 }

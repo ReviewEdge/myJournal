@@ -1,12 +1,15 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
  * A class that creates a set of pages.
  */
-public class Feed {
+public class Feed implements JSONSerializable {
     private LinkedList<Page> pages;
 
     public Feed(ArrayList<Followable> subscribed) {
@@ -26,6 +29,16 @@ public class Feed {
      */
     public Page getPage() {
         //refresh page after no more page
+        return null;
+    }
+
+    @Override
+    public JSONElement asJsonElement() {
+        return null;
+    }
+
+    @Override
+    public String asJson() {
         return null;
     }
 }

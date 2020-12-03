@@ -1,4 +1,4 @@
-package myJournal;
+package myJournal.util;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -13,7 +13,7 @@ public class BenchmarkHashing {
         for(int i = 4; i < 16; i++) {
             r.nextBytes(pass);
             long then = System.nanoTime();
-            String e = BCrypt.gensalt(4);
+            String e = BCrypt.gensalt(i);
             String f = BCrypt.hashpw(Base64.getEncoder().encodeToString(pass), e);
             long now = System.nanoTime();
             long elapsed = now - then;

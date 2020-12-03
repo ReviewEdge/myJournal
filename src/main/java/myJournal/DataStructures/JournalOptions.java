@@ -1,11 +1,14 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.HashSet;
 
 /**
  * Stores the options for a journal.
  */
-public class JournalOptions{
+public class JournalOptions implements JSONSerializable {
 
 	private boolean isPrivate;
 	private boolean hasLikes;
@@ -172,5 +175,14 @@ public class JournalOptions{
 		
 		return result;
 	}
-	
+
+	@Override
+	public JSONElement asJsonElement() {
+		return null;
+	}
+
+	@Override
+	public String asJson() {
+		return null;
+	}
 }

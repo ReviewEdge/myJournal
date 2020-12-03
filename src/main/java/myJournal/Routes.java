@@ -20,6 +20,8 @@ public class Routes {
     };
     public static Route getAccount = (Request request, Response response) -> {
         String username = request.queryParams("username");
+        System.out.println("Accessing account with username " + username);
+        System.out.println(DBCommunication.getAccountByUsername(username));
         return DBCommunication.getAccountByUsername(username);
     };
     public static Route getJournal = (Request request, Response response) -> {
@@ -36,29 +38,21 @@ public class Routes {
     public static Route addAccount = (Request request, Response response) -> {
         request.params().forEach((key, value) -> System.out.println(key));
         System.out.println(request.queryParams().toArray().length);
-        System.out.println("I HOPE TO GET THE DATA");
         String firstName = request.queryParams("firstName");
-        System.out.println("GOT FIRSTNAME");
         String lastName = request.queryParams("lastName");
-        System.out.println("GOT LASTNAME");
         String username = request.queryParams("username");
-        System.out.println("GOT USERNAME");
-        String passwordHash = request.queryParams("passwordHash");
-        System.out.println("GOT PASSWORD");
+        String password = request.queryParams("password");
+        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(10));
         Date accountCreation = new Date();
-        System.out.println("MADE ACCUNTCRUEATION");
         Date dateOfBirth = (new SimpleDateFormat("yyyy-MM-DD")).parse(request.queryParams("dateOfBirth"));
-        System.out.println("GOT DOB");
         String bio = request.queryParams("bio");
-        System.out.println("GOT BIO");
         String livingLocation = request.queryParams("livingLocation");
-        System.out.println("GOT LL");
-        System.out.println("I HAVE GOTTEN THE DATA");
         AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
         ArrayList<Followable> s = new ArrayList<>();
         Feed f = new Feed(s);
         Account a = new Account(0, p, s, f);
         DBCommunication.addAccount(a);
+        System.out.println("Added account with username " + username);
         response.status(200);
         return "OK";
     };

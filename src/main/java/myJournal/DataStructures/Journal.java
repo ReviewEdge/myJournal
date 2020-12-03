@@ -1,12 +1,15 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONElement;
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * A container for individual pages that can be public or private and can have multiple contributers.
  */
-public class Journal implements Followable {
+public class Journal implements Followable, JSONSerializable {
 
     private long id;
     private String name;
@@ -229,7 +232,15 @@ public class Journal implements Followable {
 		result = result*37 + options.hashCode();
 		return result;
 	}
-	
-	
-	
+
+
+    @Override
+    public JSONElement asJsonElement() {
+        return null;
+    }
+
+    @Override
+    public String asJson() {
+        return null;
+    }
 }

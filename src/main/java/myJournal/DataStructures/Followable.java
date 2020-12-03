@@ -1,13 +1,15 @@
 package myJournal.DataStructures;
 
 
+import myJournal.util.JSON.JSONSerializable;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Classes that implement followable can have their pages shown to follower classes.
  */
-public interface Followable {
+public interface Followable extends JSONSerializable {
     /**
      *
      * @return the number of followers a followable object has.

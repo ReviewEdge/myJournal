@@ -1,6 +1,8 @@
 
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.*;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -8,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Represents a followable account.
  */
-public class Account implements Followable{
+public class Account implements Followable, JSONSerializable {
     private AccountData profile;
     private final long id;
     private ArrayList<Followable> subscribed;
@@ -133,5 +135,20 @@ public class Account implements Followable{
 
     public Account copyWithId(long id) {
         return new Account(id, this.profile, this.subscribed, this.feed);
+    }
+
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pair("profile", profile.asJsonElement());
+        jb.pair("id", JSONValue.from(id));
+        jb.pairArray("subscribed").add(subscribed).close();
+        jb.pair("feed", feed);
+        jb.pairArray("journals").add(journals).close();
+        jb.pair("stats", stats.asJsonElement());
+        return jb.toJSONElement();
+    }
+
+    public String asJson() {
+        return asJsonElement().toJSONString();
     }
 }
