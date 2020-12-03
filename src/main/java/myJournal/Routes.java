@@ -73,8 +73,6 @@ public class Routes {
         String bio = request.queryParams("bio");
         String livingLocation = request.queryParams("livingLocation");
         AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
-        ArrayList<FollowableId> s = new ArrayList<>();
-        Feed f = new Feed(s);
         Account a = new Account(0, p);
         DBCommunication.addAccount(a);
         System.out.println("Added account with username " + username);

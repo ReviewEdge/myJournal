@@ -34,6 +34,8 @@ public class Main {
 		post(Endpoints.Session, Routes.createSession);
 		put(Endpoints.Account, Routes.editAccount);
 		put(Endpoints.Journal, Routes.editJournal);
+		put(Endpoints.AccountSubscribe, Routes.subscribeAccount);
+		put(Endpoints.JournalSubscribe, Routes.subscribeJournal);
 		delete(Endpoints.Account, Routes.deleteAccount);
 		delete(Endpoints.Journal, Routes.deleteJournal);
 		delete(Endpoints.Page, Routes.deletePage);
