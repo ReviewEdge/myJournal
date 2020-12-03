@@ -22,6 +22,8 @@ public class AccountData implements JSONSerializable {
     private String livingLocation;
 
     public AccountData(String firstName, String lastName, String username, String passwordHash, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
+        if(username == null || username.equals("") || passwordHash == null)
+            throw new IllegalArgumentException();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

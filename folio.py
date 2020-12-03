@@ -17,6 +17,13 @@ class Folio:
             self.endpoints[name] = self.url + endpoint
         self.authenticated = False
 
+    def get_session_user(self):
+        """
+
+        :return:
+        """
+        return self.session.get(self.endpoints["account"]).json()
+
     def get_user_id(self, username):
         """
         Get the id of a user from their username.
@@ -486,4 +493,15 @@ class Folio:
 if __name__ == '__main__':
     f = Folio("http://localhost:4567")
     f.add_account("joe", "joe", "joe", "joe")
-    print(f.get_user_id("lo"))
+    joe_id = f.get_user_id("joe")
+    f.authenticate(joe_id, "joe")
+    f.add_journal("Joe's Journal", False, False, False, [joe_id], [])
+    journal_ids = f.get_session_user()["journalIds"]
+    first_journal = journal_ids[0]
+    first_id = first_journal["id"]
+    print(first_id)
+    f.add_page("Joe's page", "I SURE DO LIKE TO EAT CHICKEN", author_id=joe_id, parent_journal_id=first_id)
+    pages = f.get_journal_pages(first_id)
+    print(pages)
+
+

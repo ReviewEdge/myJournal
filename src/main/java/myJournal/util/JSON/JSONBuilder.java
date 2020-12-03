@@ -159,6 +159,25 @@ public class JSONBuilder {
         return this;
     }
 
+    public JSONBuilder add(Object e) {
+        add(JSONValue.from(e));
+        return this;
+    }
+
+    public JSONBuilder addValues(Object ... es) {
+        addValues(Arrays.asList(es));
+        return this;
+    }
+
+    public <R extends Object> JSONBuilder addValues(Collection<R> es) {
+        if(es != null) {
+            for (Object e : es) {
+                add(e);
+            }
+        }
+        return this;
+    }
+
     /**
      * Add a new element into the current array, creating a new JSONArray as the value,
      * which will become the new modified element. Only works if the currently modified element is JSONArray.
@@ -216,6 +235,12 @@ public class JSONBuilder {
 
     public String toString() {
         return rootElement.toJSONString();
+    }
+
+    public static <R extends JSONSerializable> String convertToJSONString(Collection<R> jsonSerializables) {
+        JSONBuilder jb = JSONBuilder.array();
+        jb.add(jsonSerializables);
+        return jb.toString();
     }
 
     /**

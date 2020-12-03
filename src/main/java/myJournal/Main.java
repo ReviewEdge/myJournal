@@ -15,7 +15,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		before((request, response) -> {
-			System.out.println(request.session(true));
+			request.session(true);
 		});
 		get("/", (q,a)->{
 			return q.session().isNew();

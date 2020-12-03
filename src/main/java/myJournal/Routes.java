@@ -2,6 +2,7 @@
 package myJournal;
 
 import myJournal.DataStructures.*;
+import myJournal.util.JSON.JSONBuilder;
 import org.mindrot.jbcrypt.BCrypt;
 import spark.Request;
 import spark.Response;
@@ -33,11 +34,13 @@ public class Routes {
             System.out.println(DBCommunication.getAccount(id).asJson());
             return DBCommunication.getAccount(id).asJson();
         }
+        System.out.println("No recognized query parameters.");
         if(request.session().attribute("account") != null) {
             request.session().attribute("account", DBCommunication.getAccount(
                     ((Account)request.session().attribute("account")).getId()));
-            return request.session().attribute("account");
+            return ((Account) request.session().attribute("account")).asJson();
         }
+        System.out.println("EVERYTHING FAILED");
         return "NONE";
     };
     public static final Route getJournal = (Request request, Response response) -> {
@@ -54,9 +57,18 @@ public class Routes {
     public static final Route getFeedNext = (Request request, Response response) -> {
         return ((Account)request.session().attribute("account")).getFeed().getPage().asJson();
     };
+    public static final Route getAccountPages = (Request request, Response response) -> {
+        Long id = Long.parseLong(request.queryParams("id"));
+        Account a = DBCommunication.getAccount(id);
+        return JSONBuilder.convertToJSONString(a.getPages(((Account)request.session().attribute("account")).getId()));
+    };
+    public static final Route getJournalPages = (Request request, Response response) -> {
+        System.out.println(request.queryParams("id"));
+        Long id = Long.parseLong(request.queryParams("id"));
+        Journal j = DBCommunication.getJournal(id);
+        return JSONBuilder.convertToJSONString(j.getPages(((Account)request.session().attribute("account")).getId()));
+    };
     public static final Route addAccount = (Request request, Response response) -> {
-        request.params().forEach((key, value) -> System.out.println(key));
-        System.out.println(request.queryParams().toArray().length);
         String firstName = request.queryParams("firstName");
         String lastName = request.queryParams("lastName");
         String username = request.queryParams("username");
@@ -67,7 +79,7 @@ public class Routes {
         try {
             dateOfBirth = (new SimpleDateFormat("yyyy-MM-dd")).parse(request.queryParams("dateOfBirth"));
         }
-        catch(ParseException p) {
+        catch(ParseException | NullPointerException e) {
             dateOfBirth = null;
         }
         String bio = request.queryParams("bio");
@@ -85,14 +97,22 @@ public class Routes {
         Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
         Boolean hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
         HashSet<Long> owners = new HashSet<>();
-        Scanner ownerScanner = new Scanner(request.queryParams("owners"));
-        while(ownerScanner.hasNextLong()) {
-            owners.add(ownerScanner.nextLong());
+        String[] ownersString = request.queryParamsValues("owners");
+        if(ownersString != null) {
+            for (String s : ownersString) {
+                owners.add(Long.parseLong(s));
+            }
+        }
+        else {
+            response.status(401);
+            return "FAIL";
         }
         HashSet<Long> contributers = new HashSet<>();
-        Scanner contributerScanner = new Scanner(request.queryParams("contributers"));
-        while(contributerScanner.hasNextLong()) {
-            contributers.add(contributerScanner.nextLong());
+        String[] contributersString = request.queryParamsValues("contributers");
+        if(contributersString != null) {
+            for (String s : contributersString) {
+                contributers.add(Long.parseLong(s));
+            }
         }
         ArrayList<Page> pages = new ArrayList<>();
         JournalStatistics stats = new JournalStatistics(new HashSet<>(), new HashSet<>(), new HashSet<>());
@@ -101,7 +121,7 @@ public class Routes {
         DBCommunication.addJournal(j);
 
         Account sessionAccount = request.session().attribute("account");
-        sessionAccount.addJournal(j);
+        sessionAccount.addJournalId(JournalId.from(j));
         DBCommunication.editAccount(sessionAccount.getId(), sessionAccount);
         return "OK";
     };
@@ -110,10 +130,12 @@ public class Routes {
         String newName = request.queryParams("name");
         String content = request.queryParams("content");
         long authorId = Long.parseLong(request.queryParams("authorId"));
+        System.out.println(request.queryParams("parentJournalId"));
         long parentJournalId = Long.parseLong(request.queryParams("parentJournalId"));
         Journal parentJournal = DBCommunication.getJournal(parentJournalId);
         Page p = new Page(newId, newName, content, authorId, parentJournal);
         parentJournal.addPage(p);
+        System.out.println(parentJournal.asJson());
         DBCommunication.editJournal(parentJournalId, parentJournal);
         return "OK";
     };
@@ -263,15 +285,5 @@ public class Routes {
         Long id = Long.parseLong(request.queryParams("id"));
         DBCommunication.deletePage(id);
         return "OK";
-    };
-    public static final Route getAccountPages = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.queryParams("id"));
-        Account a = DBCommunication.getAccount(id);
-        return a.getPages(((Account)request.session().attribute("account")).getId());
-    };
-    public static final Route getJournalPages = (Request request, Response response) -> {
-        Long id = Long.parseLong(request.queryParams("id"));
-        Journal j = DBCommunication.getJournal(id);
-        return j.getPages(((Account)request.session().attribute("account")).getId());
     };
 }

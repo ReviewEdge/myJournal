@@ -23,7 +23,8 @@ public class DBCommunication {
      */
     public static long addAccount(Account toAdd) {
         long id = fakeAccountsTable.size();
-        fakeAccountsTable.add(toAdd.copyWithId(id));
+        toAdd = toAdd.copyWithId(id);
+        fakeAccountsTable.add(toAdd);
         return id;
     }
 
@@ -60,7 +61,8 @@ public class DBCommunication {
      */
     public static long addJournal(Journal toAdd) {
         long id = fakeJournalsTable.size();
-        fakeJournalsTable.add(toAdd.copyWithId(id));
+        toAdd = toAdd.copyWithId(id);
+        fakeJournalsTable.add(toAdd);
         return id;
     }
 
@@ -88,7 +90,8 @@ public class DBCommunication {
      */
     public static long addPage(Page toAdd) {
         long id = fakePagesTable.size();
-        fakePagesTable.add(toAdd.copyWithId(id));
+        toAdd = toAdd.copyWithId(id);
+        fakePagesTable.add(toAdd);
         return id;
     }
     /**

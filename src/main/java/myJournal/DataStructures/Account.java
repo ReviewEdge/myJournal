@@ -16,25 +16,29 @@ public class Account implements Followable, JSONSerializable {
     private final long id;
     private ArrayList<FollowableId> subscribed;
     private Feed feed;
-    private ArrayList<Journal> journals;
+    private ArrayList<JournalId> journalIds;
     private AccountStatistics stats;
 
 
-    public Account(long id, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<Journal> journals, AccountStatistics stats) {
+    public Account(long id, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<JournalId> journalIds, AccountStatistics stats) {
+        if(profile == null  || subscribed == null || feed == null || journalIds == null || stats == null)
+            throw new IllegalArgumentException();
         this.profile = profile;
         this.id = id;
         this.subscribed = subscribed;
-        this.journals = journals;
+        this.journalIds = journalIds;
         this.stats = stats;
         this.feed = new Feed(subscribed);
     }
 
     public Account(long id, AccountData profile) {
+        if(profile == null)
+            throw new IllegalArgumentException();
         this.profile = profile;
         this.id = id;
         this.subscribed = new ArrayList<>();
         this.feed = new Feed(this.subscribed);
-        this.journals = new ArrayList<>();
+        this.journalIds = new ArrayList<>();
         this.stats = new AccountStatistics();
     }
 
@@ -137,12 +141,12 @@ public class Account implements Followable, JSONSerializable {
     }
 
 
-    public ArrayList<Journal> getJournals() {
-        return journals;
+    public ArrayList<JournalId> getJournals() {
+        return journalIds;
     }
 
-    public void addJournal(Journal j) {
-        journals.add(j);
+    public void addJournalId(JournalId j) {
+        journalIds.add(j);
     }
 
     public AccountStatistics getStats() {
@@ -160,16 +164,16 @@ public class Account implements Followable, JSONSerializable {
     }
 
     public Account copyWithId(long id) {
-        return new Account(id, this.profile, this.subscribed, this.feed, this.journals, this.stats);
+        return new Account(id, this.profile, this.subscribed, this.feed, this.journalIds, this.stats);
     }
 
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("profile", profile.asJsonElement());
         jb.pair("id", JSONValue.from(id));
-        jb.pairArray("subscribed").add(FollowableId.toFollowableArray(subscribed)).close();
+        jb.pairArray("subscribed").add(subscribed).close();
         jb.pair("feed", feed);
-        jb.pairArray("journals").add(journals).close();
+        jb.pairArray("journalIds").add(journalIds).close();
         jb.pair("stats", stats);
         return jb.toJSONElement();
     }

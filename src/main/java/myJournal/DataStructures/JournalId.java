@@ -1,6 +1,7 @@
 package myJournal.DataStructures;
 
 import myJournal.DBCommunication;
+import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 
 public class JournalId extends FollowableId{
@@ -16,5 +17,18 @@ public class JournalId extends FollowableId{
     @Override
     public Followable getFollowable() {
         return DBCommunication.getJournal(this.id);
+    }
+
+    @Override
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pair("type", "journal");
+        jb.pair("id", id);
+        return jb.toJSONElement();
+    }
+
+    @Override
+    public String asJson() {
+        return asJsonElement().toJSONString();
     }
 }
