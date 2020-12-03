@@ -14,11 +14,18 @@ public class Main {
 	 * @param args Command line arguments to the program.
 	 */
 	public static void main(String[] args) {
+		before((request, response) -> {
+			System.out.println(request.session(true));
+		});
+		get("/", (q,a)->{
+			return q.session().isNew();
+		});
 		get(Endpoints.Test, Routes.getTest);
 		get(Endpoints.Account, Routes.getAccount);
 		get(Endpoints.Journal, Routes.getJournal);
 		get(Endpoints.Page, Routes.getPage);
 		get(Endpoints.Feed, Routes.getFeed);
+		get(Endpoints.FeedNext, Routes.getFeedNext);
 		get(Endpoints.AccountPages, Routes.getAccountPages);
 		get(Endpoints.JournalPages, Routes.getJournalPages);
 		post(Endpoints.Account, Routes.addAccount);

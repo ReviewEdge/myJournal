@@ -2,6 +2,7 @@
 package myJournal.DataStructures;
 
 import myJournal.util.JSON.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,17 +14,28 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Account implements Followable, JSONSerializable {
     private AccountData profile;
     private final long id;
-    private ArrayList<Followable> subscribed;
+    private ArrayList<FollowableId> subscribed;
     private Feed feed;
     private ArrayList<Journal> journals;
     private AccountStatistics stats;
 
 
-    public Account(long id, AccountData profile, ArrayList<Followable> subscribed, Feed feed) {
+    public Account(long id, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<Journal> journals, AccountStatistics stats) {
         this.profile = profile;
         this.id = id;
         this.subscribed = subscribed;
+        this.journals = journals;
+        this.stats = stats;
         this.feed = new Feed(subscribed);
+    }
+
+    public Account(long id, AccountData profile) {
+        this.profile = profile;
+        this.id = id;
+        this.subscribed = new ArrayList<>();
+        this.feed = new Feed(this.subscribed);
+        this.journals = new ArrayList<>();
+        this.stats = new AccountStatistics();
     }
 
     /**
@@ -54,7 +66,7 @@ public class Account implements Followable, JSONSerializable {
      *
      * @return the list of followable objects the account is subscribed to
      */
-    public ArrayList<Followable> getSubscribed() {
+    public ArrayList<FollowableId> getSubscribed() {
         return subscribed;
     }
 
@@ -62,7 +74,7 @@ public class Account implements Followable, JSONSerializable {
      * Overwrite the subscribed list
      * @param subscribed the list of followable objects the account should be subscribed to
      */
-    public void setSubscribed(ArrayList<Followable> subscribed) {
+    public void setSubscribed(ArrayList<FollowableId> subscribed) {
         this.subscribed = subscribed;
     }
 
@@ -70,7 +82,7 @@ public class Account implements Followable, JSONSerializable {
      * subscribe to a new followable object
      * @param f a followable object
      */
-    public void subscribeTo(Followable f) {
+    public void subscribeTo(FollowableId f) {
         this.subscribed.add(f);
     }
 
@@ -124,27 +136,41 @@ public class Account implements Followable, JSONSerializable {
         return 0;
     }
 
+
+    public ArrayList<Journal> getJournals() {
+        return journals;
+    }
+
+    public void addJournal(Journal j) {
+        journals.add(j);
+    }
+
+    public AccountStatistics getStats() {
+        return stats;
+    }
+
+
     /**
      *
-     * @param passwordHash the hash of the password to be checked
+     * @param password the password to be checked
      * @return whether or not the hashes match
      */
-    public boolean checkPasswordHash(String passwordHash) {
-        return this.profile.getPasswordHash().equals(passwordHash);
+    public boolean checkPassword(String password) {
+        return BCrypt.checkpw(password, this.profile.getPasswordHash());
     }
 
     public Account copyWithId(long id) {
-        return new Account(id, this.profile, this.subscribed, this.feed);
+        return new Account(id, this.profile, this.subscribed, this.feed, this.journals, this.stats);
     }
 
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("profile", profile.asJsonElement());
         jb.pair("id", JSONValue.from(id));
-        jb.pairArray("subscribed").add(subscribed).close();
+        jb.pairArray("subscribed").add(FollowableId.toFollowableArray(subscribed)).close();
         jb.pair("feed", feed);
         jb.pairArray("journals").add(journals).close();
-        jb.pair("stats", stats.asJsonElement());
+        jb.pair("stats", stats);
         return jb.toJSONElement();
     }
 

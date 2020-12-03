@@ -19,6 +19,10 @@ public class AccountStatistics implements JSONSerializable {
   
     }
 
+    public AccountStatistics() {
+        this.followers = new HashSet<>();
+    }
+
     /**
      * @return a hashset of all of the followers
      */

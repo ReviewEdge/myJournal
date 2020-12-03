@@ -12,7 +12,7 @@ import java.util.LinkedList;
 public class Feed implements JSONSerializable {
     private LinkedList<Page> pages;
 
-    public Feed(ArrayList<Followable> subscribed) {
+    public Feed(ArrayList<FollowableId> subscribed) {
 
     }
 

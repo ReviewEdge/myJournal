@@ -1,4 +1,6 @@
-import folio
+from folio import Folio
+
+folio = Folio("http://localhost:4567")
 
 
 # returns user id if login successful, else returns False
@@ -8,11 +10,11 @@ def login():
     if has_acc == "y":
         username = input("Enter your username:").lower()
 
-        if username in folio.get_all_usernames:
+        if folio.user_exists(username):
             account_id = folio.get_user_id(username)
             pas_attempt = input("Enter your password:")
 
-            if pas_attempt == account_id.get_password():
+            if folio.authenticate(account_id, pas_attempt):
                 return account_id
             else:
                 print("Your password is incorrect.")
@@ -67,9 +69,9 @@ def accounts():
 # This will be false if the user doesn't sign in
 current_user_id = login()
 
-current_username = folio.get_username(current_user_id)
-
-if current_user_id:
+if current_user_id is not False:
+    global current_username
+    current_username = folio.get_username(current_user_id)
     print("\nYou are now logged in as " + current_username + ".\n")
 else:
     print("Please make an account.")
@@ -77,7 +79,7 @@ else:
     add_account()
     print("Restart the program to use your new account.")
 
-if current_user_id:
+if current_user_id is not False:
     while True:
         do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
     

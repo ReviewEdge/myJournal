@@ -1,6 +1,7 @@
 package myJournal.util.JSON;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Stack;
 
@@ -68,14 +69,18 @@ public class JSONBuilder {
      * @return the json builder
      */
     public JSONBuilder pair(String key, JSONElement value) {
-        if (lastElement() instanceof JSONObject) {
-            ((JSONObject) lastElement()).put(key, value);
-        } else throw new IllegalStateException();
+        if(value != null) {
+            if (lastElement() instanceof JSONObject) {
+                ((JSONObject) lastElement()).put(key, value);
+            } else throw new IllegalStateException();
+        }
         return this;
     }
 
     public JSONBuilder pair(String key, JSONSerializable value) {
-        pair(key, value.asJsonElement());
+        if(value != null) {
+            pair(key, value.asJsonElement());
+        }
         return this;
     }
 
@@ -120,9 +125,11 @@ public class JSONBuilder {
      * @return the json builder
      */
     public JSONBuilder add(JSONElement e) {
-        if (lastElement() instanceof JSONArray) {
-            ((JSONArray) lastElement()).add(e);
-        } else throw new IllegalStateException();
+        if(e != null) {
+            if (lastElement() instanceof JSONArray) {
+                ((JSONArray) lastElement()).add(e);
+            } else throw new IllegalStateException();
+        }
         return this;
     }
 
@@ -139,15 +146,15 @@ public class JSONBuilder {
     }
 
     public JSONBuilder add(JSONSerializable ... es) {
-        for(JSONSerializable e : es) {
-            add(e);
-        }
+        add(Arrays.asList(es));
         return this;
     }
 
-    public <R extends JSONSerializable> JSONBuilder add(ArrayList<R> es) {
-        for(JSONSerializable e : es) {
-            add(e);
+    public <R extends JSONSerializable> JSONBuilder add(Collection<R> es) {
+        if(es != null) {
+            for (JSONSerializable e : es) {
+                add(e);
+            }
         }
         return this;
     }

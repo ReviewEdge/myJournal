@@ -56,6 +56,7 @@ public class JSONObject implements JSONElement{
             out.append(v.toJSONString());
             prefix[0] = ',';
         });
+        out.append('}');
         return out.toString();
     }
 }
