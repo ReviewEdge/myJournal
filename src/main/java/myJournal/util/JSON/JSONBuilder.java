@@ -159,7 +159,7 @@ public class JSONBuilder {
         return this;
     }
 
-    public JSONBuilder add(Object e) {
+    public JSONBuilder addValue(Object e) {
         add(JSONValue.from(e));
         return this;
     }
@@ -172,7 +172,7 @@ public class JSONBuilder {
     public <R extends Object> JSONBuilder addValues(Collection<R> es) {
         if(es != null) {
             for (Object e : es) {
-                add(e);
+                addValue(e);
             }
         }
         return this;

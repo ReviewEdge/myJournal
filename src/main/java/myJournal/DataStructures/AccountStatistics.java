@@ -15,7 +15,7 @@ public class AccountStatistics implements JSONSerializable {
      * @param followers
      */
     public AccountStatistics(HashSet<Long> followers) {
-  
+        this.followers = followers;
     }
 
     public AccountStatistics() {
@@ -39,7 +39,7 @@ public class AccountStatistics implements JSONSerializable {
 
     public JSONElement asJsonElement() {
     	JSONBuilder jb = JSONBuilder.object();
-    	jb.pairArray("followers").add(followers).close();
+    	jb.pairArray("followers").addValue(followers).close();
         return jb.toJSONElement();
     }
 
