@@ -118,7 +118,7 @@ public class Account implements Followable, JSONSerializable {
 
     /**
      *
-     * @return a hashset of the account's followers
+     * @return a Hashset of the account's followers
      */
     public HashSet<Long> getFollowers() {
         return stats.getFollowers();

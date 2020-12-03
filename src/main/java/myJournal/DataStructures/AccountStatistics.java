@@ -1,9 +1,8 @@
 package myJournal.DataStructures;
 
-import myJournal.util.JSON.JSONElement;
-import myJournal.util.JSON.JSONSerializable;
-
+import myJournal.util.JSON.*;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Stores statistics about an account
@@ -24,7 +23,7 @@ public class AccountStatistics implements JSONSerializable {
     }
 
     /**
-     * @return a hashset of all of the followers
+     * @return a HashSet of all of the followers
      */
     public HashSet<Long> getFollowers() {
         return this.followers;
@@ -37,13 +36,15 @@ public class AccountStatistics implements JSONSerializable {
         return followers.size();
     }
 
-    @Override
+
     public JSONElement asJsonElement() {
-        return null;
+    	JSONBuilder jb = JSONBuilder.object();
+    	jb.pairArray("followers").add(followers).close();
+        return jb.toJSONElement();
     }
 
-    @Override
+
     public String asJson() {
-        return null;
+        return asJsonElement().toJSONString();
     }
 }

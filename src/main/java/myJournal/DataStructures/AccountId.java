@@ -4,7 +4,7 @@ import myJournal.DBCommunication;
 import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 
-public class AccountId extends FollowableId{
+public class AccountId extends FollowableId implements JSONElement{
     public AccountId(long id) {
         super(id);
     }
