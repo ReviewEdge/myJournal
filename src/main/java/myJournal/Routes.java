@@ -133,6 +133,10 @@ public class Routes {
     };
     public static Route editAccount = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
+        if(id != ((Account)request.session().attribute("account")).getId()){
+            response.status(401);
+            return "FAIL";
+        }
         Account toModify = DBCommunication.getAccount(id);
         String firstName = request.queryParamOrDefault("firstName", toModify.getProfile().getFirstName());
         String lastName = request.queryParamOrDefault("lastName", toModify.getProfile().getLastName());
@@ -164,6 +168,10 @@ public class Routes {
     };
     public static Route editJournal = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
+        if(id != ((Account)request.session().attribute("account")).getId()){
+            response.status(401);
+            return "FAIL";
+        }
         Journal toModify = DBCommunication.getJournal(id);
         String name = request.queryParamOrDefault("name", toModify.getName());
         Boolean isPrivate;
