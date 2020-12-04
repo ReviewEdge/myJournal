@@ -14,17 +14,17 @@ public class JournalStatistics implements JSONSerializable {
 
 	private HashSet<Long> likers;
 	private HashSet<Long> followers;
-	private HashSet<Long> viewers;
+	private HashSet<Long> viewed;
 	
 	/**
 	 * @param likers
 	 * @param followers
-	 * @param viewers
+	 * @param viewed
 	 */
-	public JournalStatistics(HashSet<Long> likers, HashSet<Long> followers, HashSet<Long> viewers) {
+	public JournalStatistics(HashSet<Long> likers, HashSet<Long> followers, HashSet<Long> viewed) {
 		this.likers = likers;
 		this.followers = followers;
-		this.viewers = viewers;
+		this.viewed = viewed;
 	}
 
 	/**
@@ -58,15 +58,15 @@ public class JournalStatistics implements JSONSerializable {
 	/**
 	 * @return a HashSet of the ids of all of the journal's viewers
 	 */
-	public HashSet<Long> getViewers () {
-		return viewers;
+	public HashSet<Long> getViewed () {
+		return viewed;
 	}
 
 	/**
 	 * @return how many viewers the journal has
 	 */
-	public int getNumViewers() {
-		return viewers.size();
+	public int getNumViewed() {
+		return viewed.size();
 	}
 	
 	/**
@@ -86,8 +86,8 @@ public class JournalStatistics implements JSONSerializable {
 	/**
 	 * @param viewerId
 	 */
-	public void addViewer(long viewerId) {
-		viewers.add(viewerId);
+	public void addViewed(long viewerId) {
+		viewed.add(viewerId);
 	}
 	
 	/**
@@ -104,7 +104,7 @@ public class JournalStatistics implements JSONSerializable {
 		}
 		JournalStatistics s = (JournalStatistics) o;
 		
-		return (s.likers.equals(this.likers) && s.followers.equals(this.followers) && s.viewers.equals(this.viewers));
+		return (s.likers.equals(this.likers) && s.followers.equals(this.followers) && s.viewed.equals(this.viewed));
 	}
 	
 	/**
@@ -115,7 +115,7 @@ public class JournalStatistics implements JSONSerializable {
 		int result = 17;
 		result = result*37 + likers.hashCode();
 		result = result*37 + followers.hashCode();	
-		result = result*37 + viewers.hashCode();	
+		result = result*37 + viewed.hashCode();	
 		return result;
 	}
 
@@ -127,7 +127,7 @@ public class JournalStatistics implements JSONSerializable {
         JSONBuilder jb = JSONBuilder.object();
         jb.pairArray("likers").addValues(likers).close();
         jb.pairArray("followers").addValues(followers).close();
-        jb.pairArray("viewers").addValues(viewers).close();
+        jb.pairArray("viewers").addValues(viewed).close();
         return jb.toJSONElement();
     }
 

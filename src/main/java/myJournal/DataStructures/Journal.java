@@ -11,197 +11,324 @@ import java.util.HashSet;
 /**
  * A container for individual pages that can be public or private and can have multiple contributers.
  */
-public class Journal implements Followable, JSONSerializable {
+public class Journal implements Followable, JSONSerializable, Permissions{
+	
+	private final long id;
+	private String name;
+	private ArrayList<Page> pages;
+	private JournalStatistics stats;
+	private JournalOptions options;
+	
+	/**
+	 * @param id
+	 * @param name
+	 * @param pages
+	 * @param stats
+	 * @param options
+	 */
+	public Journal(long id, String name, ArrayList<Page> pages, JournalStatistics stats, JournalOptions options) {
+	    this.id = id;
+	    this.name = name;
+	    this.pages = pages;
+	    this.stats = stats;
+	    this.options = options;
+	}
+	
+	/**
+	 * @return id of journal as long
+	 */
+	public long getId() {
+	    return id;
+	}
+	
+	/**
+	 * @return arrayList of all of the pages in the journal
+	 */
+	public ArrayList<Page> getPages() {
+	    return pages;
+	}
+	
+	
+	// Statistical Data
+	/**
+	 * @return how many likes the journal has
+	 */
+	public long getLikes() {
+		return stats.getLikes();
+	}
+	
+	/**
+	 * @return a HashSet of all of the journal's likers
+	 */
+	public HashSet<Long> getLikers() {
+	    return stats.getLikers();
+	}
+	
+	/**
+	*
+	* adds the @param id  of the account which liked the object
+	*/
+	   public void addLiker(Long id){
+	 	   stats.addLiker(id);
+	   }
+	    
+	    /**
+	 * @return how many followers a journal has
+	 */
+	public long getNumFollowers() {
+	    return stats.getNumFollowers();
+	}
+	
+	/**
+	 * @return a HashSet of all of the journal's followers
+	 */
+	public HashSet<Long> getFollowers() {
+	    return stats.getFollowers();
+	}
+	
+	/**
+	* 
+	* adds the @param id  of the account which followed the object
+	*/
+	   public void addFollowed(Long id){
+	 	   stats.addFollower(id);
+	   }
+	
+	    /**
+	*
+	* @return the ids of the accounts which can view the object
+	*/
+   public HashSet<Long> getViewed(){
+	   return stats.getViewed();
+   }
+   
+	/**
+	*
+	* adds the @param id  of the account which viewed the object
+	*/
+   public void addViewed(Long id){
+	   stats.addViewed(id);
+   }
+	
+   /**
+	* @return the statistics object for the journal
+	*/
+	public JournalStatistics getStats() {
+	    return stats;
+	}
 
-    private final long id;
-    private String name;
-    private ArrayList<Page> pages;
-    private JournalStatistics stats;
-    private JournalOptions options;
-
-    /**
-     * @param id
-     * @param name
-     * @param pages
-     * @param stats
-     * @param options
-     */
-    public Journal(long id, String name, ArrayList<Page> pages, JournalStatistics stats, JournalOptions options) {
-        this.id = id;
-        this.name = name;
-        this.pages = pages;
-        this.stats = stats;
-        this.options = options;
-    }
-
-    /**
-     * @return id of journal as long
-     */
-    public long getId() {
-        return id;
-    }
-
-    /**
-     * @return arrayList of all of the pages in the journal
-     */
-    public ArrayList<Page> getPages() {
-        return pages;
-    }
-
-
-    // TO DO (Implement Options):
-    // Stats Data
-
-    /**
-     * @return how many likes the journal has
-     */
-    public long getLikes() {
-        return stats.getLikes();
-    }
-
-    /**
-     * @return a HashSet of all of the journal's likers
-     */
-    public HashSet<Long> getLikers() {
-        return stats.getLikers();
-    }
-
-    /**
-     * @return a HashSet of all of the journal's followers
-     */
-    public HashSet<Long> getFollowers() {
-        return stats.getFollowers();
-    }
-
-    /**
-     * @return how many followers a journal has
-     */
-    public long getNumFollowers() {
-        return stats.getNumFollowers();
-    }
-
-    /**
-     * @return the statistics object for the journal
-     */
-    public JournalStatistics getStats() {
-        return stats;
-    }
-
-
-    // Options data:
-
-    /**
-     * @return if the journal is private
-     */
-    public boolean isPrivate() {
-        return options.isPrivate();
-    }
-
-    /**
-     * @return if the journal has likes
-     */
-    public boolean hasLikes() {
-        return options.hasLikes();
-    }
-
-    /**
-     * @return if the journal has followers
-     */
-    public boolean hasFollowers() {
-        return options.hasFollowers();
-    }
-
-    /**
-     * @return a HashSet of the owners of the journal
-     */
-    public HashSet<Long> getOwners() {
-        return options.getOwners();
-    }
-
-    /**
-     * @return a HashSet of the contributers to the journal
-     */
-    public HashSet<Long> getContributers() {
-        return options.getContributers();
-    }
-
-    /**
-     * @return the options object for the journal
-     */
-    public JournalOptions getOptions() {
-        return options;
-    }
-
-    // TO DO:
-
-    /**
-     * Adds a new page to the journal.
-     * @param newPage
-     */
-    public void addPage(Page newPage) {
-    	pages.add(newPage);
-    }
-
-    //TO DO:
-
-    /**
-     * @param requestingId
-     * @return the latest page in the journal
-     */
-    public Page getLatestPage(long requestingId) {
-    	if (hasPermission(requestingId)) {
-    		return pages.get(pages.size()-1);
-    	}
-    	// better way???
-    	return null;
-    }
-    	
-    /**
-     * @param requestingId
-     * @return the id of all of the pages in the journal
-     */
-    public ArrayList<Page> getPages(long requestingId) {
-    	if (hasPermission(requestingId)) {
-        return pages;
-    	}
-    	// better way???
-    	return null;
-    }
-
-    /**
-     * @return how many pages are in the journal
-     */
-    public long getNumPages() {
-        return pages.size();
-    }
-
+	
+	// Options data:
+	/**
+	* @return if the journal is private
+	*/
+	public boolean isPrivate() {
+	    return options.isPrivate();
+	}
+	
+	/**
+	* privacy sets JournalOptions isPrivate to @param privacy
+	*/
+	public void setPrivacy(boolean privacy, long requestingId) throws IllegalAccessAttempt{
+		if (isOwner(requestingId))
+			options.setPrivacy(privacy);
+		else
+			throw new IllegalAccessAttempt("Can't change privacy settings");
+	}
+	
+	/**
+	 * @return if the journal has likes
+	 */
+	public boolean hasLikes() {
+	    return options.hasLikes();
+	}
+	
+	/**
+	* sets JournalOptions isPrivate to @param likes
+	*/
+	public void setHasLikes(boolean likes, long requestingId) throws IllegalAccessAttempt{
+		if (isOwner(requestingId))
+			options.setHasLikes(likes);
+		else
+			throw new IllegalAccessAttempt("Can't change like settings");
+	}
+	
+	/**
+	 * @return if the journal has followers
+	 */
+	public boolean hasFollowers() {
+	    return options.hasFollowers();
+	}
+	
+	/**
+	 *  sets JournalOptions hasFollowers to @param followable
+	 */
+	public void setHsFollowers(boolean followable, long requestingId) throws IllegalAccessAttempt{
+		if (isOwner(requestingId))
+			options.setHasFollowers(followable);
+		else
+			throw new IllegalAccessAttempt("Can't change follower settings");
+	}
+	
+	/**
+	 * @return a HashSet of the owners of the journal
+	 */
+	public HashSet<Long> getOwners() {
+	    return options.getOwners();
+	}
+	
+	/**
+	 * adds @param newOwner to the JournalOptions owners
+	 */
+	public void addOwners(long newOwner, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.addOwner(newOwner);
+		else
+			throw new IllegalAccessAttempt("Can't add a new owner");
+	}
+	
+	/**
+	 * removes @param oldOwner from the JournalOptions owners
+	 */
+	public void removeOwners(long oldOwner, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.removeOwner(oldOwner);
+		else
+			throw new IllegalAccessAttempt("Can't remove an owner");
+	}
+	
+	/**
+	 * @return a HashSet of the contributers to the journal
+	 */
+	public HashSet<Long> getContributers() {
+	    return options.getContributers();
+	}
+	
+	/**
+	 * @return a HashSet of the contributers to the journal
+	 */
+	public HashSet<Long> getEditors(){
+		return getContributers();
+	}
+	
+	/**
+	 * adds @param newContributer to the JournalOptions contributers
+	 */
+	public void addContributer(long newContributer, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.addContributer(newContributer);
+		else
+			throw new IllegalAccessAttempt("Can't add a new contributer");
+	}
+	
+	/**
+	 * removes @param newOwner from the JournalOptions owners
+	 */
+	public void removeContributer(long oldContributer, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.removeOwner(oldContributer);
+		else
+			throw new IllegalAccessAttempt("Can't remove a contributer");
+	}
+	
+	/**
+	 * @return a HashSet of the viewers of the journal
+	 */
+	public HashSet<Long> getViewers() {
+		if (isPrivate())
+			return options.getViewers();
+		else
+			return new HashSet<Long>();
+	}
+	
+	/**
+	 * adds @param newViewer to the JournalOptions viewers
+	 */
+	public void addViewer(long newViewer, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.addViewer(newViewer);
+		else
+			throw new IllegalAccessAttempt("Can't add a new viewer");
+	}
+	
+	/**
+	 * removes @param oldViewer from the JournalOptions viewers
+	 */
+	public void removeViewer(long oldViewer, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			options.removeOwner(oldViewer);
+		else
+			throw new IllegalAccessAttempt("Can't remove a viewer");
+	}
+	
+	/**
+	 * @return the options object for the journal
+	 */
+	public JournalOptions getOptions() {
+	    return options;
+	}
+	
+	// TO DO:
+	
+	/**
+	 * Adds a new page to the journal.
+	 * @param newPage
+	 */
+	public void addPage(Page newPage, long requestingId) throws IllegalAccessAttempt {
+		if (canEdit(requestingId))
+			pages.add(newPage);
+		else
+			throw new IllegalAccessAttempt("Can't add pages");
+	}
+	
+	/**
+	 * @param requestingId
+	 * @return the latest page in the journal
+	 */
+	public Page getLatestPage(long requestingId) throws IllegalAccessAttempt {
+		if (canView(requestingId)) 
+			return pages.get(pages.size()-1);
+		throw new IllegalAccessAttempt("Can't view page");
+	}
+		
+	/**
+	 * @param requestingId
+	 * @return the id of all of the pages in the journal
+	 */
+	public ArrayList<Page> getPages(long requestingId) throws IllegalAccessAttempt {
+		if (canView(requestingId)) {
+			return pages;
+		}
+		throw new IllegalAccessAttempt("Can't view page");
+	}
+	
+	/**
+	 * @return how many pages are in the journal
+	 */
+	public long getNumPages() {
+	    return pages.size();
+	}
+	
 	/**
 	 * @return the name of the journal
 	 */
 	public String getName() {
 		return name;
 	}
-
+	
 	/**
 	 * @param name the name of the journal
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String name, long requestingId) throws IllegalAccessAttempt {
+		if (isOwner(requestingId))
+			this.name = name;
+		else
+			throw new IllegalAccessAttempt("Can't change name");
 	}
-
-	/**
-	 * TODO:
-	 * @return if requestingId has permission
-	 */
-	public boolean hasPermission(long requestingId) {
-		
-		
-		return true;
-	}
-
+	
 	public Journal copyWithId(long id) {
 	    return new Journal(id, name, pages, stats, options);
-    }
+	}
 	
 	/**
 	 * @param o
@@ -234,26 +361,27 @@ public class Journal implements Followable, JSONSerializable {
 		result = result*37 + options.hashCode();
 		return result;
 	}
-
+	
 	/**
 	 * @return the object as a JSONElement
 	 * @Override
 	 */
-    public JSONElement asJsonElement() {
-        JSONBuilder jb = JSONBuilder.object();
-        jb.pair("name", name);
-        jb.pair("id", JSONValue.from(id));
-        jb.pairArray("pages").add(pages).close();
-        jb.pair("options", options);
-        jb.pair("stats", stats);
-        return jb.toJSONElement();
-    }
-
+	public JSONElement asJsonElement() {
+	    JSONBuilder jb = JSONBuilder.object();
+	    jb.pair("name", name);
+	jb.pair("id", JSONValue.from(id));
+	jb.pairArray("pages").add(pages).close();
+	jb.pair("options", options);
+	jb.pair("stats", stats);
+	    return jb.toJSONElement();
+	}
+	
 	/**
 	 * @return the JSON string of the object
 	 * @Override
 	 */
-    public String asJson() {
-        return asJsonElement().toJSONString();
-    }
+	public String asJson() {
+	    return asJsonElement().toJSONString();
+	}
+
 }

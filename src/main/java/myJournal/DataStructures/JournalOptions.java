@@ -19,6 +19,7 @@ public class JournalOptions implements JSONSerializable {
 	private boolean hasFollowers;
 	private HashSet<Long> owners; 
 	private HashSet<Long> contributers;
+	private HashSet<Long> viewers;
 	
 	/**
 	 * @param isPrivate
@@ -27,12 +28,13 @@ public class JournalOptions implements JSONSerializable {
 	 * @param owners
 	 * @param contributers
 	 */
-	public JournalOptions(boolean isPrivate, boolean hasLikes, boolean hasFollowers, HashSet<Long> owners, HashSet<Long> contributers) {
+	public JournalOptions(boolean isPrivate, boolean hasLikes, boolean hasFollowers, HashSet<Long> owners, HashSet<Long> contributers, HashSet<Long> viewers) {
 		this.isPrivate = isPrivate;
 		this.hasLikes = isPrivate && hasLikes;  // Assuming no likes on a private Journal
 		this.hasFollowers = isPrivate && hasFollowers; // Or Followers?
 		this.owners = owners;
 		this.contributers = contributers;
+		this.viewers = viewers;
 	}
 
 	/**
@@ -71,6 +73,13 @@ public class JournalOptions implements JSONSerializable {
 	}
 	
 	/**
+	 * @return a HashSet of the ids of all of the journal's viewers
+	 */
+	public HashSet<Long> getViewers(){
+		return viewers;
+	}
+	
+	/**
 	 * @param isPrivate
 	 */
 	public void setPrivacy(boolean isPrivate) {
@@ -104,13 +113,20 @@ public class JournalOptions implements JSONSerializable {
 	public void addContributer(long newContributer){
 		contributers.add(newContributer);
 	}
+	
+	/**
+	 * @param newViewer
+	 */
+	public void addViewer(long newViewer){
+		viewers.add(newViewer);
+	}
 
 	/**
 	 * @param Owner
 	 */
 	public void removeOwner(long Owner) throws IllegalArgumentException{
 		try {
-			owners.add(Owner);
+			owners.remove(Owner);
 		}
 		catch (Exception e){
 			throw new IllegalArgumentException("Owner does not exist");
@@ -122,7 +138,19 @@ public class JournalOptions implements JSONSerializable {
 	 */
 	public void removeContributer(long Contributer) throws IllegalArgumentException{
 		try {
-		contributers.add(Contributer);
+		contributers.remove(Contributer);
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException("Contributer does not exist");
+		}
+	}
+	
+	/**
+	 * @param Contributer
+	 */
+	public void removeViewer(long viewer) throws IllegalArgumentException{
+		try {
+		viewers.remove(viewer);
 		}
 		catch (Exception e) {
 			throw new IllegalArgumentException("Contributer does not exist");
@@ -143,8 +171,8 @@ public class JournalOptions implements JSONSerializable {
 		}
 		JournalOptions j = (JournalOptions) o;
 		
-		return (j.owners.equals(this.owners) && j.contributers.equals(this.contributers) && (j.isPrivate == this.isPrivate)
-				&& (j.hasLikes == this.hasLikes) && (j.isPrivate == this.isPrivate));
+		return (j.owners.equals(this.owners) && j.contributers.equals(this.contributers) && j.viewers.equals(this.viewers) 
+				&& (j.isPrivate == this.isPrivate) && (j.hasLikes == this.hasLikes) && (j.isPrivate == this.isPrivate));
 	}
 	
 	/**
@@ -155,6 +183,7 @@ public class JournalOptions implements JSONSerializable {
 		int result = 17;
 		result = result*37 + owners.hashCode();
 		result = result*37 + contributers.hashCode();
+		result = result*37 + viewers.hashCode();
 		result = result*37 + Boolean.hashCode(hasFollowers);
 		result = result*37 + Boolean.hashCode(hasLikes);
 		result = result*37 + Boolean.hashCode(isPrivate);
@@ -172,6 +201,7 @@ public class JournalOptions implements JSONSerializable {
         jb.pair("hasFollowers", hasFollowers);
         jb.pairArray("owners").addValues(owners).close();
         jb.pairArray("contributers").addValues(contributers).close();
+        jb.pairArray("viewers").addValues(viewers).close();
         return jb.toJSONElement();
     }
 
