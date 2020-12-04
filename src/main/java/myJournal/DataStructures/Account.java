@@ -166,8 +166,44 @@ public class Account implements Followable, JSONSerializable {
     public Account copyWithId(long id) {
         return new Account(id, this.profile, this.subscribed, this.feed, this.journalIds, this.stats);
     }
-
-    @Override
+    
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Account)) {
+			return false;
+		}
+		Account s = (Account) o;
+		
+		return ((s.id == this.id) && s.profile.equals(this.profile) && s.subscribed.equals(this.subscribed) 
+				&& s.stats.equals(this.stats) && s.feed.equals(this.feed) && s.journalIds.equals(this.journalIds));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + profile.hashCode();
+		result = result*37 + (Long.hashCode(id));	
+		result = result*37 + subscribed.hashCode();
+		result = result*37 + feed.hashCode();
+		result = result*37 + journalIds.hashCode();
+		result = result*37 + stats.hashCode();
+		return result;
+	}
+    
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("profile", profile);
@@ -179,7 +215,10 @@ public class Account implements Followable, JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

@@ -155,32 +155,16 @@ public class JournalOptions implements JSONSerializable {
 		int result = 17;
 		result = result*37 + owners.hashCode();
 		result = result*37 + contributers.hashCode();
-		
-		if (isPrivate) {
-			result = result*37 + 1;
-		}
-		else {
-			result *= 37;
-		}
-		
-		if (hasLikes) {
-			result = result*37 + 1;
-		}
-		else {
-			result *= 37;
-		}
-		
-		if (hasFollowers) {
-			result = result*37 + 1;
-		}
-		else {
-			result *= 37;
-		}
-		
+		result = result*37 + Boolean.hashCode(hasFollowers);
+		result = result*37 + Boolean.hashCode(hasLikes);
+		result = result*37 + Boolean.hashCode(isPrivate);
 		return result;
 	}
 
-    @Override
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("isPrivate", isPrivate);
@@ -191,7 +175,10 @@ public class JournalOptions implements JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

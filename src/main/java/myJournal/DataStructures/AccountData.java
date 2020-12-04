@@ -154,8 +154,46 @@ public class AccountData implements JSONSerializable {
         this.livingLocation = livingLocation;
     }
 
-
-    @Override
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AccountData)) {
+			return false;
+		}
+		AccountData s = (AccountData) o;
+		
+		return (s.firstName.equals(this.firstName) && s.lastName.equals(this.lastName) && s.username.equals(this.username) 
+				&& s.passwordHash.equals(this.passwordHash) && s.accountCreation.equals(this.accountCreation)
+				&& s.dateOfBirth.equals(this.dateOfBirth) && s.bio.equals(this.bio) && s.livingLocation.equals(this.livingLocation));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + firstName.hashCode();
+		result = result*37 + lastName.hashCode();	
+		result = result*37 + username.hashCode();
+		result = result*37 + passwordHash.hashCode();
+		result = result*37 + accountCreation.hashCode();
+		result = result*37 + dateOfBirth.hashCode();
+		result = result*37 + bio.hashCode();
+		result = result*37 + livingLocation.hashCode();
+		return result;
+	}
+    
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object()
                 .pair("firstName", firstName)
@@ -169,7 +207,10 @@ public class AccountData implements JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

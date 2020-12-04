@@ -18,8 +18,11 @@ public class JournalId extends FollowableId{
     public Followable getFollowable() {
         return DBCommunication.getJournal(this.id);
     }
-
-    @Override
+    
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("type", "journal");
@@ -27,7 +30,10 @@ public class JournalId extends FollowableId{
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

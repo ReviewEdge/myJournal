@@ -119,8 +119,10 @@ public class JournalStatistics implements JSONSerializable {
 		return result;
 	}
 
-
-    @Override
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pairArray("likers").addValues(likers).close();
@@ -129,7 +131,11 @@ public class JournalStatistics implements JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

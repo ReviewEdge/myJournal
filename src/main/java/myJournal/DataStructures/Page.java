@@ -172,23 +172,45 @@ public class Page implements JSONSerializable {
 	}
 	
 	/**
-	 * @return the HashCode of the object
+	 * @param o
+	 * @return if they are equal
+	 * @Override
 	 */
-	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Page)) {
+			return false;
+		}
+		Page s = (Page) o;
+		
+		return ((s.id == this.id) && s.name.equals(this.name) && s.content.equals(this.content) 
+				&& s.stats.equals(this.stats) && s.authorId == this.authorId  && s.parentJournal.getId() == this.parentJournal.getId()
+				 && s.hasLikes == this.hasLikes  && s.authorId == this.authorId);
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * 	@Override
+	 */
 	public int hashCode() {
 		int result = 17;
-		result = result*37 + (Long.valueOf(id).hashCode());
+		result = result*37 + Long.hashCode(id);
 		result = result*37 + name.hashCode();	
 		result = result*37 + content.hashCode();
-		result = result*37 + Long.valueOf(authorId).hashCode();
+		result = result*37 + Long.hashCode(authorId);
 		result = result*37 + stats.hashCode();
 		result = result*37 + parentJournal.hashCode();
-		result = result*37 + Boolean.valueOf(hasLikes).hashCode();
-		result = result*37 + Boolean.valueOf(hasViews).hashCode();
+		result = result*37 + Boolean.hashCode(hasLikes);
+		result = result*37 + Boolean.hashCode(hasViews);
 		return result;
 	}
 
-    @Override
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("id", JSONValue.from(id));
@@ -202,7 +224,10 @@ public class Page implements JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

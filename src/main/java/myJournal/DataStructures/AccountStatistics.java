@@ -36,15 +36,47 @@ public class AccountStatistics implements JSONSerializable {
         return followers.size();
     }
 
-    @Override
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AccountStatistics)) {
+			return false;
+		}
+		AccountStatistics s = (AccountStatistics) o;
+		
+		return (s.followers.equals(this.followers));
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + followers.hashCode();
+		return result;
+	}
+    
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
     	JSONBuilder jb = JSONBuilder.object();
     	jb.pairArray("followers").addValue(followers).close();
         return jb.toJSONElement();
     }
-
-    @Override
-    public String asJson() {
+    
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */    public String asJson() {
         return asJsonElement().toJSONString();
     }
 }

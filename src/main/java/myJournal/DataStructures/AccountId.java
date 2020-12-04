@@ -18,7 +18,37 @@ public class AccountId extends FollowableId{
         return DBCommunication.getAccount(this.id);
     }
 
-    @Override
+	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof AccountId)) {
+			return false;
+		}
+		AccountId s = (AccountId) o;
+		
+		return (s.id == this.id);
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + (Long.hashCode(id));
+		return result;
+	}
+    
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("type", "account");
@@ -26,7 +56,10 @@ public class AccountId extends FollowableId{
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }

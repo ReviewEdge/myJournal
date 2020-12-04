@@ -61,6 +61,23 @@ public class PageStatistics implements JSONSerializable {
 	}
 	
 	/**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof PageStatistics)) {
+			return false;
+		}
+		PageStatistics s = (PageStatistics) o;
+		
+		return (s.likers.equals(this.likers) && s.viewers.equals(this.viewers));
+	}
+	
+	/**
 	 * @return the HashCode of the object
 	 */
 	@Override
@@ -71,7 +88,10 @@ public class PageStatistics implements JSONSerializable {
 		return result;
 	}
 
-    @Override
+	/**
+	 * @return the object as a JSONElement
+	 * @Override
+	 */
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pairArray("likers").addValues(likers).close();
@@ -79,7 +99,10 @@ public class PageStatistics implements JSONSerializable {
         return jb.toJSONElement();
     }
 
-    @Override
+	/**
+	 * @return the JSON string of the object
+	 * @Override
+	 */
     public String asJson() {
         return asJsonElement().toJSONString();
     }
