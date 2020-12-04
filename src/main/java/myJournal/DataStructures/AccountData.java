@@ -154,6 +154,7 @@ public class AccountData implements JSONSerializable {
         this.livingLocation = livingLocation;
     }
 
+
     @Override
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object()

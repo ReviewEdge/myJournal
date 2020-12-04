@@ -1,9 +1,13 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Stores the options for a journal.
@@ -176,13 +180,20 @@ public class JournalOptions implements JSONSerializable {
 		return result;
 	}
 
-	@Override
-	public JSONElement asJsonElement() {
-		return null;
-	}
+    @Override
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pair("isPrivate", isPrivate);
+        jb.pair("hasLikes", hasLikes);
+        jb.pair("hasFollowers", hasFollowers);
+        jb.pairArray("owners").addValues(owners).close();
+        jb.pairArray("contributers").addValues(contributers).close();
+        return jb.toJSONElement();
+    }
 
-	@Override
-	public String asJson() {
-		return null;
-	}
+    @Override
+    public String asJson() {
+        return asJsonElement().toJSONString();
+    }
 }
+

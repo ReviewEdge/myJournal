@@ -1,7 +1,10 @@
 package myJournal.DataStructures;
 
 
+import myJournal.util.JSON.JSONBuilder;
+import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,4 +44,5 @@ public interface Followable extends JSONSerializable {
      * @return the number of pages the followable object has.
      */
     long getNumPages();
+    
 }

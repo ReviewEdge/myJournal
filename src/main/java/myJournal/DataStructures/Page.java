@@ -1,7 +1,9 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
 
 import java.util.HashSet;
 
@@ -186,13 +188,22 @@ public class Page implements JSONSerializable {
 		return result;
 	}
 
-	//TODO
-	public JSONElement asJsonElement() {
-		return null;
-	}
+    @Override
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pair("id", JSONValue.from(id));
+        jb.pair("name", name);
+        jb.pair("content", content);
+        jb.pair("authorId", JSONValue.from(authorId));
+        jb.pair("stats", stats);
+        jb.pair("parentJournal", parentJournal);
+        jb.pair("hasLikes", hasLikes);
+        jb.pair("hasViews", hasViews);
+        return jb.toJSONElement();
+    }
 
-	//TODO
-	public String asJson() {
-		return null;
-	}
+    @Override
+    public String asJson() {
+        return asJsonElement().toJSONString();
+    }
 }

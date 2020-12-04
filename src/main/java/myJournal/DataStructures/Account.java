@@ -167,9 +167,10 @@ public class Account implements Followable, JSONSerializable {
         return new Account(id, this.profile, this.subscribed, this.feed, this.journalIds, this.stats);
     }
 
+    @Override
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
-        jb.pair("profile", profile.asJsonElement());
+        jb.pair("profile", profile);
         jb.pair("id", JSONValue.from(id));
         jb.pairArray("subscribed").add(subscribed).close();
         jb.pair("feed", feed);
@@ -178,6 +179,7 @@ public class Account implements Followable, JSONSerializable {
         return jb.toJSONElement();
     }
 
+    @Override
     public String asJson() {
         return asJsonElement().toJSONString();
     }

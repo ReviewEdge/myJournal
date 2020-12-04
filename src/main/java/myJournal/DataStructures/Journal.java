@@ -1,7 +1,9 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,7 +13,7 @@ import java.util.HashSet;
  */
 public class Journal implements Followable, JSONSerializable {
 
-    private long id;
+    private final long id;
     private String name;
     private ArrayList<Page> pages;
     private JournalStatistics stats;
@@ -236,11 +238,17 @@ public class Journal implements Followable, JSONSerializable {
 
     @Override
     public JSONElement asJsonElement() {
-        return null;
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pair("name", name);
+        jb.pair("id", JSONValue.from(id));
+        jb.pairArray("pages").add(pages).close();
+        jb.pair("options", options);
+        jb.pair("stats", stats);
+        return jb.toJSONElement();
     }
 
     @Override
     public String asJson() {
-        return null;
+        return asJsonElement().toJSONString();
     }
 }

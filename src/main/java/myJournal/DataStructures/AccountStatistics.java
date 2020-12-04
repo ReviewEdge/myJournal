@@ -36,14 +36,14 @@ public class AccountStatistics implements JSONSerializable {
         return followers.size();
     }
 
-
+    @Override
     public JSONElement asJsonElement() {
     	JSONBuilder jb = JSONBuilder.object();
     	jb.pairArray("followers").addValue(followers).close();
         return jb.toJSONElement();
     }
 
-
+    @Override
     public String asJson() {
         return asJsonElement().toJSONString();
     }

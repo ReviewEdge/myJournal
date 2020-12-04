@@ -1,7 +1,9 @@
 package myJournal.DataStructures;
 
+import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
+import myJournal.util.JSON.JSONValue;
 
 import java.util.HashSet;
 
@@ -118,13 +120,17 @@ public class JournalStatistics implements JSONSerializable {
 	}
 
 
-	@Override
-	public JSONElement asJsonElement() {
-		return null;
-	}
+    @Override
+    public JSONElement asJsonElement() {
+        JSONBuilder jb = JSONBuilder.object();
+        jb.pairArray("likers").addValues(likers).close();
+        jb.pairArray("followers").addValues(followers).close();
+        jb.pairArray("viewers").addValues(viewers).close();
+        return jb.toJSONElement();
+    }
 
-	@Override
-	public String asJson() {
-		return null;
-	}
+    @Override
+    public String asJson() {
+        return asJsonElement().toJSONString();
+    }
 }
