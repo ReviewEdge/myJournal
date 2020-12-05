@@ -43,6 +43,14 @@ class Folio:
         }
         return self.session.get(self.endpoints["account"], params=request_data).json()
 
+    def get_user_journals(self, id: int):
+        """
+
+        :param id:
+        """
+        user = self.get_user_by_id(id)
+        return [journal["id"] for journal in user["journalIds"]]
+
     def get_user_by_id(self, id: int):
         """
 
@@ -169,12 +177,15 @@ class Folio:
             return True
         return False
 
-    def get_feed(self):
+    def get_feed(self, num_pages:int):
         """
 
         :return:
         """
-        response = self.session.get(self.endpoints["feed"])
+        request_data = {
+            "numPages": num_pages
+        }
+        response = self.session.get(self.endpoints["feed"], params=request_data)
         return response.json()
 
     def get_feed_next(self):

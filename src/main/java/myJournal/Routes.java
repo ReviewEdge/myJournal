@@ -2,6 +2,7 @@
 package myJournal;
 
 import myJournal.DataStructures.*;
+import myJournal.util.JSON.JSONArray;
 import myJournal.util.JSON.JSONBuilder;
 import org.mindrot.jbcrypt.BCrypt;
 import spark.Request;
@@ -52,7 +53,8 @@ public class Routes {
         return DBCommunication.getPage(id).asJson();
     };
     public static final Route getFeed = (Request request, Response response) -> {
-        return ((Account)request.session().attribute("account")).getFeed().asJson();
+        int numPages = Integer.parseInt(request.queryParams("numPages"));
+        return JSONBuilder.convertToJSONString(((Account)request.session().attribute("account")).getFeed().getPages(10));
     };
     public static final Route getFeedNext = (Request request, Response response) -> {
         return ((Account)request.session().attribute("account")).getFeed().getPage().asJson();
@@ -92,20 +94,18 @@ public class Routes {
         return "OK";
     };
     public static final Route addJournal = (Request request, Response response) -> {
+        Account sessionAccount = request.session().attribute("account");
         String name = request.queryParams("name");
         Boolean isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
         Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
         Boolean hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
         HashSet<Long> owners = new HashSet<>();
         String[] ownersString = request.queryParamsValues("owners");
+        owners.add(sessionAccount.getId());
         if(ownersString != null) {
             for (String s : ownersString) {
                 owners.add(Long.parseLong(s));
             }
-        }
-        else {
-            response.status(401);
-            return "FAIL";
         }
         HashSet<Long> contributers = new HashSet<>();
         String[] contributersString = request.queryParamsValues("contributers");
@@ -114,19 +114,28 @@ public class Routes {
                 contributers.add(Long.parseLong(s));
             }
         }
+        HashSet<Long> viewers = new HashSet<>();
+        if(isPrivate) {
+            String[] viewersString = request.queryParamsValues("viewers");
+            viewers.add(sessionAccount.getId());
+            if(viewersString != null) {
+                for (String s : viewersString) {
+                    viewers.add(Long.parseLong(s));
+                }
+            }
+        }
         ArrayList<Page> pages = new ArrayList<>();
         JournalStatistics stats = new JournalStatistics(new HashSet<>(), new HashSet<>(), new HashSet<>());
-        JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, owners, contributers);
+        JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, owners, contributers, viewers);
         Journal j = new Journal(0,name,pages,stats,options);
         DBCommunication.addJournal(j);
-
-        Account sessionAccount = request.session().attribute("account");
         sessionAccount.addJournalId(JournalId.from(j));
         DBCommunication.editAccount(sessionAccount.getId(), sessionAccount);
         return "OK";
     };
     public static final Route addPage = (Request request, Response response) -> {
         long newId = 0;
+        Account currentAccount = request.session().attribute("account");
         String newName = request.queryParams("name");
         String content = request.queryParams("content");
         long authorId = Long.parseLong(request.queryParams("authorId"));
@@ -134,7 +143,7 @@ public class Routes {
         long parentJournalId = Long.parseLong(request.queryParams("parentJournalId"));
         Journal parentJournal = DBCommunication.getJournal(parentJournalId);
         Page p = new Page(newId, newName, content, authorId, parentJournal);
-        parentJournal.addPage(p);
+        parentJournal.addPage(p, currentAccount.getId());
         System.out.println(parentJournal.asJson());
         DBCommunication.editJournal(parentJournalId, parentJournal);
         return "OK";
@@ -190,6 +199,7 @@ public class Routes {
     };
     public static final Route editJournal = (Request request, Response response) -> {
         Long id = Long.parseLong(request.queryParams("id"));
+        Account sessionAccount = request.session().attribute("account");
         if(id != ((Account)request.session().attribute("account")).getId()){
             response.status(401);
             return "FAIL";
@@ -217,31 +227,32 @@ public class Routes {
         catch(NullPointerException n) {
             hasFollowers = toModify.hasFollowers();
         }
-        HashSet<Long> owners = toModify.getOwners();
-        try {
-            Scanner ownerScanner = new Scanner(request.queryParams("owners"));
-            ownerScanner.useDelimiter("\\D+");
-            while (ownerScanner.hasNextLong()) {
-                owners.add(ownerScanner.nextLong());
+        String[] ownersString = request.queryParamsValues("owners");
+        if(ownersString != null) {
+            for (String s : ownersString) {
+                toModify.addOwners(Long.parseLong(s), sessionAccount.getId());
             }
         }
-        catch(NullPointerException n) {
-            //DO NOTHING WOO
-        }
-        HashSet<Long> contributers = new HashSet<>();
-        try {
-            Scanner contributerScanner = new Scanner(request.queryParams("contributers"));
-            contributerScanner.useDelimiter("\\D+");
-            while(contributerScanner.hasNextLong()) {
-                contributers.add(contributerScanner.nextLong());
+        String[] contributersString = request.queryParamsValues("contributers");
+        if(contributersString != null) {
+            for (String s : contributersString) {
+                toModify.addContributer(Long.parseLong(s), sessionAccount.getId());
             }
         }
-        catch(NullPointerException n) {
-            //DOO NOOTHING WOOOO
+        HashSet<Long> viewers = new HashSet<>();
+        if(isPrivate) {
+            String[] viewersString = request.queryParamsValues("viewers");
+            viewers.add(sessionAccount.getId());
+            if(viewersString != null) {
+                for (String s : viewersString) {
+                    toModify.addViewer(Long.parseLong(s), sessionAccount.getId());
+                }
+            }
         }
         ArrayList<Page> pages = toModify.getPages();
         JournalStatistics stats = toModify.getStats();
-        JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, owners, contributers);
+        JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, toModify.getOwners(),
+                toModify.getContributers(), toModify.getViewers());
         Journal j = new Journal(id,name,pages,stats,options);
         DBCommunication.editJournal(id, j);
         response.status(200);
