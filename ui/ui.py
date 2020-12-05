@@ -1,6 +1,6 @@
 from folio import Folio
-import accounts_ui
 import journals_ui
+import accounts_ui
 
 folio = Folio("http://localhost:4567")
 
