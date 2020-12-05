@@ -22,7 +22,7 @@ def login():
         else:
             print("Your account doesn't exist.")
     else:
-        print("Create an account.")
+        print("Please make an account.")
     return False
 
 
@@ -40,16 +40,16 @@ def add_account():
 
 def accounts():
     while True:
-        do_acc = input("Enter: \nNew Account: 'n' \nView My Account: 'm' \nView Someone Else's Account: 'v' \nExit: 'e'").lower()
+        do_acc = input("Enter: \nNew Account: 'n' \nView My Account: 'm' \nView Someone Else's Account: 'v' \nExit: 'e'\n").lower()
 
         if do_acc == "n":
             add_account()
 
-        if do_acc == "m":
+        elif do_acc == "m":
             print("Your account:\n\n")
             view_account(current_user_id)
 
-        if do_acc == 'v':
+        elif do_acc == 'v':
             viewing_acc_id = input("Enter an account's ID:")
             view_account(viewing_acc_id)
 
@@ -63,6 +63,21 @@ def accounts():
 
 
 
+def journals():
+    while True:
+        do_journ = input("Enter: \nNew Journal: 'n' \nView Journal: 'v' \nEdit Journal: 'e'\nDelete Journal: 'd' \nSubscribe to Journal: 's' \nExit: 'x'\n").lower()
+        if do_journ == "n":
+
+
+        elif do_journ == "v":
+
+
+        elif do_journ == 'd':
+
+
+        elif do_journ == 'x':
+            break
+
 
 # Runs the program
 
@@ -74,23 +89,25 @@ if current_user_id is not False:
     current_username = folio.get_username(current_user_id)
     print("\nYou are now logged in as " + current_username + ".\n")
 else:
-    print("Please make an account.")
-    # directs the user to make an account
-    add_account()
-    print("Restart the program to use your new account.")
+    if input("Would you like to make a new account (y/n)?\n").lower() == "y":
+        # directs the user to make an account
+        add_account()
+        print("Restart the program to use your new account.")
 
 if current_user_id is not False:
     while True:
-        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'").lower()
+        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nPages: 'p' \nFeed 'f'\n").lower()
     
         if do == "a":
             print("ACCOUNTS\n\n")
+            accounts()
     
-        if do == "j":
+        elif do == "j":
             print("JOURNALS\n\n")
+            journals()
     
-        if do == "p":
+        elif do == "p":
             print("PAGES\n\n")
     
-        if do == "f":
+        elif do == "f":
             print("FEED\n\n")
