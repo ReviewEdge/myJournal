@@ -538,5 +538,7 @@ if __name__ == '__main__':
     f.add_page("Joe's page", "I SURE DO LIKE TO EAT CHICKEN", author_id=joe_id, parent_journal_id=first_id)
     pages = f.get_journal_pages(first_id)
     print(pages)
+    f.subscribe_journal(first_id)
+    print(f.get_user_by_id(joe_id))
 
 

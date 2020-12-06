@@ -69,7 +69,7 @@ public class AccountStatistics implements JSONSerializable {
 	 */
     public JSONElement asJsonElement() {
     	JSONBuilder jb = JSONBuilder.object();
-    	jb.pairArray("followers").addValue(followers).close();
+    	jb.pairArray("followers").addValues(followers).close();
         return jb.toJSONElement();
     }
     
