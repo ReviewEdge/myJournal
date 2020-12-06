@@ -38,7 +38,7 @@ public interface Permissions {
     	for (Long i: getViewers())
     		if (id == i)
     			return true;
-    	return false;
+    	return canEdit(id);
     }
     
     /**
@@ -48,7 +48,7 @@ public interface Permissions {
     	for (Long i: getEditors())
     		if (id == i)
     			return true;
-    	return false;
+    	return isOwner(id);
     }
     
     /**

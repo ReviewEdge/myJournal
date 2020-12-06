@@ -1,6 +1,5 @@
 package myJournal.util;
 
-import jdk.nashorn.internal.ir.RuntimeNode;
 import myJournal.DataStructures.Account;
 import spark.Request;
 import spark.Response;

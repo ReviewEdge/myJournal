@@ -160,6 +160,7 @@ public class Routes {
         Journal parentJournal = DBCommunication.getJournal(parentJournalId);
         Page p = new Page(newId, newName, content, authorId, parentJournal);
         DBCommunication.addPage(p); //modifies p's id
+        System.out.println(account.getId());
         parentJournal.addPage(PageId.from(p), account.getId());
         System.out.println(parentJournal.asJson());
         DBCommunication.editJournal(parentJournalId, parentJournal);

@@ -214,7 +214,6 @@ public class Account implements Followable, JSONSerializable {
         jb.pair("profile", profile);
         jb.pair("id", JSONValue.from(id));
         jb.pairArray("subscribed").add(subscribed).close();
-        jb.pair("feed", feed);
         jb.pairArray("journalIds").add(journalIds).close();
         jb.pair("stats", stats);
         return jb.toJSONElement();
