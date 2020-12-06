@@ -1,21 +1,6 @@
 import sys
 
 
-
-
-
-def my_pages(current_folio):
-
-    # prints all of user's pages, uses pages methods
-
-    print("under construction")
-
-
-
-
-
-
-
 def edit_account(current_folio):
     print("\nEDIT ACCOUNT\n")
     if input("Would you like to change your username? (y/n)\n").lower() == "y":
@@ -56,12 +41,9 @@ def main(current_folio, current_user_id):
     print("MY ACCOUNT\n")
     do = ""
     while do != "x":
-        do = input("Enter: \nMy Pages: 'p' \nEdit Account: 'e' \nDelete Account: 'd' \nExit: 'x'\n").lower()
+        do = input("Enter: \nEdit Account: 'e' \nDelete Account: 'd' \nExit: 'x'\n").lower()
 
-        if do == "p":
-            my_pages(current_folio)
-
-        elif do == "e":
+        if do == "e":
             edit_account(current_folio)
 
         elif do == "d":

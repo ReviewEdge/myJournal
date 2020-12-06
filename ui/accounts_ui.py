@@ -1,5 +1,6 @@
 import my_account_ui
 
+
 def new_account(current_folio):
     print("\n\nNEW ACCOUNT\n")
     first_name = input("Enter your first name: ")
@@ -17,9 +18,6 @@ def my_account(current_folio):
     view_account(current_folio, True)
 
     my_account_ui.main(current_folio, user_id)
-
-
-
 
 
 def view_account(current_folio, checking_my_account=False):
@@ -46,11 +44,24 @@ def view_account(current_folio, checking_my_account=False):
     print("User Since: " + account_creation[4:10] + ", " + account_creation[24:28])
     print()
 
+
+
+
+
+
     #add follower count
-    #add subscribe option
 
-    #show pages
 
+
+
+
+    if input("Would you like to view " + viewing_user["profile"]["username"] + "'s pages? (y/n)\n").lower() == "y":
+        #show pages
+        print("under construction")
+        #pages.view_pages()
+
+
+    # add subscribe option
 
 
 

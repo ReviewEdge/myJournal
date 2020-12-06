@@ -8,6 +8,24 @@ folio = Folio("http://localhost:4567")
 
 
 
+
+
+#DELETE ME
+#SET UP FAKE USERS
+folio.add_account("Test", "Tester", "u", "p")
+
+
+
+
+
+
+
+
+
+
+
+
+
 # returns user id if login successful, else returns False
 def login():
     has_acc = input("Do you have a login account? (y/n)\n").lower()
@@ -51,6 +69,7 @@ else:
 
 # Runs main loop if user is logged in
 if user_id is not False:
+    print("\n\nFOLIO\n")
     do = ""
     while do != "x":
         do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nExit: 'x'\n").lower()
