@@ -1,12 +1,13 @@
 
 package myJournal.DataStructures;
 
+import myJournal.Intermediaries.FollowableId;
+import myJournal.Intermediaries.JournalId;
 import myJournal.util.JSON.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Represents a followable account.
@@ -28,7 +29,7 @@ public class Account implements Followable, JSONSerializable {
         this.subscribed = subscribed;
         this.journalIds = journalIds;
         this.stats = stats;
-        this.feed = new Feed(subscribed);
+        this.feed = new Feed(subscribed, id);
     }
 
     public Account(long id, AccountData profile) {
@@ -37,7 +38,7 @@ public class Account implements Followable, JSONSerializable {
         this.profile = profile;
         this.id = id;
         this.subscribed = new ArrayList<>();
-        this.feed = new Feed(this.subscribed);
+        this.feed = new Feed(this.subscribed, id);
         this.journalIds = new ArrayList<>();
         this.stats = new AccountStatistics();
     }
@@ -147,6 +148,10 @@ public class Account implements Followable, JSONSerializable {
 
     public void addJournalId(JournalId j) {
         journalIds.add(j);
+    }
+
+    public void removeJournal(long id) {
+        journalIds.remove(new JournalId(id));
     }
 
     public AccountStatistics getStats() {

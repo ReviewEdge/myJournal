@@ -1,6 +1,8 @@
-package myJournal.DataStructures;
+package myJournal.Intermediaries;
 
 import myJournal.DBCommunication;
+import myJournal.DataStructures.Account;
+import myJournal.DataStructures.Followable;
 import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 

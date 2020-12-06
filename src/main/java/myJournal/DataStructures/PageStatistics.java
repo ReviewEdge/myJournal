@@ -106,4 +106,12 @@ public class PageStatistics implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+    public void addLiker(long likerId) {
+    	this.likers.add(likerId);
+    }
+
+    public void removeLiker(long likerId) {
+    	this.likers.remove(likerId);
+	}
 }

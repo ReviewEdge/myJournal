@@ -139,4 +139,8 @@ public class JournalStatistics implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+    public void removeLiker(long likingId) {
+    	likers.remove(likingId);
+    }
 }

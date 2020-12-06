@@ -32,10 +32,14 @@ public class Main {
 		get(Endpoints.FeedNext, Routes.getFeedNext);
 		get(Endpoints.AccountPages, Routes.getAccountPages);
 		get(Endpoints.JournalPages, Routes.getJournalPages);
+		post(Endpoints.JournalLike, Routes.likeJournal);
+		post(Endpoints.PageLike, Routes.likePage);
 		post(Endpoints.Account, Routes.addAccount);
 		post(Endpoints.Journal, Routes.addJournal);
 		post(Endpoints.Page, Routes.addPage);
 		post(Endpoints.Session, Routes.createSession);
+		put(Endpoints.JournalLike, Routes.unlikeJournal);
+		put(Endpoints.PageLike, Routes.unlikePage);
 		put(Endpoints.Account, Routes.editAccount);
 		put(Endpoints.Journal, Routes.editJournal);
 		put(Endpoints.AccountSubscribe, Routes.subscribeAccount);

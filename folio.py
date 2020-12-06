@@ -45,7 +45,7 @@ class Folio:
 
     def get_user_journals(self, id: int):
         """
-
+        Get the ids of all of a user's journals.
         :param id:
         """
         user = self.get_user_by_id(id)
@@ -69,6 +69,9 @@ class Folio:
         :return:
         """
         return self.get_user_by_id(id)["profile"]["username"]
+
+    def get_user_profile(self, id: int):
+        return self.get_user_by_id(id)["profile"]
 
     def add_account(self, first_name, last_name, new_username, new_password):
         """
@@ -177,7 +180,7 @@ class Folio:
             return True
         return False
 
-    def get_feed(self, num_pages:int):
+    def get_feed(self, num_pages: int):
         """
 
         :return:
@@ -207,6 +210,9 @@ class Folio:
         }
         response = self.session.get(self.endpoints["page"], params=request_data)
         return response.json()
+
+    def get_page_author(self, page_id):
+        return self.get_user_by_id(self.get_page(page_id)["accountId"])
 
     def get_journal(self, journal_id):
         """
@@ -393,9 +399,10 @@ class Folio:
         response = self.session.put(self.endpoints["account"], data=request_data)
         return response.status_code == 200
 
-    def edit_journal(self, journal_id, name, is_private, has_likes, has_followers, owners, contributers):
+    def edit_journal(self, journal_id, name, is_private, has_likes, has_followers, owners, contributers, viewers):
         """
 
+        :param viewers:
         :param journal_id:
         :param name:
         :param is_private:
@@ -412,13 +419,15 @@ class Folio:
             "has_likes": has_likes,
             "has_followers": has_followers,
             "owners": owners,
-            "contributers": contributers
+            "contributers": contributers,
+            "viewers": viewers
         }
         return self.session.put(self.endpoints["journal"], data=request_data).status_code == 200
 
-    def edit_journal_options(self, journal_id, is_private, has_likes, has_followers):
+    def edit_journal_options(self, journal_id, is_private, has_likes, has_followers, viewers):
         """
 
+        :param viewers:
         :param journal_id:
         :param is_private:
         :param has_likes:
@@ -429,7 +438,8 @@ class Folio:
             "id": journal_id,
             "is_private": is_private,
             "has_likes": has_likes,
-            "has_followers": has_followers
+            "has_followers": has_followers,
+            "viewers": viewers
         }
         response = self.session.put(self.endpoints["journal"], data=request_data)
         return response.status_code == 200
@@ -472,6 +482,20 @@ class Folio:
         request_data = {
             "id": journal_id,
             "contributers": contributers
+        }
+        response = self.session.put(self.endpoints["journal"], data=request_data)
+        return response.status_code == 200
+
+    def edit_journal_viewers(self, journal_id, viewers):
+        """
+
+        :param journal_id:
+        :param viewers:
+        :return:
+        """
+        request_data = {
+            "id": journal_id,
+            "viewers": viewers
         }
         response = self.session.put(self.endpoints["journal"], data=request_data)
         return response.status_code == 200

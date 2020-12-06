@@ -1,8 +1,8 @@
 package myJournal.DataStructures;
 
+import myJournal.Intermediaries.FollowableId;
 import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
-import myJournal.util.JSON.JSONSerializable;
 
 import java.util.*;
 

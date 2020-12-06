@@ -1,6 +1,6 @@
-package myJournal.DataStructures;
+package myJournal.Intermediaries;
 
-import myJournal.util.JSON.JSONElement;
+import myJournal.DataStructures.Followable;
 import myJournal.util.JSON.JSONSerializable;
 
 import java.util.ArrayList;

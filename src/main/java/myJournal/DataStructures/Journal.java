@@ -1,5 +1,6 @@
 package myJournal.DataStructures;
 
+import myJournal.Intermediaries.PageId;
 import myJournal.util.JSON.JSONBuilder;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
@@ -15,23 +16,33 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	
 	private final long id;
 	private String name;
-	private ArrayList<Page> pages;
+
+	public ArrayList<PageId> getPageIds() {
+		return pageIds;
+	}
+
+	private ArrayList<PageId> pageIds;
 	private JournalStatistics stats;
 	private JournalOptions options;
 	
 	/**
 	 * @param id
 	 * @param name
-	 * @param pages
+	 * @param pageIds
 	 * @param stats
 	 * @param options
 	 */
-	public Journal(long id, String name, ArrayList<Page> pages, JournalStatistics stats, JournalOptions options) {
+	public Journal(long id, String name, ArrayList<PageId> pageIds, JournalStatistics stats, JournalOptions options) {
 	    this.id = id;
 	    this.name = name;
-	    this.pages = pages;
+	    this.pageIds = pageIds;
 	    this.stats = stats;
 	    this.options = options;
+	}
+
+	public Journal authorized(long requestingId) {
+		if(canView(requestingId)) return this;
+		else throw new IllegalAccessAttempt();
 	}
 	
 	/**
@@ -45,7 +56,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 * @return arrayList of all of the pages in the journal
 	 */
 	public ArrayList<Page> getPages() {
-	    return pages;
+	    return PageId.toPageArray(pageIds);
 	}
 	
 	
@@ -272,13 +283,20 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	
 	/**
 	 * Adds a new page to the journal.
-	 * @param newPage
+	 * @param newPageId
 	 */
-	public void addPage(Page newPage, long requestingId) throws IllegalAccessAttempt {
+	public void addPage(PageId newPageId, long requestingId) throws IllegalAccessAttempt {
 		if (canEdit(requestingId))
-			pages.add(newPage);
+			pageIds.add(newPageId);
 		else
 			throw new IllegalAccessAttempt("Can't add pages");
+	}
+
+	public void removePage(Page toRemove, long requestingId) {
+		if (isOwner(requestingId))
+			pageIds.remove(toRemove);
+		else
+			throw new IllegalAccessAttempt("Can't remove page.");
 	}
 	
 	/**
@@ -287,7 +305,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 */
 	public Page getLatestPage(long requestingId) throws IllegalAccessAttempt {
 		if (canView(requestingId)) 
-			return pages.get(pages.size()-1);
+			return pageIds.get(pageIds.size()-1).getPage();
 		throw new IllegalAccessAttempt("Can't view page");
 	}
 		
@@ -297,7 +315,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 */
 	public ArrayList<Page> getPages(long requestingId) throws IllegalAccessAttempt {
 		if (canView(requestingId)) {
-			return pages;
+			return PageId.toPageArray(pageIds);
 		}
 		throw new IllegalAccessAttempt("Can't view page");
 	}
@@ -306,7 +324,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 * @return how many pages are in the journal
 	 */
 	public long getNumPages() {
-	    return pages.size();
+	    return pageIds.size();
 	}
 	
 	/**
@@ -327,7 +345,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	}
 	
 	public Journal copyWithId(long id) {
-	    return new Journal(id, name, pages, stats, options);
+	    return new Journal(id, name, pageIds, stats, options);
 	}
 	
 	/**
@@ -344,7 +362,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 		}
 		Journal s = (Journal) o;
 		
-		return ((s.id == this.id) && s.name.equals(this.name) && s.pages.equals(this.pages) 
+		return ((s.id == this.id) && s.name.equals(this.name) && s.pageIds.equals(this.pageIds)
 				&& s.stats.equals(this.stats) && s.options.equals(this.options));
 	}
 	
@@ -356,7 +374,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 		int result = 17;
 		result = result*37 + (Long.valueOf(id).hashCode());
 		result = result*37 + name.hashCode();	
-		result = result*37 + pages.hashCode();
+		result = result*37 + pageIds.hashCode();
 		result = result*37 + stats.hashCode();
 		result = result*37 + options.hashCode();
 		return result;
@@ -370,7 +388,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	    JSONBuilder jb = JSONBuilder.object();
 	    jb.pair("name", name);
 	jb.pair("id", JSONValue.from(id));
-	jb.pairArray("pages").add(pages).close();
+	jb.pairArray("pages").add(pageIds).close();
 	jb.pair("options", options);
 	jb.pair("stats", stats);
 	    return jb.toJSONElement();
@@ -384,4 +402,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	    return asJsonElement().toJSONString();
 	}
 
+	public void removeLiker(long likingId) {
+		this.stats.removeLiker(likingId);
+	}
 }

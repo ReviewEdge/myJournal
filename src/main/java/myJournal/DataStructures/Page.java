@@ -142,7 +142,7 @@ public class Page implements JSONSerializable {
 	 * @param likerId
 	 */
 	public void addLiker(long likerId) {
-		this.stats.addView(likerId);
+		this.stats.addLiker(likerId);
 	}
 	
 	/**
@@ -161,6 +161,11 @@ public class Page implements JSONSerializable {
 
 	public Page copyWithId(long id) {
 		return new Page(id, name, content, authorId, parentJournal);
+	}
+
+	public Page authorized(long requestingId) {
+		if(parentJournal.canView(requestingId)) return this;
+		else throw new IllegalAccessAttempt();
 	}
 	
 	/**
@@ -231,4 +236,8 @@ public class Page implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+	public void removeLiker(long likingId) {
+    	this.stats.removeLiker(likingId);
+	}
 }
