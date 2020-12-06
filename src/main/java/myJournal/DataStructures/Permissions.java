@@ -1,9 +1,7 @@
 package myJournal.DataStructures;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-
-import myJournal.util.JSON.JSONSerializable;
+import java.util.Objects;
 
 
 /**
@@ -36,7 +34,7 @@ public interface Permissions {
     		return true;
     	
     	for (Long i: getViewers())
-    		if (id == i)
+    		if (Objects.equals(id, i))
     			return true;
     	return canEdit(id);
     }
@@ -46,7 +44,7 @@ public interface Permissions {
      */
     default boolean canEdit(Long id) {
     	for (Long i: getEditors())
-    		if (id == i)
+    		if (Objects.equals(id, i))
     			return true;
     	return isOwner(id);
     }
@@ -56,7 +54,7 @@ public interface Permissions {
      */
     default boolean isOwner(Long id) {
     	for (Long i: getOwners())
-    		if (id == i)
+    		if (Objects.equals(id, i))
     			return true;
     	
     	return false;
