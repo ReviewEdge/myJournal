@@ -10,7 +10,7 @@ folio = Folio("http://localhost:4567")
 
 # returns user id if login successful, else returns False
 def login():
-    has_acc = input("Do you have a login account (y/n)?\n").lower()
+    has_acc = input("Do you have a login account? (y/n)\n").lower()
 
     if has_acc == "y":
         username = input("Enter your username:").lower()
@@ -41,16 +41,19 @@ user_id = login()
 if user_id is not False:
     current_username = folio.get_username(user_id)
     print("\nYou are now logged in as " + current_username + ".\n")
+
+# Prompts user to make an account
 else:
-    if input("Would you like to make a new account (y/n)?\n").lower() == "y":
+    if input("Would you like to make a new account? (y/n)\n").lower() == "y":
         # directs the user to make an account
         accounts_ui.new_account(folio)
         print("Restart the UI to use your new account.")
 
+# Runs main loop if user is logged in
 if user_id is not False:
     do = ""
     while do != "x":
-        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nExit: 'x'").lower()
+        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nExit: 'x'\n").lower()
 
         if do == "a":
             accounts_ui.main(folio, user_id)
