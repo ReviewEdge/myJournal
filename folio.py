@@ -539,6 +539,8 @@ if __name__ == '__main__':
     pages = f.get_journal_pages(first_id)
     print(pages)
     f.subscribe_journal(first_id)
+    pages2 = f.get_account_pages(joe_id)
     print(f.get_user_by_id(joe_id))
+    print(pages2)
 
 

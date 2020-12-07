@@ -138,8 +138,13 @@ public class Feed {
 
     public ArrayList<Page> getPages(int num) {
         ArrayList<Page> out = new ArrayList<>();
-        for (int i = num; i > 0 ; i--) {
-            out.add(getPage());
+        for (int i = num; i > 0; i--) {
+            try {
+                out.add(getPage());
+            }
+            catch(NoSuchElementException n) {
+                break;
+            }
         }
         return out;
     }

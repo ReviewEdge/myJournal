@@ -124,7 +124,15 @@ public class Account implements Followable, JSONSerializable {
      * @return an arraylist of the pages available to the account
      */
     public ArrayList<Page> getPages(long requestingId) {
-        return new ArrayList<>();
+        ArrayList<Page> out = new ArrayList<>();
+        for(Followable j : JournalId.toFollowableArray(journalIds)) {
+            try {
+                out.addAll(j.getPages(requestingId));
+            } catch(IllegalAccessAttempt a) {
+                //Do nothing
+            }
+        }
+        return out;
     }
 
     /**
@@ -133,6 +141,10 @@ public class Account implements Followable, JSONSerializable {
      * @return a page available to the account
      */
     public Page getLatestPage(long requestingId) {
+        ArrayList<Page> pages = getPages(requestingId);
+        if(pages.size() > 0) {
+            return pages.get(pages.size() - 1);
+        }
         return null;
     }
 
