@@ -79,9 +79,17 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	*
 	* adds the @param id  of the account which liked the object
 	*/
-	   public void addLiker(Long id){
-	 	   stats.addLiker(id);
-	   }
+    public void addLiker(Long id){
+  	   stats.addLiker(id);
+    }
+	   
+	/**
+	*
+	* adds the @param id  of the account which liked the object
+	*/
+    public void removeLiker(Long id){
+  	   stats.removeLiker(id);
+    }
 	    
 	    /**
 	 * @return how many followers a journal has
@@ -101,9 +109,17 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	* 
 	* adds the @param id  of the account which followed the object
 	*/
-	   public void addFollowed(Long id){
-	 	   stats.addFollower(id);
-	   }
+	public void addFollower(Long id){
+		stats.addFollower(id);
+	}
+	
+	/**
+	* 
+	* removes the @param id  of the account which followed the object
+	*/
+	public void removeFollower(Long id){
+		stats.removeFollower(id);
+	}
 	
 	    /**
 	*
@@ -111,6 +127,14 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	*/
    public HashSet<Long> getViewed(){
 	   return stats.getViewed();
+   }
+   
+   /**
+	*
+	* @return the ids of the accounts which can view the object
+	*/
+   public long getViews(){
+	   return stats.getViewed().size();
    }
    
 	/**
@@ -174,7 +198,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	/**
 	 *  sets JournalOptions hasFollowers to @param followable
 	 */
-	public void setHsFollowers(boolean followable, long requestingId) throws IllegalAccessAttempt{
+	public void setHasFollowers(boolean followable, long requestingId) throws IllegalAccessAttempt{
 		if (isOwner(requestingId))
 			options.setHasFollowers(followable);
 		else
@@ -191,7 +215,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	/**
 	 * adds @param newOwner to the JournalOptions owners
 	 */
-	public void addOwners(long newOwner, long requestingId) throws IllegalAccessAttempt {
+	public void addOwner(long newOwner, long requestingId) throws IllegalAccessAttempt {
 		if (isOwner(requestingId))
 			options.addOwner(newOwner);
 		else
@@ -201,7 +225,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	/**
 	 * removes @param oldOwner from the JournalOptions owners
 	 */
-	public void removeOwners(long oldOwner, long requestingId) throws IllegalAccessAttempt {
+	public void removeOwner(long oldOwner, long requestingId) throws IllegalAccessAttempt {
 		if (isOwner(requestingId))
 			options.removeOwner(oldOwner);
 		else

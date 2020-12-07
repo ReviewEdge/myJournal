@@ -77,12 +77,26 @@ public class JournalStatistics implements JSONSerializable {
 	}
 
 	/**
+	 * @param likerId
+	 */
+	public void removeLiker(long likerId) {
+		likers.remove(likerId);
+	}
+	
+	/**
 	 * @param followerId
 	 */
 	public void addFollower(long followerId) {
 		followers.add(followerId);
 	}
 
+	/**
+	 * @param followerId
+	 */
+	public void removeFollower(long followerId) {
+		followers.remove(followerId);
+	}
+	
 	/**
 	 * @param viewerId
 	 */
@@ -138,9 +152,5 @@ public class JournalStatistics implements JSONSerializable {
 	 */
     public String asJson() {
         return asJsonElement().toJSONString();
-    }
-
-    public void removeLiker(long likingId) {
-    	likers.remove(likingId);
     }
 }
