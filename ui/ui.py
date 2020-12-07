@@ -5,27 +5,6 @@ import accounts_ui
 folio = Folio("http://localhost:4567")
 
 
-
-
-
-
-
-#DELETE ME
-#SET UP FAKE USERS
-folio.add_account("Test", "Tester", "u", "p")
-
-
-
-
-
-
-
-
-
-
-
-
-
 # returns user id if login successful, else returns False
 def login():
     has_acc = input("Do you have a login account? (y/n)\n").lower()
@@ -48,9 +27,6 @@ def login():
     return False
 
 
-
-
-
 # Runs the program
 
 # This will be false if the user doesn't sign in
@@ -67,11 +43,12 @@ else:
         accounts_ui.new_account(folio)
         print("Restart the UI to use your new account.")
 
+
 # Runs main loop if user is logged in
 if user_id is not False:
-    print("\n\nFOLIO\n")
     do = ""
     while do != "x":
+        print("\n\nFOLIO\n")
         do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nExit: 'x'\n").lower()
 
         if do == "a":
@@ -80,6 +57,4 @@ if user_id is not False:
         elif do == "j":
             journals_ui.main(folio, user_id)
 
-
 print("\nExiting UI...")
-

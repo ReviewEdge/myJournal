@@ -1,3 +1,4 @@
+import my_journals_ui
 
 
 def new_journal(current_folio):
@@ -27,37 +28,31 @@ def new_journal(current_folio):
         print("Successfully created new journal " + journal_name + ".\n")
 
 
-
-
-
 def my_journals(current_folio):
-    print("\n\nMY JOURNALS\n")
+    print("\n\nMY JOURNALS:\n")
 
-    jids_raw = current_folio.get_session_user()["journalIds"]
     jids = []
-    for raw_id in jids_raw:
+    # gets id of all of user's journals
+    for raw_id in current_folio.get_session_user()["journalIds"]:
         jids.append(raw_id["id"])
 
-    # Displays all of the user's journals
+    my_journals_info = {}
+    counter = 1
     for jid in jids:
-        print("1 - " + current_folio.get_journal(jid)["name"])
+        my_journals_info[counter] = (current_folio.get_journal(jid)["name"], jid)
+        counter += 1
 
-    # Select journals by number (-1 to input, then grab from list)
-
-
-
-
-
-
+    # Opens the My Journals UI
+    my_journals_ui.main(current_folio, my_journals_info)
 
 
 def main(current_folio, current_user_id):
     global user_id
     user_id = current_user_id
 
-    print("\n\nJOURNALS\n")
     do = ""
     while do != "x":
+        print("\n\nJOURNALS\n")
         do = input("Enter: \nNew Journal: 'n' \nMy Journals: 'm' \nExit: 'x'\n").lower()
 
         if do == "n":
@@ -66,5 +61,5 @@ def main(current_folio, current_user_id):
         elif do == "m":
             my_journals(current_folio)
 
-    print("\nExiting Journal...\n")
+    print("\nExiting Journals...\n")
 
