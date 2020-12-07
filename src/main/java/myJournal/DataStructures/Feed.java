@@ -12,7 +12,7 @@ import java.util.*;
 public class Feed {
     private static final int MAX_PAGES = 15;
     private final HashSet<FollowableId> subscribed;
-    private LinkedList<Page> pages;
+    private Queue<Page> pages;
     private List<Page> consumed;
     private long accountId;
 

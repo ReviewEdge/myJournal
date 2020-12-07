@@ -16,11 +16,6 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	
 	private final long id;
 	private String name;
-
-	public ArrayList<PageId> getPageIds() {
-		return pageIds;
-	}
-
 	private ArrayList<PageId> pageIds;
 	private JournalStatistics stats;
 	private JournalOptions options;
@@ -342,6 +337,10 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 			return PageId.toPageArray(pageIds);
 		}
 		throw new IllegalAccessAttempt("Can't view page");
+	}
+
+	public ArrayList<PageId> getPageIds() {
+		return pageIds;
 	}
 	
 	/**
