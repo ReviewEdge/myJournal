@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 
 public class Routes {
     public static final Route getTest = (Request request, Response response) -> "I DONT CARE";
@@ -74,7 +75,14 @@ public class Routes {
     public static final Route getFeed = (Request request, Response response) ->
             runAuthorized(request, response, getFeedAuthorized, true);
     public static final Route getFeedNext = (Request request, Response response) ->
-            runAuthorized(request, response, (r, q, a) -> a.getFeed().getPage().asJson(), true);
+            runAuthorized(request, response, (r, q, a) -> {
+                try {
+                    return a.getFeed().getPage().asJson();
+                } catch(NoSuchElementException n) {
+                    q.status(404);
+                    return "No more in feed.";
+                }
+            }, true);
     public static final Route getAccountPages = (Request request, Response response) ->
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));

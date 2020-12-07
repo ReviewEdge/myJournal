@@ -197,7 +197,10 @@ class Folio:
         :return:
         """
         response = self.session.get(self.endpoints["feed_next"])
-        return response.json()
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 400:
+            return {}
 
     def get_page(self, page_id):
         """

@@ -1,0 +1,5 @@
+#stuff to add
+[ ] proper database
+[ ] searchable usernames
+[ ] page dates
+[ ] better feed algorithm
