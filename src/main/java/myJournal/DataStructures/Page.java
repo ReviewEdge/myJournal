@@ -36,6 +36,18 @@ public class Page implements JSONSerializable {
 		this.content = content;
 		this.authorId = authorId;
 		this.parentJournal = parentJournal;
+		this.stats = new PageStatistics();
+		this.hasLikes = this.getParentJournal().hasLikes();
+		this.hasViews = true; //this.getParentJournal().hasViews();
+	}
+
+	public Page(long newId, String newName, String content, long authorId, Journal parentJournal, PageStatistics stats) {
+		this.id = newId;
+		this.name = newName;
+		this.content = content;
+		this.authorId = authorId;
+		this.parentJournal = parentJournal;
+		this.stats = stats;
 		this.hasLikes = this.getParentJournal().hasLikes();
 		this.hasViews = true; //this.getParentJournal().hasViews();
 	}

@@ -134,6 +134,12 @@ class Folio:
         }
         return self.session.post(self.endpoints["journal"], data=request_data).status_code == 200
 
+    def like_journal(self, journal_id):
+        data = {
+            "id": journal_id
+        }
+        return requests.post(self.endpoints["journal_like"], data=data)
+
     def add_page(self, name, content, author_id, parent_journal_id):
         """
 
@@ -150,6 +156,12 @@ class Folio:
             "parentJournalId": parent_journal_id
         }
         return self.session.post(self.endpoints["page"], data=request_data).status_code == 200
+
+    def like_page(self, page_id):
+        data = {
+            "id": page_id
+        }
+        return requests.post(self.endpoints["page_like"], data=data)
 
     def user_exists(self, username):
         """
@@ -503,6 +515,18 @@ class Folio:
         response = self.session.put(self.endpoints["journal"], data=request_data)
         return response.status_code == 200
 
+    def unlike_journal(self, journal_id):
+        data = {
+            "id": journal_id
+        }
+        return requests.put(self.endpoints["journal_like"], data=data)
+
+    def unlike_page(self, page_id):
+        data = {
+            "id": page_id
+        }
+        return requests.put(self.endpoints["page_like"], data=data)
+
     def subscribe_account(self, account_id):
         """
 
@@ -543,7 +567,11 @@ if __name__ == '__main__':
     print(pages)
     f.subscribe_journal(first_id)
     pages2 = f.get_account_pages(joe_id)
+    pageid = pages2[0]["id"]
+    f.like_page(pageid)
     print(f.get_user_by_id(joe_id))
+    pages2 = f.get_account_pages(joe_id)
+    print(f.get_page(pageid))
     print(pages2)
 
 

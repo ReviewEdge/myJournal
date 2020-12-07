@@ -61,7 +61,10 @@ public class Routes {
     static final AuthorizedRoute getPageAuthorized = (request, response, account) -> {
         try {
             long id = Long.parseLong(request.queryParams("id"));
-            return DBCommunication.getPage(id).authorized(account.getId()).asJson();
+            Page page = DBCommunication.getPage(id);
+            page.addView(account.getId());
+            DBCommunication.editPage(page.getId(), page);
+            return page.asJson();
         } catch (IllegalAccessAttempt e) {
             response.status(403);
             return "FORBIDDEN";
@@ -70,15 +73,23 @@ public class Routes {
     public static final Route getPage = (Request request, Response response) -> runAuthorized(request, response, getPageAuthorized);
     static final AuthorizedRoute getFeedAuthorized = (r, q, a) -> {
         int numPages = Integer.parseInt(r.queryParamOrDefault("numPages", "10"));
-        return JSONBuilder.convertToJSONString(a.getFeed().getPages(numPages));
+        ArrayList<Page> pages = a.getFeed().getPages(numPages);
+        for (Page p : pages) {
+            p.addView(a.getId());
+            DBCommunication.editPage(p.getId(), p);
+        }
+        return JSONBuilder.convertToJSONString(pages);
     };
     public static final Route getFeed = (Request request, Response response) ->
             runAuthorized(request, response, getFeedAuthorized, true);
     public static final Route getFeedNext = (Request request, Response response) ->
             runAuthorized(request, response, (r, q, a) -> {
                 try {
-                    return a.getFeed().getPage().asJson();
-                } catch(NoSuchElementException n) {
+                    Page nextPage = a.getFeed().getPage();
+                    nextPage.addView(a.getId());
+                    DBCommunication.editPage(nextPage.getId(), nextPage);
+                    return nextPage.asJson();
+                } catch (NoSuchElementException n) {
                     q.status(404);
                     return "No more in feed.";
                 }
@@ -87,13 +98,23 @@ public class Routes {
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));
                 Account a2 = DBCommunication.getAccount(id);
-                return JSONBuilder.convertToJSONString(a2.getPages(a.getId()));
+                ArrayList<Page> pages = a2.getPages(a.getId());
+                for (Page p : pages) {
+                    p.addView(a.getId());
+                    DBCommunication.editPage(p.getId(), p);
+                }
+                return JSONBuilder.convertToJSONString(pages);
             }, true);
     public static final Route getJournalPages = (Request request, Response response) ->
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));
                 Journal j = DBCommunication.getJournal(id);
-                return JSONBuilder.convertToJSONString(j.getPages(a.getId()));
+                ArrayList<Page> pages = j.getPages(a.getId());
+                for (Page p : pages) {
+                    p.addView(a.getId());
+                    DBCommunication.editPage(p.getId(), p);
+                }
+                return JSONBuilder.convertToJSONString(pages);
             }, true);
     public static final Route addAccount = (Request request, Response response) -> {
         String firstName = request.queryParams("firstName");
@@ -193,7 +214,7 @@ public class Routes {
         Long id = Long.parseLong(request.queryParams("id"));
         if (id != account.getId()) {
             response.status(403);
-            return "FAIL";
+            return "NOT ALLOWEDDDDD";
         }
         Account toModify = DBCommunication.getAccount(id);
         String firstName = request.queryParamOrDefault("firstName", toModify.getProfile().getFirstName());
@@ -216,9 +237,11 @@ public class Routes {
         }
         String bio = request.queryParamOrDefault("bio", toModify.getProfile().getBio());
         String livingLocation = request.queryParamOrDefault("livingLocation", toModify.getProfile().getLivingLocation());
-        AccountData p = new AccountData(username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
-        Account a = new Account(id, firstName, lastName, p, toModify.getSubscribed(), toModify.getFeed(), toModify.getJournals(), toModify.getStats());
-        DBCommunication.editAccount(id, a);
+        toModify.setUsername(username);
+        toModify.setPasswordHash(passwordHash);
+        AccountData p = new AccountData(firstName, lastName, accountCreation, dateOfBirth, bio, livingLocation);
+        toModify.setProfile(p);
+        DBCommunication.editAccount(id, toModify);
         response.status(200);
         return "OK";
     };
@@ -226,62 +249,53 @@ public class Routes {
             runAuthorized(request, response, editAccountAuthorized, true);
     static final AuthorizedRoute editJournalAuthorized = (request, response, account) -> {
         Long id = Long.parseLong(request.queryParams("id"));
-        if (id != account.getId()) {
-            response.status(403);
-            return "FAIL";
-        }
         Journal toModify = DBCommunication.getJournal(id);
-        String name = request.queryParamOrDefault("name", toModify.getName());
-        Boolean isPrivate;
         try {
-            isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
-        } catch (NullPointerException n) {
-            isPrivate = toModify.isPrivate();
-        }
-        Boolean hasLikes;
-        try {
-            hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
-        } catch (NullPointerException n) {
-            hasLikes = toModify.hasLikes();
-        }
-        Boolean hasFollowers;
-        try {
-            hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
-        } catch (NullPointerException n) {
-            hasFollowers = toModify.hasFollowers();
-        }
-        String[] ownersString = request.queryParamsValues("owners");
-        if (ownersString != null) {
-            for (String s : ownersString) {
-                long newId = Long.parseLong(s);
-                if(newId > 0) {
-                    toModify.addOwner(newId, account.getId());
-                } else {
-                    newId *= -1;
-                    toModify.removeOwner(newId, account.getId());
+            toModify.setName(request.queryParamOrDefault("name", toModify.getName()), account.getId());
+            try {
+                Boolean isPrivate = Boolean.parseBoolean(request.queryParams("isPrivate"));
+                toModify.setPrivacy(isPrivate, account.getId());
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                Boolean hasLikes = Boolean.parseBoolean(request.queryParams("hasLikes"));
+                toModify.setHasLikes(hasLikes, account.getId());
+            } catch (NullPointerException ignored) {
+            }
+            try {
+                Boolean hasFollowers = Boolean.parseBoolean(request.queryParams("hasFollowers"));
+                toModify.setHasFollowers(hasFollowers, account.getId());
+            } catch (NullPointerException ignored) {
+            }
+            String[] ownersString = request.queryParamsValues("owners");
+            if (ownersString != null) {
+                for (String s : ownersString) {
+                    long newId = Long.parseLong(s);
+                    if (newId > 0) {
+                        toModify.addOwner(newId, account.getId());
+                    } else {
+                        newId *= -1;
+                        toModify.removeOwner(newId, account.getId());
+                    }
                 }
             }
-        }
-        String[] contributersString = request.queryParamsValues("contributers");
-        if (contributersString != null) {
-            for (String s : contributersString) {
-                long newId = Long.parseLong(s);
-                if(newId > 0) {
-                    toModify.addContributer(newId, account.getId());
-                } else {
-                    newId *= -1;
-                    toModify.removeContributer(newId, account.getId());
+            String[] contributersString = request.queryParamsValues("contributers");
+            if (contributersString != null) {
+                for (String s : contributersString) {
+                    long newId = Long.parseLong(s);
+                    if (newId > 0) {
+                        toModify.addContributer(newId, account.getId());
+                    } else {
+                        newId *= -1;
+                        toModify.removeContributer(newId, account.getId());
+                    }
                 }
             }
-        }
-        HashSet<Long> viewers = new HashSet<>();
-        if (isPrivate) {
             String[] viewersString = request.queryParamsValues("viewers");
-            viewers.add(account.getId());
             if (viewersString != null) {
                 for (String s : viewersString) {
                     long newId = Long.parseLong(s);
-                    if(newId > 0) {
+                    if (newId > 0) {
                         toModify.addViewer(newId, account.getId());
                     } else {
                         newId *= -1;
@@ -289,15 +303,14 @@ public class Routes {
                     }
                 }
             }
+            DBCommunication.editJournal(id, toModify);
+            response.status(200);
+            return "OK";
         }
-        ArrayList<PageId> pageIds = toModify.getPageIds();
-        JournalStatistics stats = toModify.getStats();
-        JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, toModify.getOwners(),
-                toModify.getContributers(), toModify.getViewers());
-        Journal j = new Journal(id, name, pageIds, stats, options);
-        DBCommunication.editJournal(id, j);
-        response.status(200);
-        return "OK";
+        catch(IllegalAccessAttempt a){
+            response.status(403);
+            return a.getMessage();
+        }
     };
     public static final Route editJournal = (Request request, Response response) ->
             runAuthorized(request, response, editJournalAuthorized, true);
@@ -328,11 +341,10 @@ public class Routes {
     public static final Route deleteAccount = (Request request, Response response) ->
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));
-                if(a.getId() == id) {
+                if (a.getId() == id) {
                     DBCommunication.deleteAccount(id);
                     return "OK";
-                }
-                else {
+                } else {
                     q.status(403);
                     return "UNAUTHORIZED";
                 }
@@ -341,13 +353,12 @@ public class Routes {
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));
                 Journal toDelete = DBCommunication.getJournal(id);
-                if(toDelete.isOwner(a.getId())) {
+                if (toDelete.isOwner(a.getId())) {
                     DBCommunication.deleteJournal(id);
                     a.removeJournal(id);
                     DBCommunication.editAccount(a.getId(), a);
                     return "OK";
-                }
-                else {
+                } else {
                     q.status(403);
                     return "UNAUTHORIZED";
                 }
@@ -356,14 +367,13 @@ public class Routes {
             runAuthorized(request, response, (r, q, a) -> {
                 Long id = Long.parseLong(r.queryParams("id"));
                 Page toDelete = DBCommunication.getPage(id);
-                if(toDelete.getParentJournal().isOwner(a.getId())) {
+                if (toDelete.getParentJournal().isOwner(a.getId())) {
                     Journal j = toDelete.getParentJournal();
                     j.removePage(toDelete, a.getId());
                     DBCommunication.deletePage(id);
                     DBCommunication.editJournal(j.getId(), j);
                     return "OK";
-                }
-                else {
+                } else {
                     q.status(403);
                     return "UNAUTHORIZED";
                 }
@@ -376,8 +386,7 @@ public class Routes {
             toLike.addLiker(likingId);
             DBCommunication.editPage(toLike.getId(), toLike);
             return "OK";
-        }
-        catch(NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             response.status(401);
             return "NO ID";
         }
@@ -393,8 +402,7 @@ public class Routes {
             toLike.addLiker(likingId);
             DBCommunication.editJournal(toLike.getId(), toLike);
             return "OK";
-        }
-        catch(NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             response.status(401);
             return "NO ID";
         }
@@ -410,8 +418,7 @@ public class Routes {
             toLike.removeLiker(likingId);
             DBCommunication.editPage(toLike.getId(), toLike);
             return "OK";
-        }
-        catch(NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             response.status(401);
             return "NO ID";
         }
@@ -427,8 +434,7 @@ public class Routes {
             toLike.removeLiker(likingId);
             DBCommunication.editJournal(toLike.getId(), toLike);
             return "OK";
-        }
-        catch(NullPointerException | NumberFormatException e) {
+        } catch (NullPointerException | NumberFormatException e) {
             response.status(401);
             return "NO ID";
         }
@@ -459,8 +465,8 @@ public class Routes {
                 Account n = new PublicAccount();
                 return route.run(request, response, n);
             } else {
-                response.status(403);
-                return "FORBIDDEN";
+                response.status(401);
+                return "UNAUTHENTICATED";
             }
         }
     }

@@ -17,13 +17,13 @@ public class Account implements Followable, JSONSerializable {
     private final long id;
     private String username;
     private String passwordHash;
-    private ArrayList<FollowableId> subscribed;
+    private HashSet<FollowableId> subscribed;
     private Feed feed;
-    private ArrayList<JournalId> journalIds;
+    private HashSet<JournalId> journalIds;
     private AccountStatistics stats;
 
 
-    public Account(long id, String username, String passwordHash, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<JournalId> journalIds, AccountStatistics stats) {
+    public Account(long id, String username, String passwordHash, AccountData profile, HashSet<FollowableId> subscribed, Feed feed, HashSet<JournalId> journalIds, AccountStatistics stats) {
         if(username == null || username.equals("") || passwordHash == null || subscribed == null || feed == null || journalIds == null || stats == null)
             throw new IllegalArgumentException();
         this.username = username;
@@ -43,9 +43,9 @@ public class Account implements Followable, JSONSerializable {
         this.passwordHash = passwordHash;
         this.profile = new AccountData(null, null, null, null, null, null);
         this.id = id;
-        this.subscribed = new ArrayList<>();
+        this.subscribed = new HashSet<>();
         this.feed = new Feed(this.subscribed, id);
-        this.journalIds = new ArrayList<>();
+        this.journalIds = new HashSet<>();
         this.stats = new AccountStatistics();
     }
 
@@ -56,9 +56,9 @@ public class Account implements Followable, JSONSerializable {
         this.passwordHash = passwordHash;
         this.profile = profile;
         this.id = id;
-        this.subscribed = new ArrayList<>();
+        this.subscribed = new HashSet<>();
         this.feed = new Feed(this.subscribed, id);
-        this.journalIds = new ArrayList<>();
+        this.journalIds = new HashSet<>();
         this.stats = new AccountStatistics();
     }
 
@@ -90,7 +90,7 @@ public class Account implements Followable, JSONSerializable {
      *
      * @return the list of followable objects the account is subscribed to
      */
-    public ArrayList<FollowableId> getSubscribed() {
+    public HashSet<FollowableId> getSubscribed() {
         return subscribed;
     }
 
@@ -98,7 +98,7 @@ public class Account implements Followable, JSONSerializable {
      * Overwrite the subscribed list
      * @param subscribed the list of followable objects the account should be subscribed to
      */
-    public void setSubscribed(ArrayList<FollowableId> subscribed) {
+    public void setSubscribed(HashSet<FollowableId> subscribed) {
         this.subscribed = subscribed;
     }
 
@@ -125,7 +125,7 @@ public class Account implements Followable, JSONSerializable {
      */
     public ArrayList<Page> getPages(long requestingId) {
         ArrayList<Page> out = new ArrayList<>();
-        for(Followable j : JournalId.toFollowableArray(journalIds)) {
+        for(Followable j : JournalId.toFollowableHashSet(journalIds)) {
             try {
                 out.addAll(j.getPages(requestingId));
             } catch(IllegalAccessAttempt a) {
@@ -173,7 +173,7 @@ public class Account implements Followable, JSONSerializable {
     }
 
 
-    public ArrayList<JournalId> getJournals() {
+    public HashSet<JournalId> getJournals() {
         return journalIds;
     }
 
@@ -237,8 +237,8 @@ public class Account implements Followable, JSONSerializable {
 	/**
 	 * @param o
 	 * @return if they are equal
-	 * @Override
 	 */
+    @Override
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -254,8 +254,8 @@ public class Account implements Followable, JSONSerializable {
 	
 	/**
 	 * @return the HashCode of the object
-	 * @Override
 	 */
+    @Override
 	public int hashCode() {
 		int result = 17;
 		result = result*37 + profile.hashCode();
@@ -269,8 +269,8 @@ public class Account implements Followable, JSONSerializable {
     
 	/**
 	 * @return the object as a JSONElement
-	 * @Override
 	 */
+    @Override
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("profile", profile);
@@ -285,8 +285,8 @@ public class Account implements Followable, JSONSerializable {
 
 	/**
 	 * @return the JSON string of the object
-	 * @Override
 	 */
+    @Override
     public String asJson() {
         return asJsonElement().toJSONString();
     }

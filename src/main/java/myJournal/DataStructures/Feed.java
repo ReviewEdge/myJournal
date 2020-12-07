@@ -11,12 +11,12 @@ import java.util.*;
  */
 public class Feed {
     private static final int MAX_PAGES = 15;
-    private final ArrayList<FollowableId> subscribed;
+    private final HashSet<FollowableId> subscribed;
     private LinkedList<Page> pages;
     private List<Page> consumed;
     private long accountId;
 
-    public Feed(ArrayList<FollowableId> subscribed, long accountId) {
+    public Feed(HashSet<FollowableId> subscribed, long accountId) {
         this.subscribed = subscribed;
         this.accountId = accountId;
         this.consumed = new LinkedList<>();

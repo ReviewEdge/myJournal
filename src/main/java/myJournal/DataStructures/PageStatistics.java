@@ -17,10 +17,16 @@ public class PageStatistics implements JSONSerializable {
 	 * @param viewers
 	 */
 	public PageStatistics(HashSet<Long> likers, HashSet<Long> viewers) {
-		
+		this.likers = likers;
+		this.viewers = viewers;
 	}
-	
-	/**
+
+    public PageStatistics() {
+        this.likers = new HashSet<>();
+        this.viewers = new HashSet<>();
+    }
+
+    /**
 	 * @return how many likes the page has
 	 */
 	public int getLikes() {

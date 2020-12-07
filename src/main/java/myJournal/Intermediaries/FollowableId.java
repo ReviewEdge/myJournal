@@ -4,6 +4,7 @@ import myJournal.DataStructures.Followable;
 import myJournal.util.JSON.JSONSerializable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public abstract class FollowableId implements JSONSerializable {
@@ -16,8 +17,8 @@ public abstract class FollowableId implements JSONSerializable {
     public long getId() {
         return this.id;
     }
-    public static <R extends FollowableId> ArrayList<Followable> toFollowableArray(ArrayList<R> af) {
-        return af.stream().map(FollowableId::getFollowable).collect(Collectors.toCollection(ArrayList::new));
+    public static <R extends FollowableId> HashSet<Followable> toFollowableHashSet(HashSet<R> af) {
+        return af.stream().map(FollowableId::getFollowable).collect(Collectors.toCollection(HashSet::new));
     }
 
 }
