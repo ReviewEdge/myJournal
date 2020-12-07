@@ -15,15 +15,19 @@ import java.util.HashSet;
 public class Account implements Followable, JSONSerializable {
     private AccountData profile;
     private final long id;
+    private String username;
+    private String passwordHash;
     private ArrayList<FollowableId> subscribed;
     private Feed feed;
     private ArrayList<JournalId> journalIds;
     private AccountStatistics stats;
 
 
-    public Account(long id, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<JournalId> journalIds, AccountStatistics stats) {
-        if(profile == null  || subscribed == null || feed == null || journalIds == null || stats == null)
+    public Account(long id, String username, String passwordHash, AccountData profile, ArrayList<FollowableId> subscribed, Feed feed, ArrayList<JournalId> journalIds, AccountStatistics stats) {
+        if(username == null || username.equals("") || passwordHash == null || subscribed == null || feed == null || journalIds == null || stats == null)
             throw new IllegalArgumentException();
+        this.username = username;
+        this.passwordHash = passwordHash;
         this.profile = profile;
         this.id = id;
         this.subscribed = subscribed;
@@ -32,9 +36,24 @@ public class Account implements Followable, JSONSerializable {
         this.feed = new Feed(subscribed, id);
     }
 
-    public Account(long id, AccountData profile) {
-        if(profile == null)
+    public Account(long id, String username, String passwordHash) {
+        if(username == null || username.equals("") || passwordHash == null)
             throw new IllegalArgumentException();
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.profile = new AccountData(null, null, null, null, null, null);
+        this.id = id;
+        this.subscribed = new ArrayList<>();
+        this.feed = new Feed(this.subscribed, id);
+        this.journalIds = new ArrayList<>();
+        this.stats = new AccountStatistics();
+    }
+
+    public Account(long id, String username, String passwordHash, AccountData profile) {
+        if(username == null || username.equals("") || passwordHash == null || profile == null)
+            throw new IllegalArgumentException();
+        this.username = username;
+        this.passwordHash = passwordHash;
         this.profile = profile;
         this.id = id;
         this.subscribed = new ArrayList<>();
@@ -158,6 +177,37 @@ public class Account implements Followable, JSONSerializable {
         return stats;
     }
 
+    /**
+     *
+     * @return the account's username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     *
+     * @param passwordHash the new password hash
+     */
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    /**
+     *
+     * @return the account's password's hash
+     */
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    /**
+     *
+     * @param username the new username
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     /**
      *
@@ -165,11 +215,11 @@ public class Account implements Followable, JSONSerializable {
      * @return whether or not the hashes match
      */
     public boolean checkPassword(String password) {
-        return BCrypt.checkpw(password, this.profile.getPasswordHash());
+        return BCrypt.checkpw(password, this.getPasswordHash());
     }
 
     public Account copyWithId(long id) {
-        return new Account(id, this.profile, this.subscribed, this.feed, this.journalIds, this.stats);
+        return new Account(id, this.username, this.passwordHash, this.profile, this.subscribed, this.feed, this.journalIds, this.stats);
     }
     
 	/**
@@ -212,7 +262,9 @@ public class Account implements Followable, JSONSerializable {
     public JSONElement asJsonElement() {
         JSONBuilder jb = JSONBuilder.object();
         jb.pair("profile", profile);
-        jb.pair("id", JSONValue.from(id));
+        jb.pair("id", id);
+        jb.pair("username", username);
+        jb.pair("passwordHash", passwordHash);
         jb.pairArray("subscribed").add(subscribed).close();
         jb.pairArray("journalIds").add(journalIds).close();
         jb.pair("stats", stats);

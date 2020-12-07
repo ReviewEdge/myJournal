@@ -102,8 +102,8 @@ public class Routes {
         }
         String bio = request.queryParams("bio");
         String livingLocation = request.queryParams("livingLocation");
-        AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
-        Account a = new Account(0, p);
+        AccountData p = new AccountData(firstName, lastName, accountCreation, dateOfBirth, bio, livingLocation);
+        Account a = new Account(0, username, passwordHash, p);
         DBCommunication.addAccount(a);
         System.out.println("Added account with username " + username);
         response.status(200);
@@ -190,14 +190,14 @@ public class Routes {
         Account toModify = DBCommunication.getAccount(id);
         String firstName = request.queryParamOrDefault("firstName", toModify.getProfile().getFirstName());
         String lastName = request.queryParamOrDefault("lastName", toModify.getProfile().getLastName());
-        String username = request.queryParamOrDefault("username", toModify.getProfile().getUsername());
+        String username = request.queryParamOrDefault("username", toModify.getUsername());
         String password = request.queryParams("password");
         String passwordHash;
         if (password != null) {
             String salt = BCrypt.gensalt(10);
             passwordHash = BCrypt.hashpw(password, salt);
         } else {
-            passwordHash = toModify.getProfile().getPasswordHash();
+            passwordHash = toModify.getPasswordHash();
         }
         Date accountCreation = toModify.getProfile().getAccountCreation();
         Date dateOfBirth;
@@ -208,8 +208,8 @@ public class Routes {
         }
         String bio = request.queryParamOrDefault("bio", toModify.getProfile().getBio());
         String livingLocation = request.queryParamOrDefault("livingLocation", toModify.getProfile().getLivingLocation());
-        AccountData p = new AccountData(firstName, lastName, username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
-        Account a = new Account(id, p, toModify.getSubscribed(), toModify.getFeed(), toModify.getJournals(), toModify.getStats());
+        AccountData p = new AccountData(username, passwordHash, accountCreation, dateOfBirth, bio, livingLocation);
+        Account a = new Account(id, firstName, lastName, p, toModify.getSubscribed(), toModify.getFeed(), toModify.getJournals(), toModify.getStats());
         DBCommunication.editAccount(id, a);
         response.status(200);
         return "OK";

@@ -1,9 +1,6 @@
 package myJournal.DataStructures;
 
-import myJournal.util.JSON.JSONBuilder;
-import myJournal.util.JSON.JSONElement;
-import myJournal.util.JSON.JSONSerializable;
-import myJournal.util.JSON.JSONValue;
+import myJournal.util.JSON.*;
 
 import java.util.HashSet;
 
@@ -82,7 +79,7 @@ public class JournalStatistics implements JSONSerializable {
 	public void removeLiker(long likerId) {
 		likers.remove(likerId);
 	}
-	
+
 	/**
 	 * @param followerId
 	 */
@@ -153,4 +150,12 @@ public class JournalStatistics implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+    public static JournalStatistics fromJson(String jsonString) {
+    	JSONObject jsonObject = (JSONObject) JSONParser.parse(jsonString);
+		HashSet<Long> followers = new HashSet<Long>(((JSONArray)jsonObject.get("followers")).getAsLongArray());
+		HashSet<Long> viewers = new HashSet<Long>(((JSONArray)jsonObject.get("viewers")).getAsLongArray());
+		HashSet<Long> likers = new HashSet<Long>(((JSONArray)jsonObject.get("likers")).getAsLongArray());
+		return new JournalStatistics(likers, followers, viewers);
+	}
 }

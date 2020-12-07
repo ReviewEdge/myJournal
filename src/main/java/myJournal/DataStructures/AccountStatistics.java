@@ -79,4 +79,18 @@ public class AccountStatistics implements JSONSerializable {
 	 */    public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+	public static AccountStatistics fromJson(String jsonString) {
+		HashSet<Long> followers = new HashSet<>();
+		JSONElement j = JSONParser.parse(jsonString);
+		if(j instanceof JSONObject) {
+			JSONObject statsJson = ((JSONObject) j);
+			JSONArray followersJson = (JSONArray)statsJson.get("followers");
+			for(Long f : followersJson.getAsLongArray()) {
+				followers.add(f);
+			}
+			return new AccountStatistics(followers);
+		}
+		throw new IllegalArgumentException();
+	}
 }

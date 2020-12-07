@@ -39,7 +39,7 @@ public class DBCommunication {
 
     public static Account getAccountByUsername(String username) {
         for (Account account : fakeAccountsTable) {
-            if (account.getProfile().getUsername().equals(username)) {
+            if (account.getUsername().equals(username)) {
                 return account;
             }
         }

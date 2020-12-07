@@ -1,9 +1,6 @@
 package myJournal.DataStructures;
 
-import myJournal.util.JSON.JSONBuilder;
-import myJournal.util.JSON.JSONElement;
-import myJournal.util.JSON.JSONSerializable;
-import myJournal.util.JSON.JSONValue;
+import myJournal.util.JSON.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -146,7 +143,7 @@ public class JournalOptions implements JSONSerializable {
 	}
 	
 	/**
-	 * @param Contributer
+	 * @param viewer
 	 */
 	public void removeViewer(long viewer) throws IllegalArgumentException{
 		try {
@@ -212,5 +209,16 @@ public class JournalOptions implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+
+    public static JournalOptions fromJson(String jsonString) {
+		JSONObject jsonObject = (JSONObject) JSONParser.parse(jsonString);
+		boolean isPrivate = jsonObject.getAsBoolean("isPrivate");
+		boolean hasFollowers = jsonObject.getAsBoolean("hasFollowers");
+		HashSet<Long> owners = new HashSet<Long>(((JSONArray)jsonObject.get("owners")).getAsLongArray());
+		HashSet<Long> contributers = new HashSet<Long>(((JSONArray)jsonObject.get("contributers")).getAsLongArray());
+		boolean hasLikes = jsonObject.getAsBoolean("hasLikes");
+		HashSet<Long> viewers = new HashSet<Long>(((JSONArray)jsonObject.get("owners")).getAsLongArray());
+		return new JournalOptions(isPrivate, hasLikes, hasFollowers, owners, contributers, viewers);
+	}
 }
 

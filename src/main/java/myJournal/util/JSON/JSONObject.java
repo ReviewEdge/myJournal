@@ -1,5 +1,7 @@
 package myJournal.util.JSON;
 
+import myJournal.DataStructures.Page;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -58,5 +60,53 @@ public class JSONObject implements JSONElement{
         });
         out.append('}');
         return out.toString();
+    }
+
+    public JSONElement get(String key) {
+        try{
+            return map.get(key);
+        }
+        catch(NoSuchElementException e) {
+            return null;
+        }
+    }
+    public Object getValue(String key) {
+        return ((JSONValue)get(key)).getValue();
+    }
+
+    public String getAsString(String key) {
+        return (String) getValue(key);
+    }
+
+    public String getAsStringOrNull(String key) {
+        try {
+            return getAsString(key);
+        } catch(NullPointerException n) {
+            return null;
+        }
+    }
+
+    public Long getAsLong(String key) {
+        return (Long) getValue(key);
+    }
+
+    public Long getAsLongOrNull(String key) {
+        try {
+            return getAsLong(key);
+        } catch(NullPointerException n) {
+            return null;
+        }
+    }
+
+    public Boolean getAsBoolean(String key) {
+        return (Boolean) getValue(key);
+    }
+
+    public Boolean getAsBooleanOrNull(String key) {
+        try {
+            return getAsBoolean(key);
+        } catch(NullPointerException n) {
+            return null;
+        }
     }
 }

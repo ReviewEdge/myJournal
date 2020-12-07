@@ -1,5 +1,7 @@
 package myJournal.util.JSON;
 
+import myJournal.DataStructures.AccountData;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -63,5 +65,44 @@ public class JSONArray implements JSONElement{
         });
         out.append(']');
         return out.toString();
+    }
+    public JSONElement get(int id) {
+        return list.get(id);
+    }
+    public Object getValue(int id) {
+        return ((JSONValue)get(id)).getValue();
+    }
+
+    public String getAsString(int id) {
+        return (String) getValue(id);
+    }
+
+    public String getAsStringOrNull(int id) {
+        try {
+            return getAsString(id);
+        } catch(NullPointerException n) {
+            return null;
+        }
+    }
+
+    public Long getAsLong(int id) {
+        return (Long) getValue(id);
+    }
+
+    public Long getAsLongOrNull(int id) {
+        try {
+            return getAsLong(id);
+        } catch(NullPointerException n) {
+            return null;
+        }
+    }
+
+    public ArrayList<Long> getAsLongArray() {
+        ArrayList<Long> out = new ArrayList<>();
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            out.add(getAsLong(i));
+        };
+        return out;
     }
 }

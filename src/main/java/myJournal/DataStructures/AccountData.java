@@ -1,11 +1,10 @@
 package myJournal.DataStructures;
 
-import myJournal.util.JSON.JSONBuilder;
-import myJournal.util.JSON.JSONElement;
-import myJournal.util.JSON.JSONSerializable;
-import myJournal.util.JSON.JSONValue;
+import myJournal.util.JSON.*;
 
 import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -14,20 +13,14 @@ import java.util.Date;
 public class AccountData implements JSONSerializable {
     private String firstName;
     private String lastName;
-    private String username;
-    private String passwordHash;
     private Date accountCreation;
     private Date dateOfBirth;
     private String bio;
     private String livingLocation;
 
-    public AccountData(String firstName, String lastName, String username, String passwordHash, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
-        if(username == null || username.equals("") || passwordHash == null)
-            throw new IllegalArgumentException();
+    public AccountData(String firstName, String lastName, Date accountCreation, Date dateOfBirth, String bio, String livingLocation) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.username = username;
-        this.passwordHash = passwordHash;
         this.accountCreation = accountCreation;
         this.dateOfBirth = dateOfBirth;
         this.bio = bio;
@@ -66,37 +59,7 @@ public class AccountData implements JSONSerializable {
         this.lastName = lastName;
     }
 
-    /**
-     *
-     * @return the account's username
-     */
-    public String getUsername() {
-        return username;
-    }
 
-    /**
-     *
-     * @param passwordHash the new password hash
-     */
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
-    /**
-     *
-     * @return the account's password's hash
-     */
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    /**
-     *
-     * @param username the new username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     /**
      *
@@ -168,8 +131,7 @@ public class AccountData implements JSONSerializable {
 		}
 		AccountData s = (AccountData) o;
 		
-		return (s.firstName.equals(this.firstName) && s.lastName.equals(this.lastName) && s.username.equals(this.username) 
-				&& s.passwordHash.equals(this.passwordHash) && s.accountCreation.equals(this.accountCreation)
+		return (s.firstName.equals(this.firstName) && s.lastName.equals(this.lastName) && s.accountCreation.equals(this.accountCreation)
 				&& s.dateOfBirth.equals(this.dateOfBirth) && s.bio.equals(this.bio) && s.livingLocation.equals(this.livingLocation));
 	}
 	
@@ -180,9 +142,7 @@ public class AccountData implements JSONSerializable {
 	public int hashCode() {
 		int result = 17;
 		result = result*37 + firstName.hashCode();
-		result = result*37 + lastName.hashCode();	
-		result = result*37 + username.hashCode();
-		result = result*37 + passwordHash.hashCode();
+		result = result*37 + lastName.hashCode();
 		result = result*37 + accountCreation.hashCode();
 		result = result*37 + dateOfBirth.hashCode();
 		result = result*37 + bio.hashCode();
@@ -198,8 +158,6 @@ public class AccountData implements JSONSerializable {
         JSONBuilder jb = JSONBuilder.object()
                 .pair("firstName", firstName)
                 .pair("lastName", lastName)
-                .pair("username", username)
-                .pair("passwordHash", passwordHash)
                 .pair("accountCreation", accountCreation)
                 .pair("dateOfBirth", dateOfBirth)
                 .pair("bio", bio)
@@ -213,5 +171,33 @@ public class AccountData implements JSONSerializable {
 	 */
     public String asJson() {
         return asJsonElement().toJSONString();
+    }
+
+    public static AccountData fromJson(String jsonString) {
+        JSONElement j = JSONParser.parse(jsonString);
+        if(j instanceof JSONObject) {
+            JSONObject accountJson = (JSONObject) j;
+            String firstName = accountJson.getAsStringOrNull("firstName");
+            String lastName = accountJson.getAsStringOrNull("lastName");
+            Date accountCreation;
+            try {
+                accountCreation = (new SimpleDateFormat("yyyy-MM-dd")).parse(accountJson.getAsString("accountCreation"));
+            }
+            catch(ParseException p) {
+                throw new IllegalArgumentException();
+            }
+            Date dateOfBirth = null;
+            try {
+                dateOfBirth = (new SimpleDateFormat("yyyy-MM-dd")).parse(accountJson.getAsString("dateOfBirth"));
+            }
+            catch(ParseException | NullPointerException e) {
+                //ha ha
+            }
+            String bio = accountJson.getAsStringOrNull("bio");
+            String livingLocation = accountJson.getAsStringOrNull("livingLocation");
+            return new AccountData(firstName, lastName, accountCreation, dateOfBirth, bio, livingLocation);
+        }
+        throw new IllegalArgumentException();
+
     }
 }

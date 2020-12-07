@@ -1,5 +1,8 @@
 package myJournal.util.JSON;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * The type Json value.
  */
@@ -34,10 +37,20 @@ public class JSONValue implements JSONElement{
         if(value instanceof Number) {
             return value.toString();
         }
+        if(value instanceof Date) {
+            StringBuilder sb = new StringBuilder();
+            sb.append('"');
+            sb.append(new SimpleDateFormat("yyyy-MM-dd").format(value));
+            sb.append('"');
+            return sb.toString();
+        }
         StringBuilder sb = new StringBuilder();
         sb.append('"');
         sb.append(value.toString());
         sb.append('"');
         return sb.toString();
+    }
+    public Object getValue() {
+        return value;
     }
 }
