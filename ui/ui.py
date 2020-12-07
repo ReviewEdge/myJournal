@@ -1,6 +1,7 @@
 from folio import Folio
 import journals_ui
 import accounts_ui
+import feed_ui
 
 folio = Folio("http://localhost:4567")
 
@@ -49,12 +50,15 @@ if user_id is not False:
     do = ""
     while do != "x":
         print("\n\nFOLIO\n")
-        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nExit: 'x'\n").lower()
+        do = input("Enter: \nAccounts: 'a' \nJournals: 'j' \nFeed: 'f' \nExit: 'x'\n").lower()
 
         if do == "a":
             accounts_ui.main(folio, user_id)
 
         elif do == "j":
             journals_ui.main(folio, user_id)
+
+        elif do == "f":
+            feed_ui.view_feed(folio)
 
 print("\nExiting UI...")

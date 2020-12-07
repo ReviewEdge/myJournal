@@ -68,7 +68,7 @@ class Folio:
         :param id:
         :return:
         """
-        return self.get_user_by_id(id)["profile"]["username"]
+        return self.get_user_by_id(id)["username"]
 
     def get_user_profile(self, id: int):
         return self.get_user_by_id(id)["profile"]

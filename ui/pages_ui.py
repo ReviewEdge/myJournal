@@ -1,4 +1,7 @@
 def view_pages(current_folio, pages):
+
+    print(pages) #delete me
+
     page_counter = 1
     for p in pages:
         print("--------------------------------------------")

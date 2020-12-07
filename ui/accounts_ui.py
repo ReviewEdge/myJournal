@@ -39,14 +39,14 @@ def view_account(current_folio, checking_my_account=False):
 
     # Prints account information
     viewing_user = current_folio.get_user_by_id(account_id)
-    print("User: " + viewing_user["profile"]["username"])
+    print("User: " + viewing_user["username"])
     print("Name: " + viewing_user["profile"]["firstName"] + " " + viewing_user["profile"]["lastName"])
     account_creation = viewing_user["profile"]["accountCreation"]
-    print("User Since: " + account_creation[4:10] + ", " + account_creation[24:28])
+    print("User Since: " + account_creation[5:10] + "-" + account_creation[:4])
 
     #add follower count
 
-    # if input("Would you like to view " + viewing_user["profile"]["username"] + "'s pages? (y/n)\n").lower() == "y":
+    # if input("Would you like to view " + viewing_user["username"] + "'s pages? (y/n)\n").lower() == "y":
     #
     #     print(current_folio.get_account_pages(account_id))
     #
@@ -56,7 +56,7 @@ def view_account(current_folio, checking_my_account=False):
     # add subscribe option
 
     if not checking_my_account:
-        if input("Would you like to subscribe to " + viewing_user["profile"]["username"] + "? (y/n)\n").lower() == "y":
+        if input("Would you like to subscribe to " + viewing_user["username"] + "? (y/n)\n").lower() == "y":
             current_folio.subscribe_account(account_id)
 
     print("\n")
