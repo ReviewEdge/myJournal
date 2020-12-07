@@ -247,10 +247,10 @@ public class Routes {
             for (String s : ownersString) {
                 long newId = Long.parseLong(s);
                 if(newId > 0) {
-                    toModify.addOwners(newId, account.getId());
+                    toModify.addOwner(newId, account.getId());
                 } else {
                     newId *= -1;
-                    toModify.removeOwners(newId, account.getId());
+                    toModify.removeOwner(newId, account.getId());
                 }
             }
         }
