@@ -1,6 +1,7 @@
 package myJournal.Intermediaries;
 
 import myJournal.DBCommunication;
+import myJournal.DataStructures.Account;
 import myJournal.DataStructures.Page;
 import myJournal.util.JSON.JSONElement;
 import myJournal.util.JSON.JSONSerializable;
@@ -30,6 +31,34 @@ public class PageId implements JSONSerializable {
         return ap.stream().map(PageId::getPage).collect(Collectors.toCollection(ArrayList::new));
     }
 
+    
+    /**
+	 * @param o
+	 * @return if they are equal
+	 * @Override
+	 */
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof PageId)) {
+			return false;
+		}
+		PageId s = (PageId) o;
+		
+		return (this.id == s.id);
+	}
+	
+	/**
+	 * @return the HashCode of the object
+	 * @Override
+	 */
+	public int hashCode() {
+		int result = 17;
+		result = result*37 + Long.hashCode(id);
+		return result;
+	}
+    
     @Override
     public JSONElement asJsonElement() {
         return new JSONValue(this.id);
@@ -39,4 +68,6 @@ public class PageId implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
+    
+    
 }
