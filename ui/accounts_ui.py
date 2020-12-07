@@ -43,21 +43,19 @@ def view_account(current_folio, checking_my_account=False):
     print("Name: " + viewing_user["profile"]["firstName"] + " " + viewing_user["profile"]["lastName"])
     account_creation = viewing_user["profile"]["accountCreation"]
     print("User Since: " + account_creation[5:10] + "-" + account_creation[:4])
+    print("Followers: " + str(len(viewing_user["stats"]["followers"])))
 
-    #add follower count
-
-    # if input("Would you like to view " + viewing_user["username"] + "'s pages? (y/n)\n").lower() == "y":
-    #
-    #     print(current_folio.get_account_pages(account_id))
-    #
-    #     pages_ui.view_pages(current_folio, current_folio.get_account_pages(account_id))
-
-
-    # add subscribe option
-
+    # Allows user to subscribe to user if not already following
     if not checking_my_account:
-        if input("Would you like to subscribe to " + viewing_user["username"] + "? (y/n)\n").lower() == "y":
+        if current_folio.get_session_user()["id"] in viewing_user["stats"]["followers"]:
+            print("Following.")
+
+        elif input("Would you like to follow " + viewing_user["username"] + "? (y/n)\n").lower() == "y":
             current_folio.subscribe_account(account_id)
+
+    # Allows user to see user's pages
+    if input("Would you like to view " + viewing_user["username"] + "'s pages? (y/n)\n").lower() == "y":
+        pages_ui.view_pages(current_folio, current_folio.get_account_pages(account_id))
 
     print("\n")
 

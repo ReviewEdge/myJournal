@@ -35,7 +35,7 @@ user_id = login()
 
 if user_id is not False:
     current_username = folio.get_username(user_id)
-    print("\nYou are now logged in as " + current_username + ".\n")
+    print("\nYou are now logged in as " + current_username + ".")
 
 # Prompts user to make an account
 else:

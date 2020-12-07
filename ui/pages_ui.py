@@ -1,13 +1,13 @@
 def view_pages(current_folio, pages):
-
-    print(pages) #delete me
-
     page_counter = 1
     for p in pages:
         print("--------------------------------------------")
-        print(str(page_counter) + " - " + p["name"])
-        print("By " + current_folio.get_username(p["authorId"]))
+        # print(str(page_counter) + " - " + p["name"])
+        print(p["name"])
+        # print(str(p["id"] + 1) + " - " + p["name"])
+        print("By " + current_folio.get_username(p["authorId"]) + ", in " + p["parentJournal"]["name"] + "\n")
         print(p["content"])
+        print("                                      " + str(page_counter) + "/" + str(len(pages)))
         if page_counter == len(pages):
             print("--------------------------------------------")
         page_counter += 1
