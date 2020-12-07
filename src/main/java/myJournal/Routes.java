@@ -143,25 +143,24 @@ public class Routes {
         JournalStatistics stats = new JournalStatistics(new HashSet<>(), new HashSet<>(), new HashSet<>());
         JournalOptions options = new JournalOptions(isPrivate, hasLikes, hasFollowers, owners, contributers, viewers);
         Journal j = new Journal(0, name, pages, stats, options);
-        DBCommunication.addJournal(j);
-        account.addJournalId(JournalId.from(j));
+        long jId = DBCommunication.addJournal(j);
+        account.addJournalId(new JournalId(jId));
         DBCommunication.editAccount(account.getId(), account);
         return "OK";
     };
     public static final Route addJournal = (Request request, Response response) ->
             runAuthorized(request, response, addJournalAuthorized);
     static final AuthorizedRoute addPageAuthorized = (request, response, account) -> {
-        long newId = 0;
         String newName = request.queryParams("name");
         String content = request.queryParams("content");
         long authorId = Long.parseLong(request.queryParams("authorId"));
         System.out.println(request.queryParams("parentJournalId"));
         long parentJournalId = Long.parseLong(request.queryParams("parentJournalId"));
         Journal parentJournal = DBCommunication.getJournal(parentJournalId);
-        Page p = new Page(newId, newName, content, authorId, parentJournal);
-        DBCommunication.addPage(p); //modifies p's id
+        Page p = new Page(0, newName, content, authorId, parentJournal);
+        PageId pageId = new PageId(DBCommunication.addPage(p));
         System.out.println(account.getId());
-        parentJournal.addPage(PageId.from(p), account.getId());
+        parentJournal.addPage(pageId, account.getId());
         System.out.println(parentJournal.asJson());
         DBCommunication.editJournal(parentJournalId, parentJournal);
         return "OK";
