@@ -554,7 +554,7 @@ class Folio:
 
 
 if __name__ == '__main__':
-    f = Folio("http://localhost:4567")
+    f = Folio("http://localhost:80")
     f.add_account("joe", "joe", "joe", "joe")
     joe_id = f.get_user_id("joe")
     f.authenticate(joe_id, "joe")

@@ -18,6 +18,7 @@ public class Main {
 	 * @param args Command line arguments to the program.
 	 */
 	public static void main(String[] args) {
+		port(80);
 		before((request, response) -> {
 			request.session(true);
 		});

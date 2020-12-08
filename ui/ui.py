@@ -3,7 +3,7 @@ import journals_ui
 import accounts_ui
 import feed_ui
 
-folio = Folio("http://localhost:4567")
+folio = Folio("http://localhost:80")
 
 
 # returns user id if login successful, else returns False
