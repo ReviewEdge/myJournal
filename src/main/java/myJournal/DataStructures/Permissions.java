@@ -30,8 +30,6 @@ public interface Permissions {
      * @return true if the id is of an account which can view the object
      */
     default boolean canView(Long id) {
-    	if (getViewers().size() == 0)
-    		return true;
     	
     	for (Long i: getViewers())
     		if (Objects.equals(id, i))
