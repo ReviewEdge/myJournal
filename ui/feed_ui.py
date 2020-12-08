@@ -1,4 +1,4 @@
-import pages_ui
+import ui.pages_ui as pages_ui
 
 
 def view_feed(current_folio):

@@ -1,4 +1,4 @@
-import my_journals_ui
+import ui.my_journals_ui as my_journals_ui
 
 
 def new_journal(current_folio):

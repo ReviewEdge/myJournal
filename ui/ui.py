@@ -1,9 +1,9 @@
 from folio import Folio
-import journals_ui
-import accounts_ui
-import feed_ui
+import ui.journals_ui as journals_ui
+import ui.accounts_ui as accounts_ui
+import ui.feed_ui as feed_ui
 
-folio = Folio("http://localhost:80")
+folio = Folio("http://134.122.116.97:80")
 
 
 # returns user id if login successful, else returns False

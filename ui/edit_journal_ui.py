@@ -1,4 +1,4 @@
-import pages_ui
+import ui.pages_ui as pages_ui
 
 
 def edit_journal_options(current_folio, journal_id):

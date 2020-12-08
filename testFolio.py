@@ -2,7 +2,7 @@ from folio import Folio
 
 
 if __name__ == '__main__':
-    f = Folio("http://134.122.116.97:4567")
+    f = Folio("http://134.122.116.97:80")
     f.add_account("joe", "joe", "joe", "joe")
     joe_id = f.get_user_id("joe")
     f.authenticate(joe_id, "joe")
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     first_id = first_journal["id"]
     f.add_page("Joe's page", "I SURE DO LIKE TO EAT CHICKEN", author_id=joe_id, parent_journal_id=first_id)
 
-    g = Folio("http://localhost:4567")
+    g = Folio("http://134.122.116.97:80")
     g.add_account("jim","jim","jim","jim")
     jim_id = g.get_user_id("jim")
     g.authenticate(jim_id, "jim")

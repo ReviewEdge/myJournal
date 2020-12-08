@@ -1,5 +1,5 @@
-import my_account_ui
-import pages_ui
+import ui.my_account_ui as my_account_ui
+import ui.pages_ui as pages_ui
 
 
 def new_account(current_folio):
