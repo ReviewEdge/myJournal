@@ -36,7 +36,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	}
 
 	public Journal authorized(long requestingId) {
-		if(canView(requestingId)) return this;
+		if(canView(requestingId) || !isPrivate()) return this;
 		else throw new IllegalAccessAttempt();
 	}
 	
@@ -326,6 +326,9 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 */
 	public ArrayList<Page> getPages(long requestingId) throws IllegalAccessAttempt {
 		if (canView(requestingId) || !isPrivate()) {
+			System.out.println("requestingId = " + requestingId);
+			System.out.println("canView(requestingId) = " + canView(requestingId));
+			System.out.println("isPrivate() = " + isPrivate());
 			return PageId.toPageArray(pageIds);
 		}
 		throw new IllegalAccessAttempt("Can't view page");

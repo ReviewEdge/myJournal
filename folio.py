@@ -126,9 +126,9 @@ class Folio:
         """
         request_data = {
             "name": name,
-            "is_private": is_private,
-            "has_likes": has_likes,
-            "has_followers": has_followers,
+            "isPrivate": is_private,
+            "hasLikes": has_likes,
+            "hasFollowers": has_followers,
             "owners": owners,
             "contributers": contributers
         }
@@ -381,7 +381,8 @@ class Folio:
         """
         request_data = {
             "id": account_id,
-            "date_of_birth": date_of_birth
+            "dateO"
+            "fBirth": date_of_birth
         }
         response = self.session.put(self.endpoints["account"], data=request_data)
         return response.status_code == 200
@@ -409,7 +410,7 @@ class Folio:
         """
         request_data = {
             "id": account_id,
-            "living_location": living_location
+            "livingLocation": living_location
         }
         response = self.session.put(self.endpoints["account"], data=request_data)
         return response.status_code == 200
@@ -430,9 +431,9 @@ class Folio:
         request_data = {
             "id": journal_id,
             "name": name,
-            "is_private": is_private,
-            "has_likes": has_likes,
-            "has_followers": has_followers,
+            "isPrivate": is_private,
+            "hasLikes": has_likes,
+            "hasFollowers": has_followers,
             "owners": owners,
             "contributers": contributers,
             "viewers": viewers
