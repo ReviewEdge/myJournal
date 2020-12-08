@@ -315,7 +315,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 * @return the latest page in the journal
 	 */
 	public Page getLatestPage(long requestingId) throws IllegalAccessAttempt {
-		if (canView(requestingId)) 
+		if (canView(requestingId) || !isPrivate()) 
 			return pageIds.get(pageIds.size()-1).getPage();
 		throw new IllegalAccessAttempt("Can't view page");
 	}
@@ -325,7 +325,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	 * @return the id of all of the pages in the journal
 	 */
 	public ArrayList<Page> getPages(long requestingId) throws IllegalAccessAttempt {
-		if (canView(requestingId)) {
+		if (canView(requestingId) || !isPrivate()) {
 			return PageId.toPageArray(pageIds);
 		}
 		throw new IllegalAccessAttempt("Can't view page");
