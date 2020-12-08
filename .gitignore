@@ -1,0 +1,8 @@
+/git_hidden/
+/bin/
+/.classpath
+/.project
+/.idea/**
+.idea
+.idea/**
+/target/
