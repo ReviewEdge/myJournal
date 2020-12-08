@@ -1,0 +1,19 @@
+Design Changes:
+Original Feature Descriptions:
+We will write the backend for a social journaling app that does the following:
+	- Allows user to create an account.
+		- Accounts can be followed.
+		- Account profile information can be edited.
+		- Creates an individualized feed based on followed accounts/journals.
+	- Allows user to create journals.
+		- Journals can be public or private.
+		- Journals can have multiple contributors.
+		- Journals can be followed.
+		- Journals keep track of likes and views.
+	- Allows user to write pages in journals.
+		- Pages keep track of likes and views.
+	- Interacts with database
+	- Has network endpoints
+	- A basic terminal frontend will be created:
+		- That will allow user to interact with backend as described above
+		- A GUI will NOT be created (unless we finish backend early)

@@ -3,3 +3,5 @@
 [ ] searchable usernames
 [ ] page dates
 [ ] better feed algorithm
+[ ] test code for Database
+[ ] add Metadata class for Journal & Page 

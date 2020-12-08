@@ -47,14 +47,6 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	    return id;
 	}
 	
-	/**
-	 * @return arrayList of all of the pages in the journal
-	 */
-	public ArrayList<Page> getPages() {
-	    return PageId.toPageArray(pageIds);
-	}
-	
-	
 	// Statistical Data
 	/**
 	 * @return how many likes the journal has

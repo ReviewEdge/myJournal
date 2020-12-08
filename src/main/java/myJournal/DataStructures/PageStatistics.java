@@ -41,14 +41,14 @@ public class PageStatistics implements JSONSerializable {
 	}
 	
 	/**
-	 * @return a hashset of all of the viewers
+	 * @return a hashSet of all of the viewers
 	 */
 	public HashSet<Long> getViewers() {
 		return this.viewers;
 	}
 	
 	/**
-	 * @return a hashset of all of the likers
+	 * @return a hashSet of all of the likers
 	 */
 	public HashSet<Long> getLikers() {
 		return likers;

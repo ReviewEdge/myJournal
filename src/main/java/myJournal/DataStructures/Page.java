@@ -18,6 +18,7 @@ public class Page implements JSONSerializable {
 	private long authorId;
 	private PageStatistics stats;
 	private Journal parentJournal;
+	
 	//Page Options
 	private boolean hasLikes;
 	private boolean hasViews;
@@ -95,18 +96,19 @@ public class Page implements JSONSerializable {
 	}
 	
 	/**
-	 * @return hashset of all the viewers of the page
-	 */
-	public HashSet<Long> getViewers() {
-		return this.stats.getViewers();
-	}
-	
-	/**
 	 * @return all of the liker's ids
 	 */
 	public HashSet<Long> getLikers() {
 		return this.stats.getLikers();
 	}
+	
+	/**
+	 * @return hashSet of all the viewers of the page
+	 */
+	public HashSet<Long> getViewers() {
+		return this.stats.getViewers();
+	}
+	
 	
 	/**
 	 * @return the page's parent journal 
@@ -144,17 +146,24 @@ public class Page implements JSONSerializable {
 	}
 	
 	/**
-	 * @param viewerId
+	 * @param likerId
 	 */
-	public void addView(long viewerId) {
-		this.stats.addView(viewerId);
+	public void addLiker(long likerId) {
+		this.stats.addLiker(likerId);
 	}
 	
 	/**
 	 * @param likerId
 	 */
-	public void addLiker(long likerId) {
-		this.stats.addLiker(likerId);
+	public void removeLiker(long likingId) {
+    	this.stats.removeLiker(likingId);
+	}
+	
+	/**
+	 * @param viewerId
+	 */
+	public void addView(long viewerId) {
+		this.stats.addView(viewerId);
 	}
 	
 	/**
@@ -171,10 +180,16 @@ public class Page implements JSONSerializable {
 		this.content = content;
 	}
 
+	/**
+	 * @param pageId
+	 */
 	public Page copyWithId(long id) {
 		return new Page(id, name, content, authorId, parentJournal);
 	}
 
+	/**
+	 * @param requestingId
+	 */
 	public Page authorized(long requestingId) {
 		if(parentJournal.canView(requestingId)) return this;
 		else throw new IllegalAccessAttempt();
@@ -248,8 +263,4 @@ public class Page implements JSONSerializable {
     public String asJson() {
         return asJsonElement().toJSONString();
     }
-
-	public void removeLiker(long likingId) {
-    	this.stats.removeLiker(likingId);
-	}
 }
