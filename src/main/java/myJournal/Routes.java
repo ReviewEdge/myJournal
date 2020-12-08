@@ -16,16 +16,14 @@ import spark.Route;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Routes {
     public static final Route getTest = (Request request, Response response) -> "I DONT CARE";
     public static final Route getAccount = (Request request, Response response) -> {
         String username = request.queryParams("username");
         if (username != null) {
+            username = username.toLowerCase(Locale.ROOT);
             System.out.println("Accessing account with username " + username);
             System.out.println(DBCommunication.getAccountByUsername(username).asJson());
             return DBCommunication.getAccountByUsername(username).asJson();
@@ -117,26 +115,32 @@ public class Routes {
                 return JSONBuilder.convertToJSONString(pages);
             }, true);
     public static final Route addAccount = (Request request, Response response) -> {
-        String firstName = request.queryParams("firstName");
-        String lastName = request.queryParams("lastName");
-        String username = request.queryParams("username");
-        String password = request.queryParams("password");
-        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(10));
-        Date accountCreation = new Date();
-        Date dateOfBirth;
         try {
-            dateOfBirth = (new SimpleDateFormat("yyyy-MM-dd")).parse(request.queryParams("dateOfBirth"));
-        } catch (ParseException | NullPointerException e) {
-            dateOfBirth = null;
+            String firstName = request.queryParams("firstName");
+            String lastName = request.queryParams("lastName");
+            String username = request.queryParams("username").toLowerCase(Locale.ROOT);
+            String password = request.queryParams("password");
+            String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(10));
+            Date accountCreation = new Date();
+            Date dateOfBirth;
+            try {
+                dateOfBirth = (new SimpleDateFormat("yyyy-MM-dd")).parse(request.queryParams("dateOfBirth"));
+            } catch (ParseException | NullPointerException e) {
+                dateOfBirth = null;
+            }
+            String bio = request.queryParams("bio");
+            String livingLocation = request.queryParams("livingLocation");
+            AccountData p = new AccountData(firstName, lastName, accountCreation, dateOfBirth, bio, livingLocation);
+            Account a = new Account(0, username, passwordHash, p);
+            DBCommunication.addAccount(a);
+            System.out.println("Added account with username " + username);
+            response.status(200);
+            return "OK";
         }
-        String bio = request.queryParams("bio");
-        String livingLocation = request.queryParams("livingLocation");
-        AccountData p = new AccountData(firstName, lastName, accountCreation, dateOfBirth, bio, livingLocation);
-        Account a = new Account(0, username, passwordHash, p);
-        DBCommunication.addAccount(a);
-        System.out.println("Added account with username " + username);
-        response.status(200);
-        return "OK";
+        catch(NullPointerException n) {
+            response.status(400);
+            return "BAD REQUEST";
+        }
     };
     static final AuthorizedRoute addJournalAuthorized = (request, response, account) -> {
         String name = request.queryParams("name");
@@ -159,13 +163,10 @@ public class Routes {
             }
         }
         HashSet<Long> viewers = new HashSet<>();
-        if (isPrivate) {
-            String[] viewersString = request.queryParamsValues("viewers");
-            viewers.add(account.getId());
-            if (viewersString != null) {
-                for (String s : viewersString) {
-                    viewers.add(Long.parseLong(s));
-                }
+        String[] viewersString = request.queryParamsValues("viewers");
+        if (viewersString != null) {
+            for (String s : viewersString) {
+                viewers.add(Long.parseLong(s));
             }
         }
         ArrayList<PageId> pages = new ArrayList<>();
