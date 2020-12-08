@@ -46,7 +46,7 @@ public class Journal implements Followable, JSONSerializable, Permissions{
 	public long getId() {
 	    return id;
 	}
-	
+
 	// Statistical Data
 	/**
 	 * @return how many likes the journal has
