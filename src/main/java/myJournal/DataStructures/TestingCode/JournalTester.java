@@ -12,6 +12,8 @@ import myJournal.Intermediaries.*;
 
 public class JournalTester {
 
+	// Quick overview, needs more detail in the future
+	
 	Journal jnl;
 	ArrayList<PageId> pIds;
 	JournalStatistics sts;
