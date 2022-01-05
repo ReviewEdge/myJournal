@@ -115,7 +115,14 @@ public class Routes {
                 return JSONBuilder.convertToJSONString(pages);
             }, true);
     public static final Route addAccount = (Request request, Response response) -> {
+	System.out.println("Got Add Account Request");
         try {
+//	    System.out.println(request.body());
+//	    System.out.println(request.url());
+//	    System.out.println(request.contentType());
+//	    System.out.println(request.pathInfo());
+//	    System.out.println(request.uri());
+//	    System.out.println(request.queryString());
             String firstName = request.queryParams("firstName");
             String lastName = request.queryParams("lastName");
             String username = request.queryParams("username").toLowerCase(Locale.ROOT);

@@ -21,7 +21,30 @@ public class Main {
 		port(80);
 		before((request, response) -> {
 			request.session(true);
+			response.header("Access-Control-Allow-Origin",
+				request.headers("Origin");
+			response.header("Vary", "Origin");
+			response.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
 		});
+		options("/*",
+	        	(request, response) -> {
+
+		            String accessControlRequestHeaders = request
+	                    .headers("Access-Control-Request-Headers");
+		            if (accessControlRequestHeaders != null) {
+		                response.header("Access-Control-Allow-Headers",
+	                        accessControlRequestHeaders);
+		            }
+
+		            String accessControlRequestMethod = request
+	                    .headers("Access-Control-Request-Method");
+		            if (accessControlRequestMethod != null) {
+		                response.header("Access-Control-Allow-Methods",
+	                        accessControlRequestMethod);
+		            }
+
+	            	return "OK";
+	        });
 		get("/", (q,a)->{
 			return q.session().isNew();
 		});
