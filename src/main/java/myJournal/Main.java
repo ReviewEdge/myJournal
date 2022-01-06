@@ -3,6 +3,8 @@ package myJournal;
 import myJournal.DataStructures.AccountStatistics;
 import myJournal.Endpoints;
 import myJournal.Routes;
+import spark.Request;
+import spark.Response;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -21,10 +23,15 @@ public class Main {
 		port(80);
 		before((request, response) -> {
 			request.session(true);
+			response.header("Access-Control-Allow-Origin",
+				request.headers("Origin"));
+			response.header("Vary", "Origin");
+			response.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
+			response.header("Access-Control-Allow-Credentials", "true");
 		});
-		get("/", (q,a)->{
-			return q.session().isNew();
-		});
+		options("/*",
+				Main::OptionPreflight);
+		get("/", Main::handleGeneral);
 		get(Endpoints.Test, Routes.getTest);
 		get(Endpoints.Account, Routes.getAccount);
 		get(Endpoints.Journal, Routes.getJournal);
@@ -51,4 +58,25 @@ public class Main {
 
 	}
 
+	private static Object handleGeneral(Request q, Response a) {
+		return q.session().isNew();
+	}
+
+	private static Object OptionPreflight(Request request, Response response) {
+		String accessControlRequestHeaders = request
+				.headers("Access-Control-Request-Headers");
+		if (accessControlRequestHeaders != null) {
+			response.header("Access-Control-Allow-Headers",
+					accessControlRequestHeaders);
+		}
+
+		String accessControlRequestMethod = request
+				.headers("Access-Control-Request-Method");
+		if (accessControlRequestMethod != null) {
+			response.header("Access-Control-Allow-Methods",
+					accessControlRequestMethod);
+		}
+
+		return "OK";
+	}
 }

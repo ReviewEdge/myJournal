@@ -7,7 +7,7 @@
     <groupId>PGPV</groupId>
     <artifactId>myJournal</artifactId>
     <packaging>jar</packaging>
-    <version>0.1</version>
+    <version>0.1-dbg</version>
     <build>
         <plugins>
             <plugin>
