@@ -1,8 +1,6 @@
 # myJournal - FOLIO
 A social journaling app.
 
-^.^
-
 ## Project Outline
 
 
